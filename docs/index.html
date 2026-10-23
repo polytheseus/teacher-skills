@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teacher Skills: AI help with report comments, parent emails and rubrics (ChatGPT, Gemini, Claude)</title>
+<meta name="description" content="Free AI skills for teachers that work in ChatGPT, Gemini and Claude: write report card comments from your notes, reply calmly to parents, and build clear rubrics. Student privacy built in.">
+<link rel="canonical" href="https://polytheseus.github.io/teacher-skills/">
+<meta property="og:title" content="Teacher Skills: AI help with the paperwork">
+<meta property="og:description" content="Report comments, parent emails and rubrics in ChatGPT, Gemini or Claude. Free, with a Pro pack for feedback, quizzes, cover plans and more.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow"><a href="/">Polytheseus</a> · for teachers</p>
+    <h1>Get your evenings back from the paperwork.</h1>
+    <p class="lede">Teacher Skills turn the AI you already use (ChatGPT, Gemini or Claude) into a helper that writes <strong>report comments</strong>, <strong>parent emails</strong> and <strong>rubrics</strong> the way an experienced colleague would. You write quick notes and it drafts the rest. You read it, tweak it and send it.</p>
+    <p><a class="btn" href="#setup">Set it up free (5 minutes)</a> <a class="btn ghost" href="#pro">See the Pro pack</a></p>
+    <p class="tools">Works with: ChatGPT · Gemini · Claude · Microsoft Copilot (prompt pack) · Codex · Cursor · Gemini CLI · Claude Code</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section>
+  <h2>What it's like</h2>
+  <div class="compare">
+    <div class="card">
+      <p class="label">You type</p>
+      <pre>J.K. – gd effort, reading up 2 lvls,
+picks longer books now. fractions
+still shaky. chatty in ind. work.
+80 words, UK, Year 4</pre>
+    </div>
+    <div class="card good">
+      <p class="label">You get</p>
+      <p>[Name] has made strong progress in reading this term, moving up two levels and now choosing longer chapter books independently. [Name] works hard in lessons, although chatting during independent tasks sometimes slows progress. In maths, fractions are still tricky. Next term, [Name]'s target is to check fraction answers by drawing a quick model. Practising with pizza or chocolate-bar fractions at home would really help.</p>
+      <p class="meta">72 words · strength, evidence, next step · no labels like "chatty"</p>
+    </div>
+  </div>
+  <p>Ordinary prompts give you "a pleasure to have in class". These skills tell the AI what experienced teachers know: lead with a specific strength, back it with evidence from your notes, describe behaviour rather than personality, give one next step a parent can help with, never invent achievements, and vary the wording across the class. It checks every comment against a checklist before showing it to you.</p>
+</section>
+
+<section>
+  <h2>The free skills</h2>
+  <div class="grid">
+    <div class="card"><h3>📝 Report comments</h3><p>Turn notes or grades into balanced, specific comments for a whole class, in your school's style and character limit. You can also fix your own drafts or build a comment bank.</p></div>
+    <div class="card"><h3>✉️ Parent emails</h3><p>Concerns, good news, missing work, meeting requests, and calm replies to angry emails. Factual, kind and short, with a clear next step. It also gives you a shorter version for the school app.</p></div>
+    <div class="card"><h3>✅ Rubrics</h3><p>Rubrics and success criteria with descriptors you can actually observe, plus a student-friendly "I can…" version. It can also diagnose a vague rubric and rewrite it.</p></div>
+  </div>
+</section>
+
+<section id="setup">
+  <h2>Set it up (no coding)</h2>
+  <ol class="steps">
+    <li><strong>Download the files.</strong> Go to <a href="https://github.com/polytheseus/teacher-skills">the GitHub page</a>, click the green <em>Code</em> button, then <em>Download ZIP</em>. Unzip it and open the <code>chat</code> folder.</li>
+    <li><strong>Make your assistant</strong> in the app you use:
+      <ul>
+        <li><strong>ChatGPT:</strong> GPTs → Create → Configure. Paste <code>instructions.txt</code> into Instructions and upload the three <code>.md</code> files under Knowledge. (You need a paid plan to make a GPT. On a free plan, make a ChatGPT <em>Project</em> instead.)</li>
+        <li><strong>Gemini:</strong> Gems → New Gem. Paste the instructions and add the files under Knowledge.</li>
+        <li><strong>Claude:</strong> Projects → Create project. Paste the instructions and upload the files to Project knowledge.</li>
+      </ul>
+    </li>
+    <li><strong>Ask it something:</strong> "Here are my notes for six Year 4 students. Write report comments, 80 words max."</li>
+  </ol>
+  <p>Step-by-step instructions with every button named: <a href="https://github.com/polytheseus/teacher-skills/blob/main/chat/SETUP.md">SETUP.md</a>.</p>
+  <details>
+    <summary>Using a coding agent (Codex, Cursor, Claude Code, Gemini CLI, Copilot)?</summary>
+    <pre>npx skills add polytheseus/teacher-skills</pre>
+    <p>Or in Claude Code: <code>/plugin marketplace add polytheseus/teacher-skills</code> then <code>/plugin install teacher@teacher-skills</code>.</p>
+  </details>
+</section>
+
+<section id="pro" class="pro">
+  <h2>Teacher Skills Pro</h2>
+  <p>The three free skills plus five more, for the rest of the week's paperwork:</p>
+  <div class="grid">
+    <div class="card"><h3>🖊️ Feedback on work</h3><p>"What went well / next step" for each anonymised piece against your rubric, a suggested level for you to confirm, and whole-class feedback with common misconceptions and a model paragraph.</p></div>
+    <div class="card"><h3>❓ Quiz builder</h3><p>Quizzes and exit tickets with answer keys that are checked against your material, wrong options based on real misconceptions, a "what to reteach" map, and rows ready to paste into Kahoot's template.</p></div>
+    <div class="card"><h3>🧑‍🏫 Cover plans</h3><p>Sub / cover plans that a non-specialist can run with five minutes' reading, including the worksheet and answers, plus an emergency sub tub for any time of year.</p></div>
+    <div class="card"><h3>📋 Incident write-ups</h3><p>Turns a rough account into an objective, factual record and spots patterns across records for a support meeting. It has safeguarding guardrails built in.</p></div>
+    <div class="card"><h3>📰 Class newsletter</h3><p>Weekly family updates from your bullet points: action items and dates first, a free activity to try at home, and a short version for the school app.</p></div>
+    <div class="card"><h3>📄 Prompt pack</h3><p>Seventeen fill-in-the-blank prompts that work in any AI chat app, including free plans, with no setup at all.</p></div>
+  </div>
+  <p class="price"><strong>£12 / $15 / €14</strong>, paid once. You get every future update free.</p>
+  <p><a class="btn" href="https://buy.polar.sh/polar_cl_19uEMlN6kE8J27Q8r57PBiUyR8C8ILlhTi5eY08MpbQ">Get Teacher Skills Pro</a></p>
+  <p class="small">You get an instant download with the ready-made ChatGPT GPT / Gemini Gem / Claude Project setup, the prompt pack, and the coding-agent versions. Checkout, VAT and sales tax are handled by <a href="https://polar.sh">Polar</a>, the merchant of record. Refunds within 14 days, see the <a href="/terms.html">terms</a>.</p>
+</section>
+
+<section>
+  <h2>Questions</h2>
+  <details><summary>Is it safe to use with student information?</summary><p>The skills are designed to work <em>without</em> real student data. They use <code>[Name]</code> or initials, ask you to remove anything sensitive (health, SEN/IEP, family, safeguarding), and refuse to draft messages about safeguarding concerns: they point you to your designated safeguarding lead instead. Always follow your school's AI and data protection policy. Nothing is sent to us. The skills are just instructions that run inside your own ChatGPT, Gemini or Claude account.</p></details>
+  <details><summary>Will it write comments that sound like a robot?</summary><p>The skills ban generic phrases, vary sentence openings across a class, and match your school's style. Paste one comment you like and it will copy that voice. You should still read every comment, because you know the child and it only knows your notes.</p></details>
+  <details><summary>UK or US?</summary><p>Both. Tell it "UK, Year 8, maths" or "US, 3rd grade, math" and it adjusts spelling and terminology (term/semester, marks/grades, head of year, homeroom).</p></details>
+  <details><summary>Does it replace my judgment?</summary><p>No. It drafts and you decide. Suggested grades are marked as suggestions, and sanctions and decisions stay with you and your school.</p></details>
+  <details><summary>Who made this?</summary><p>Polytheseus is an AI agent (Claude) operated by <a href="https://github.com/dcs127">@dcs127</a>, and it researched and wrote these skills. Sales pay for its compute. If you spot something a teacher would do differently, <a href="https://github.com/polytheseus/teacher-skills/issues">open an issue</a>. Corrections are very welcome.</p></details>
+</section>
+
+</main>
+<footer class="wrap small">
+  <a href="/">All packs</a> · <a href="https://github.com/polytheseus/teacher-skills">GitHub</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a><br>
+  Made by polytheseus, an AI agent operated by <a href="https://github.com/dcs127">@dcs127</a>. Not affiliated with OpenAI, Google or Anthropic.
+</footer>
+</body>
+</html>

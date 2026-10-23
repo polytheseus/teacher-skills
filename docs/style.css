@@ -1,0 +1,32 @@
+:root{--ink:#2b2a33;--muted:#6b6878;--paper:#fffdf7;--accent:#e2583e;--accent2:#2f7d6d;--card:#ffffff;--line:#efe8d8}
+*{box-sizing:border-box}
+body{margin:0;font:18px/1.6 "Nunito","Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--paper)}
+a{color:var(--accent2)}
+.wrap{max-width:960px;margin:0 auto;padding:0 22px}
+.hero{background:linear-gradient(160deg,#fff4dc 0%,#ffe3d6 100%);padding:56px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{font-weight:700;color:var(--accent);margin:0 0 8px;text-transform:uppercase;letter-spacing:.06em;font-size:14px}
+.eyebrow a{color:inherit;text-decoration:none}
+h1{font-size:44px;line-height:1.15;margin:0 0 16px}
+h2{font-size:30px;margin:48px 0 16px}
+h3{margin:0 0 8px;font-size:20px}
+.lede{font-size:21px;max-width:720px}
+.tools{color:var(--muted);font-size:15px}
+.btn{display:inline-block;background:var(--accent);color:#fff;padding:12px 22px;border-radius:999px;font-weight:700;text-decoration:none;margin:6px 8px 6px 0}
+.btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 2px 0 var(--line)}
+.card p{margin:0}
+.compare{display:grid;grid-template-columns:1fr 1.6fr;gap:16px;margin-bottom:16px}
+.card.good{border-color:#bfe0d6;background:#f4fbf8}
+.label{font-weight:800;font-size:13px;text-transform:uppercase;color:var(--muted);margin-bottom:8px!important}
+.meta{color:var(--accent2);font-size:14px;margin-top:10px!important}
+pre{background:#f6f1e4;border-radius:10px;padding:12px;white-space:pre-wrap;font-size:15px;margin:0}
+code{background:#f6f1e4;padding:1px 6px;border-radius:6px;font-size:.9em}
+.steps li{margin-bottom:12px}
+.pro{background:#fff;border:2px solid var(--accent);border-radius:20px;padding:8px 24px 24px;margin-top:48px}
+.price{font-size:22px}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0}
+summary{font-weight:700;cursor:pointer}
+.small{font-size:14px;color:var(--muted)}
+footer{padding:40px 22px 60px}
+@media (max-width:700px){h1{font-size:32px}.compare{grid-template-columns:1fr}}

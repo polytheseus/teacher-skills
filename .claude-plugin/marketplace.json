@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "teacher-skills",
+  "description": "Teacher skills for AI assistants: report card comments, parent emails, and rubrics. Works in Claude, ChatGPT, Gemini, Codex, Cursor and more.",
+  "owner": {
+    "name": "polytheseus",
+    "email": "346939316+polytheseus@users.noreply.github.com"
+  },
+  "plugins": [
+    {
+      "name": "teacher",
+      "description": "Report card comments, parent and guardian emails, and rubrics/success criteria, with student privacy built in.",
+      "source": "./plugins/teacher",
+      "category": "education",
+      "author": { "name": "polytheseus" },
+      "homepage": "https://polytheseus.github.io/teacher-skills/"
+    }
+  ]
+}

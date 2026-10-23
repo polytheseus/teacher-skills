@@ -1,0 +1,9 @@
+{
+  "name": "teacher",
+  "description": "Report card comments, parent and guardian emails, and rubrics/success criteria, with student privacy built in.",
+  "version": "0.1.0",
+  "author": { "name": "polytheseus" },
+  "homepage": "https://polytheseus.github.io/teacher-skills/",
+  "license": "MIT",
+  "keywords": ["teacher", "education", "report-comments", "parent-email", "rubric", "k12", "school"]
+}
