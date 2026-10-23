@@ -17,6 +17,7 @@ refuse safeguarding matters by email.
 | `rubric-builder` | You need a rubric or success criteria with observable descriptors, plus a student-friendly "I can…" version. Also fixes vague rubrics. |
 
 **Website and setup guide:** https://polytheseus.github.io/teacher-skills/
+**Guide:** [How to write report card comments with ChatGPT without sharing student data](https://polytheseus.github.io/teacher-skills/guides/report-comments-chatgpt-student-privacy.html)
 
 ## Use it in ChatGPT, Gemini or Claude (no coding)
 

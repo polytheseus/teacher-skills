@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to write report card comments with ChatGPT without sharing student data</title>
+<meta name="description" content="A step-by-step way to write report card comments with ChatGPT, Gemini or Claude using student codes instead of names, with a copy-paste prompt, a safe-notes checklist, and a spreadsheet formula to put names back. UK and US.">
+<link rel="canonical" href="https://polytheseus.github.io/teacher-skills/guides/report-comments-chatgpt-student-privacy.html">
+<meta property="og:title" content="Report card comments with ChatGPT, without sharing student data">
+<meta property="og:description" content="Codes instead of names, safe notes, a copy-paste prompt and a formula to merge names back in. Works in ChatGPT, Gemini and Claude.">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"HowTo","name":"Write report card comments with ChatGPT without sharing student data",
+ "step":[
+  {"@type":"HowToStep","name":"Check your school's AI policy and use an approved tool if there is one"},
+  {"@type":"HowToStep","name":"Give each student a code and keep the key offline"},
+  {"@type":"HowToStep","name":"Write notes about work and learning only, with no sensitive details"},
+  {"@type":"HowToStep","name":"Switch off model training or use a temporary chat"},
+  {"@type":"HowToStep","name":"Paste the prompt and your coded notes"},
+  {"@type":"HowToStep","name":"Read and edit every comment"},
+  {"@type":"HowToStep","name":"Put names back in your own spreadsheet, not in the chat"}]},
+{"@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"Is it OK to use initials instead of names?","acceptedAnswer":{"@type":"Answer","text":"Initials are better than full names but in a class of 30 they can still identify a child, especially alongside grades or details. A code such as S07 that only you can decode is safer."}},
+  {"@type":"Question","name":"Can I paste grades or test scores?","acceptedAnswer":{"@type":"Answer","text":"Grades attached to a code and nothing else are much lower risk than grades attached to a name. Check your school policy; some schools treat any assessment data as off limits in consumer AI tools."}},
+  {"@type":"Question","name":"Do I have to tell parents I used AI?","acceptedAnswer":{"@type":"Answer","text":"Follow your school's policy. Either way, the comment is yours: you supplied the observations and you are responsible for checking and editing what you submit."}}]}
+]}
+</script>
+</head>
+<body class="guide">
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow"><a href="../">Teacher Skills</a> · Guide</p>
+    <h1>How to write report card comments with ChatGPT (without sharing student data)</h1>
+    <p class="lede">You can get an AI to draft thirty report comments in the time it takes to make a cup of tea, and you don't need to give it a single name. Here's the workflow: codes instead of names, notes that contain nothing sensitive, a prompt you can copy, and a spreadsheet formula that puts the names back afterwards. It works the same in ChatGPT, Gemini and Claude.</p>
+    <p class="byline">Updated 23 October 2026 · UK and US · About a 7-minute read</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<div class="answer">
+  <p><strong>The short version:</strong> give every student a code (S01, S02…) and keep the key in your own spreadsheet. Write notes only about work and learning, with no health, SEN/IEP, family or behaviour-incident details. Use your school's approved AI tool if it has one; otherwise turn off model training or use a temporary chat. Ask for comments with <code>[Name]</code> as a placeholder, read every one, and swap the names back in your spreadsheet with <code>=SUBSTITUTE()</code>.</p>
+</div>
+
+<div class="warn">
+  <p><strong>This isn't legal advice.</strong> Your school or district's policy comes first. If it says no AI for reports, or only an approved tool, follow that. This guide is about doing it carefully where it's allowed.</p>
+</div>
+
+<h2>What the rules actually say</h2>
+<p><strong>England (DfE):</strong> the Department for Education's guidance on <a href="https://www.gov.uk/government/publications/generative-artificial-intelligence-in-education/generative-artificial-intelligence-ai-in-education">generative AI in education</a> (updated August 2025) recommends that <em>"personal data is not used in generative AI tools"</em>, and says any data entered <em>"should not contain information that could allow an individual to be identified."</em> It also says the quality of any final document <em>"remains the responsibility of the professional who produced it."</em> So the DfE expects you to check and own what you submit, and it doesn't ban using AI for admin. Schools elsewhere in the UK follow UK GDPR in the same way.</p>
+<p><strong>US (FERPA):</strong> FERPA governs disclosure of information from education records, and as of the last guidance we could find the Department of Education hadn't issued AI-specific rules. The common reading, and what most district policies say, is that you shouldn't put identifiable student information into a consumer AI account that your district has no agreement with. Many districts now license an approved tool. Ask your tech coordinator which one.</p>
+<p>Both point the same way: <strong>if the AI never sees anything that identifies a child, most of the problem goes away.</strong> The rest of this guide shows how.</p>
+
+<h2>Step 1: Use the right tool</h2>
+<ul>
+  <li><strong>School-approved first.</strong> If your school gives you Gemini through a Google Workspace for Education account, Google's <a href="https://knowledge.workspace.google.com/admin/gemini/gemini-for-google-workspace-faq-education">Education FAQ</a> says those chats aren't reviewed by humans or used to train models. OpenAI also offers a <a href="https://openai.com/blog/chatgpt-for-teachers">ChatGPT for Teachers</a> workspace for verified US K–12 educators. Some schools license Copilot or Claude. Approved tools come with a data agreement; your personal account doesn't.</li>
+  <li><strong>Personal account?</strong> Turn off training. In ChatGPT it's <em>Settings → Data controls → Improve the model for everyone</em>. Or use a <em>Temporary Chat</em>, which OpenAI says isn't used for training and is deleted after 30 days. Gemini and Claude have similar settings in their privacy or activity menus. Even with these on, still don't paste identifying details: the settings reduce risk, they don't make a consumer account an approved school system.</li>
+</ul>
+
+<h2>Step 2: Give each student a code</h2>
+<p>Make a two-column key in your own spreadsheet (school OneDrive or Google Drive, never in the chat):</p>
+<table>
+  <tr><th>Code</th><th>Name</th></tr>
+  <tr><td>S01</td><td><em>(the real name, which stays here)</em></td></tr>
+  <tr><td>S02</td><td><em>…</em></td></tr>
+</table>
+<p>Why not initials? In a class of thirty, "J.K., Year 4, reading up two levels" can identify a child to anyone who knows the class. A code means nothing to anyone but you. Shuffle the order if your codes would otherwise follow the register.</p>
+
+<h2>Step 3: Write notes that are safe to share</h2>
+<p>Comments only need three things: a strength, the evidence for it, and a next step. None of those need anything sensitive.</p>
+<table>
+  <tr><th>Don't paste</th><th>Paste this instead</th></tr>
+  <tr><td>Jamie Kowalski, 4B, ADHD, mum says things are hard at home</td><td>S07, Year 4</td></tr>
+  <tr><td>Has an IEP for dyslexia, gets extra time</td><td>Reading fluency improving with practice; spelling of longer words still developing</td></tr>
+  <tr><td>Excluded for 2 days after the fight in October</td><td><em>(leave it out: incidents belong in your school system, not a report comment draft)</em></td></tr>
+  <tr><td>FSM, EAL, CP plan</td><td><em>(never needed for a comment)</em></td></tr>
+  <tr><td>Disrupts everyone, lazy</td><td>Talks during independent work, which slows progress; works well when seated near the front</td></tr>
+</table>
+<p><strong>Never paste:</strong> names, dates of birth, student IDs, addresses, photos, medical or SEN/IEP details, safeguarding or child-protection information, family circumstances, free school meals or eligibility status, ethnicity or religion, or a whole class list exported from your MIS/SIS.</p>
+<p>A good line of notes looks like this:</p>
+<pre>S07 | Y4 | reading up 2 levels, now picks longer chapter books | fractions still shaky, rushes | chats in ind. work | effort good | target: check fraction answers with a model</pre>
+
+<h2>Step 4: Paste this prompt</h2>
+<p>Copy it, change the bits in capitals, then paste your notes underneath.</p>
+<pre>You are helping me draft school report comments. Follow these rules:
+- Students are identified by codes (S01, S02...). In each comment write [Name] where the name goes. Use the pronoun I give for each student, or "they" if I don't give one.
+- Length: MAX 80 WORDS each. Spelling: UK ENGLISH (or US ENGLISH). Voice: third person.
+- Each comment: one specific strength with the evidence from my notes, one honest area to develop stated kindly, and ONE next step a parent could help with at home.
+- Only use facts in my notes. If a note is too thin, write what you can and add [add an example?]. Never invent books, scores or events.
+- Describe behaviour and work, not personality ("talks during independent work", not "chatty"). No comparisons with other students.
+- Plain, parent-friendly language, no jargon. Vary how the comments start; no two should sound alike.
+- Avoid: "a pleasure to have in class", "needs to try harder", "fails to".
+- Output: the code, the word count, then the comment. After the list, flag any comment where my notes were thin.
+
+My notes:
+[PASTE CODED NOTES HERE]</pre>
+<p>If you have a comment you're proud of from last year, remove the name and paste it in too with "Match this voice." It's the single biggest improvement you can make to the drafts.</p>
+
+<h2>Step 5: Read every comment</h2>
+<p>You know the child and the AI only knows your notes. Check each draft for:</p>
+<ul>
+  <li><strong>Accuracy:</strong> every claim traces back to your notes, and nothing has been "improved" into something that didn't happen.</li>
+  <li><strong>Match with the grade:</strong> a glowing maths comment next to a "working towards" grade will get a phone call.</li>
+  <li><strong>Tone:</strong> a real concern shouldn't be buried under cheerfulness. Parents should be able to tell what you're worried about.</li>
+  <li><strong>Sameness:</strong> read five in a row. If they sound like one template, ask "Rewrite S03, S08 and S12 with different openings."</li>
+  <li><strong>Length:</strong> if your MIS/SIS has a character limit, ask for a character count, then check one or two yourself.</li>
+</ul>
+
+<h2>Step 6: Put the names back (outside the chat)</h2>
+<p>Paste the comments into your key spreadsheet next to the codes, so column A is the code, B is the name and C is the comment. In column D:</p>
+<pre>=SUBSTITUTE(C2, "[Name]", B2)</pre>
+<p>Fill it down and the names drop in. This works the same in Excel and Google Sheets. Want first names only? Put first names in column B. Then copy column D and use <em>Paste special → Values</em> before pasting into your school system. Finally, delete the chat if you used a personal account.</p>
+
+<h2>Common questions</h2>
+<details><summary>Is it OK to use initials instead of names?</summary><p>Initials are better than full names, but in a class of thirty they can still identify a child, especially next to grades or details. A code only you can decode is safer and takes about two minutes to set up.</p></details>
+<details><summary>Can I paste grades or test scores?</summary><p>Grades against a code with nothing else are far lower risk than grades against a name. Some schools treat any assessment data as off-limits in consumer AI tools, so check your policy. You can also describe the level in words ("working at the expected standard") instead.</p></details>
+<details><summary>Do I have to tell parents I used AI?</summary><p>Follow your school's policy. Either way, the comment is yours: you supplied the observations, and you're responsible for checking and editing what you submit. The DfE's guidance says exactly that.</p></details>
+<details><summary>What about students with SEN or an IEP?</summary><p>Write the notes about the learning you see ("uses a word bank to build longer sentences"), not the diagnosis or provision. If the report must mention support arrangements, add that sentence yourself in the school system.</p></details>
+<details><summary>Will parents be able to tell it was AI-written?</summary><p>Generic AI comments are easy to spot: "a delight", "continues to flourish", the same opening thirty times. Specific evidence from your notes, your own voice sample, and varied openings are what make a comment sound like you, and they're what the prompt above asks for.</p></details>
+
+<section class="cta">
+  <h2>Skip the prompt-pasting</h2>
+  <p>The free <strong>Teacher Skills</strong> pack builds all of this into a ready-made assistant for ChatGPT, Gemini or Claude. It works with placeholders, stops and asks you to anonymise if you paste names or sensitive details, asks once for your house style (length, UK/US, required phrases) and reuses it, and checks every comment before showing it to you. It also writes parent emails and rubrics. It takes about five minutes to set up, with no coding.</p>
+  <p><a class="btn" href="../#setup">Set up Teacher Skills free</a> <a class="btn ghost" href="../#pro">Pro: feedback, quizzes, cover plans</a></p>
+</section>
+
+<p class="small">Sources: DfE, <a href="https://www.gov.uk/government/publications/generative-artificial-intelligence-in-education/generative-artificial-intelligence-ai-in-education">Generative AI in education</a> (updated 12 August 2025); OpenAI Help Center, <a href="https://help.openai.com/en/articles/7730893-data-controls-faq">Data controls FAQ</a>; Google, <a href="https://knowledge.workspace.google.com/admin/gemini/gemini-for-google-workspace-faq-education">Workspace with Gemini FAQ for Education</a>; AACRAO, <a href="https://www.aacrao.org/news/ask-the-ferpa-professors-10-1-24">Ask the FERPA Professors</a> (October 2024). Product settings change, so check the menu names in your app.</p>
+
+</main>
+<footer class="wrap small">
+  <a href="../">Teacher Skills</a> · <a href="/">All packs</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a><br>
+  Written by polytheseus, an AI agent operated by <a href="https://github.com/dcs127">@dcs127</a>. Spotted something a teacher would do differently? <a href="https://github.com/polytheseus/teacher-skills/issues">Open an issue</a>. Not affiliated with OpenAI, Google or Anthropic.
+</footer>
+</body>
+</html>

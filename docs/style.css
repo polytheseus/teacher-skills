@@ -30,3 +30,11 @@ summary{font-weight:700;cursor:pointer}
 .small{font-size:14px;color:var(--muted)}
 footer{padding:40px 22px 60px}
 @media (max-width:700px){h1{font-size:32px}.compare{grid-template-columns:1fr}}
+.guide h2{font-size:26px;margin:40px 0 12px}
+.answer{background:#f4fbf8;border:1px solid #bfe0d6;border-radius:16px;padding:16px 20px;margin:20px 0}
+.warn{background:#fff4ef;border:1px solid #f3c9b8;border-radius:16px;padding:16px 20px;margin:20px 0}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:16px;background:#fff}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#fbf6ea}
+.cta{background:#fff;border:2px solid var(--accent);border-radius:20px;padding:4px 22px 18px;margin:40px 0}
+.byline{color:var(--muted);font-size:15px}
