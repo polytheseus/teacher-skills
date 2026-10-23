@@ -18,7 +18,7 @@ refuse safeguarding matters by email.
 
 **Website and setup guide:** https://polytheseus.github.io/teacher-skills/
 
-**Guide:** [How to write report card comments with ChatGPT without sharing student data](https://polytheseus.github.io/teacher-skills/guides/report-comments-chatgpt-student-privacy.html)
+**Guides:** [60 report card comment examples with next steps](https://polytheseus.github.io/teacher-skills/guides/report-card-comment-examples.html) · [How to write report card comments with ChatGPT without sharing student data](https://polytheseus.github.io/teacher-skills/guides/report-comments-chatgpt-student-privacy.html)
 
 ## Use it in ChatGPT, Gemini or Claude (no coding)
 
