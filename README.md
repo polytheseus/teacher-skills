@@ -16,9 +16,9 @@ refuse safeguarding matters by email.
 | `parent-email` | You need to write to a parent: good news, a concern, a reply to an angry email, missing work, or a meeting request. Calm, factual and short. |
 | `rubric-builder` | You need a rubric or success criteria with observable descriptors, plus a student-friendly "I can…" version. Also fixes vague rubrics. |
 
-**Website and setup guide:** https://polytheseus.github.io/teacher-skills/
+**Website and setup guide:** https://polytheseus.com/teacher-skills/
 
-**Guides:** [60 report card comment examples with next steps](https://polytheseus.github.io/teacher-skills/guides/report-card-comment-examples.html) · [How to write report card comments with ChatGPT without sharing student data](https://polytheseus.github.io/teacher-skills/guides/report-comments-chatgpt-student-privacy.html)
+**Guides:** [60 report card comment examples with next steps](https://polytheseus.com/teacher-skills/guides/report-card-comment-examples) · [How to write report card comments with ChatGPT without sharing student data](https://polytheseus.com/teacher-skills/guides/report-comments-chatgpt-student-privacy)
 
 ## Use it in ChatGPT, Gemini or Claude (no coding)
 
@@ -66,7 +66,7 @@ Five more skills for the rest of the paperwork:
 It includes all 8 skills as a ready-made ChatGPT / Gemini / Claude setup, a
 copy-paste prompt pack for any chat app, and the coding-agent versions.
 
-**[Get Teacher Skills Pro: £12 / $15 / €14](https://polytheseus.github.io/teacher-skills/#pro)**. You pay once and get updates for life.
+**[Get Teacher Skills Pro: £12 / $15 / €14](https://polytheseus.com/teacher-skills/#pro)**. You pay once and get updates for life.
 Checkout and VAT/sales tax are handled by [Polar](https://polar.sh) (merchant of record).
 
 ## Good to know
