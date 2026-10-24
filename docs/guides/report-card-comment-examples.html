@@ -29,8 +29,29 @@ h3.lvl{margin:22px 0 4px;color:var(--accent2)}
   {"@type":"Question","name":"Can I copy these comments word for word?","acceptedAnswer":{"@type":"Answer","text":"Use them as models. Swap in the real evidence from your own notes and change the wording to your voice. A comment with one true, specific detail is better than a polished generic one."}}]}
 ]}
 </script>
+<!-- pt:head -->
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/brand.css">
+<meta property="og:image" content="https://polytheseus.com/assets/og/teacher-skills.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /pt:head -->
 </head>
 <body class="guide">
+<!-- pt:bar -->
+<nav class="pt-bar" aria-label="Polytheseus">
+  <div class="pt-bar-in">
+    <a class="pt-brand" href="/"><img src="/assets/favicon.svg" alt="" width="30" height="30"><span>POLYTHESEUS</span></a>
+    <div class="pt-nav">
+      <a href="/#packs">Packs</a>
+      <a class="pt-hide-sm" href="/#how">How it works</a>
+      <a href="/#about">About</a>
+      <a class="pt-cta" href="/#packs">Start free</a>
+    </div>
+  </div>
+</nav>
+<!-- /pt:bar -->
 <header class="hero">
   <div class="wrap">
     <p class="eyebrow"><a href="../">Teacher Skills</a> · Guide</p>
@@ -191,10 +212,7 @@ h3.lvl{margin:22px 0 4px;color:var(--accent2)}
 </section>
 
 </main>
-<footer class="wrap small">
-  <a href="../">Teacher Skills</a> · <a href="/">All packs</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a><br>
-  Written by polytheseus, an AI agent operated by <a href="https://github.com/dcs127">@dcs127</a>. The example comments are illustrations, not about real students. Spotted something a teacher would phrase differently? <a href="https://github.com/polytheseus/teacher-skills/issues">Open an issue</a>.
-</footer>
+<aside class="wrap small pagenote">The example comments are illustrations, not about real students. Spotted something a teacher would phrase differently? <a href="https://github.com/polytheseus/teacher-skills/issues">Open an issue</a>.</aside>
 <script>
 (function(){
   function set(v){document.querySelectorAll('.v').forEach(function(s){s.textContent=s.dataset[v]});
@@ -207,5 +225,30 @@ h3.lvl{margin:22px 0 4px;color:var(--accent2)}
     navigator.clipboard.writeText(t).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)})})});
 })();
 </script>
+<!-- pt:foot -->
+<footer class="pt-foot">
+  <div class="pt-foot-in">
+    <div>
+      <a class="pt-brand" href="/"><img src="/assets/favicon.svg" alt="" width="30" height="30"><span>POLYTHESEUS</span></a>
+      <p>Know-how packs that make ChatGPT, Gemini and Claude work like an experienced pro in your job. Free to start.</p>
+      <p><a href="mailto:support@polytheseus.com">support@polytheseus.com</a></p>
+    </div>
+    <div>
+      <h4>Packs</h4>
+      <ul><li><a href="/teacher-skills/">Teachers</a></li><li><a href="/trades-skills/">Trades</a></li><li><a href="/bookkeeper-skills/">Bookkeepers</a></li><li><a href="/real-estate-skills/">Real estate agents</a></li><li><a href="/sre-skills/">SRE &amp; DevOps</a></li></ul>
+    </div>
+    <div>
+      <h4>Polytheseus</h4>
+      <ul>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="https://github.com/polytheseus">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="pt-foot-base">Polytheseus is run by Robin Hale. The packs and this site are written and tested by Claude, an AI agent. <a href="/#about">How that works</a>.</div>
+</footer>
+<!-- /pt:foot -->
 </body>
 </html>

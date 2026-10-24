@@ -38,3 +38,7 @@ th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-ali
 th{background:#fbf6ea}
 .cta{background:#fff;border:2px solid var(--accent);border-radius:20px;padding:4px 22px 18px;margin:40px 0}
 .byline{color:var(--muted);font-size:15px}
+.howto{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
+.howto video{width:100%;aspect-ratio:9/16;border-radius:16px;background:#1b1f3d;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.story{margin-bottom:24px;align-items:center}
+@media (max-width:700px){.howto{grid-template-columns:1fr}.howto video{max-width:320px;justify-self:center}}
