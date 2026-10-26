@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to make a rubric with ChatGPT, Gemini or Claude (prompt, examples and a free checker)</title>
+<meta name="description" content="A copy-paste prompt that gets ChatGPT, Gemini or Claude to write a rubric two teachers would mark the same way, a vague rubric fixed step by step, a single-point rubric, an 'I can' student version, and a free in-browser rubric checker.">
+<link rel="canonical" href="https://polytheseus.com/teacher-skills/guides/how-to-make-a-rubric-with-chatgpt">
+<meta property="og:title" content="How to make a rubric with ChatGPT (that isn't vague)">
+<meta property="og:description" content="The prompt, a vague rubric fixed row by row, a single-point rubric, and a free checker that flags 'good / some / most' descriptors.">
+<link rel="stylesheet" href="../style.css">
+<style>
+.tool{background:#fff;border:2px solid var(--accent2);border-radius:16px;padding:18px 20px;margin:20px 0}
+.tool textarea{font:14px/1.45 ui-monospace,Menlo,Consolas,monospace;width:100%;min-height:170px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tool button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent2);color:#fff;margin:8px 8px 0 0}
+.tool button.ghost{background:transparent;color:var(--accent2);border:2px solid var(--accent2)}
+.rb-tag{display:inline-block;font-size:12px;font-weight:800;padding:1px 8px;border-radius:999px}
+.rb-fix{background:#fbe0d8;color:#a33a22}
+.rb-review{background:#f8ecd0;color:#7a5a17}
+.rb-note{background:#dcefe8;color:#22604f}
+.rb-list li{margin-bottom:8px;font-size:15px}
+td.bad{background:#fff4ef}
+td.good{background:#f4fbf8}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Article","headline":"How to make a rubric with ChatGPT, Gemini or Claude","datePublished":"2026-10-26","dateModified":"2026-10-26","author":{"@type":"Organization","name":"polytheseus","url":"https://polytheseus.com/"}},
+{"@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"Can ChatGPT make a rubric?","acceptedAnswer":{"@type":"Answer","text":"Yes, but by default it tends to write levels that differ only by adverbs (excellent, good, some, little). Give it the task, the learning objective, the age group and the number of levels, and tell it that every descriptor must describe something a marker can see in the work and that levels must differ by what the student does. Then check it with a calibration test before using it."}},
+  {"@type":"Question","name":"How many levels should a rubric have?","acceptedAnswer":{"@type":"Answer","text":"Four is a good default: enough to show progress, few enough that markers agree, and with no neutral middle that becomes the safe mark. Use your school's bands if they're fixed."}},
+  {"@type":"Question","name":"What is a single-point rubric?","acceptedAnswer":{"@type":"Answer","text":"A rubric that only describes the target level for each criterion, with a blank column either side for 'not yet' and 'beyond' comments. It's quick to write and good for drafts and formative feedback, but it needs written comments."}},
+  {"@type":"Question","name":"Can I paste student work into ChatGPT to mark against the rubric?","acceptedAnswer":{"@type":"Answer","text":"Only within your school's AI policy, and with names and identifying details removed. The rubric itself contains no student data, so building and fixing it is low risk."}},
+  {"@type":"Question","name":"Can I import an AI-made rubric into Google Classroom?","acceptedAnswer":{"@type":"Answer","text":"Google's help says Classroom only imports rubrics that were created and exported from Classroom, so the reliable route is to create the rubric in the assignment and paste each criterion and level description in. Once it exists you can export it to Sheets and reuse it."}}]}
+]}
+</script>
+<!-- pt:head -->
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/brand.css">
+<meta property="og:image" content="https://polytheseus.com/assets/og/teacher-skills.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /pt:head -->
+</head>
+<body class="guide">
+<!-- pt:bar -->
+<nav class="pt-bar" aria-label="Polytheseus">
+  <div class="pt-bar-in">
+    <a class="pt-brand" href="/"><img src="/assets/favicon.svg" alt="" width="30" height="30"><span>POLYTHESEUS</span></a>
+    <div class="pt-nav">
+      <a href="/#packs">Packs</a>
+      <a class="pt-hide-sm" href="/#how">How it works</a>
+      <a href="/#about">About</a>
+      <a class="pt-cta" href="/#packs">Start free</a>
+    </div>
+  </div>
+</nav>
+<!-- /pt:bar -->
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow"><a href="../">Teacher Skills</a> · Guide</p>
+    <h1>How to make a rubric with ChatGPT, Gemini or Claude (that isn't vague)</h1>
+    <p class="lede">Ask an AI for a rubric and you'll usually get a neat grid that falls apart the first time you mark with it: "excellent use of evidence", "good use of evidence", "some use of evidence". Here's a prompt that avoids that, a real vague rubric fixed row by row, a single-point version, a student "I can" version, and a free checker you can paste any rubric into.</p>
+    <p class="byline">Updated 26 October 2026 · UK and US · About an 8-minute read</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<div class="answer">
+  <p><strong>The short version:</strong> give the AI the task, the learning objective, the age group and how many levels you want (4 is a good default). Tell it to write the <em>target level first</em>, to describe only things a marker can see in the work, and to change <em>what the student does</em> between levels rather than adding "some", "most" or "all". Keep it to 3–6 criteria. Then do a 2-minute calibration test: picture a real piece of work at each level. If two levels sound the same, rewrite them. Paste the result into the <a href="#checker">checker below</a> to catch the vague words.</p>
+</div>
+
+<h2>Why AI rubrics come out vague</h2>
+<p>Most rubrics online, and so most of what the AI learned from, are built as an <strong>adverb ladder</strong>: the same sentence four times with a different quality word. They look finished, but they don't help you mark or help a student improve:</p>
+<ul>
+  <li><strong>Two markers disagree.</strong> Is three quotations "some" evidence or "most"? Nobody can tell from the rubric.</li>
+  <li><strong>Students can't use it.</strong> "Make your argument more insightful" isn't something a 13-year-old can act on.</li>
+  <li><strong>It marks the wrong things.</strong> Neatness, length and "effort" rows creep in and outweigh the learning.</li>
+  <li><strong>Two things share a row.</strong> "Organisation and grammar": a well-organised essay full of errors fits no level.</li>
+</ul>
+<p>The fix is the same every time: descriptors that say <em>what's on the page</em>, and levels that change what the student does.</p>
+
+<h2>Step 1: Pick the type</h2>
+<table>
+  <tr><th>Type</th><th>Best for</th><th>Trade-off</th></tr>
+  <tr><td><strong>Analytic</strong> (criteria × levels grid)</td><td>Essays, projects, lab reports; detailed feedback and moderation</td><td>Slower to mark</td></tr>
+  <tr><td><strong>Holistic</strong> (one scale)</td><td>Timed writing, performances, quick marking</td><td>Less diagnostic</td></tr>
+  <tr><td><strong>Single-point</strong> (target level only)</td><td>Drafts, formative feedback, self- and peer-assessment</td><td>Needs written comments</td></tr>
+  <tr><td><strong>Checklist</strong> (yes / no)</td><td>Procedures and requirements: title, bibliography, units on graphs</td><td>Doesn't measure quality</td></tr>
+</table>
+<p>A useful split: put requirements (word count, headings, references present) in a <strong>checklist</strong>, and keep the rubric for <strong>quality</strong>.</p>
+
+<h2 id="prompt">Step 2: Paste this prompt</h2>
+<p>It works in ChatGPT, Gemini, Claude and Copilot, including free plans. Change the parts in capitals.</p>
+<pre>Write a marking rubric.
+Task: [WHAT STUDENTS PRODUCE, e.g. a 600-word persuasive essay on school uniform]
+Age / year group: [e.g. Year 8 (UK) / Grade 7 (US)]
+Learning objective or standard: [PASTE THE EXACT WORDING. If you are not sure of
+a standard's wording, ask me to paste it; don't invent official text.]
+Type: [analytic / single-point / holistic]. Levels: [4: Beginning, Developing,
+Proficient, Exemplary]. Points: [e.g. 4-3-2-1 per criterion, Argument x2].
+
+Rules:
+1. 3-6 criteria, each tracing to the objective. One skill per criterion.
+   Requirements like length, title or neatness go in a separate checklist.
+2. Write the target level (Proficient) first, then the levels above and below.
+3. Every descriptor describes something a marker can see in the work.
+   No bare judgment words (good, excellent, effective, insightful, appropriate).
+4. Levels differ by WHAT the student does, not only by some/most/all or
+   adverbs. Use a count only where the count matters ("at least two").
+5. Lower levels say what the work does show first ("gives an opinion but
+   doesn't yet support it"), not only what's missing.
+6. A typical secure piece for this age lands at Proficient, and Exemplary
+   is reachable by a strong student of this age.
+
+Output:
+- The rubric as a table (criteria rows x level columns) with points.
+- A student-friendly "I can..." version of the Proficient level.
+- A calibration check: one sentence describing a piece of work at each level
+  for this task. If two levels sound alike, fix them before showing me.
+- One feedback comment stem per level.</pre>
+<p>Got a rubric you already use? Paste it in instead with "Diagnose this rubric against the rules above, list the 3–5 biggest problems, then rewrite it. Keep my criteria and labels unless they're the problem."</p>
+
+<h2>Step 3: Fix the vague rows (a real example)</h2>
+<p>Here's the kind of rubric you get from a one-line prompt ("make a rubric for a persuasive essay"), next to the fixed version. Year 8 / Grade 7, objective: <em>write an argument that supports a claim with clear reasons and relevant evidence</em>.</p>
+
+<h3>Before</h3>
+<table>
+  <tr><th>Criteria</th><th>Excellent (4)</th><th>Good (3)</th><th>Fair (2)</th><th>Poor (1)</th></tr>
+  <tr><td>Ideas and argument</td><td class="bad">Excellent, insightful argument</td><td class="bad">Good argument</td><td class="bad">Some argument</td><td class="bad">Poor argument</td></tr>
+  <tr><td>Use of evidence</td><td class="bad">Uses lots of relevant evidence</td><td class="bad">Uses some relevant evidence</td><td class="bad">Uses little relevant evidence</td><td class="bad">No evidence</td></tr>
+  <tr><td>Organization and grammar</td><td class="bad">Very well organized with no errors</td><td class="bad">Well organized with few errors</td><td class="bad">Somewhat organized with some errors</td><td class="bad">Not organized, many errors</td></tr>
+  <tr><td>Neatness</td><td class="bad">Very neat</td><td class="bad">Neat</td><td class="bad">Somewhat messy</td><td class="bad">Messy</td></tr>
+</table>
+<p><strong>What's wrong:</strong> every row is an adverb ladder; "argument" and "evidence" levels can't be told apart without guessing; organisation and grammar share a row; neatness is a quarter of the mark on a writing task; the lowest levels only say what's missing.</p>
+
+<h3>After</h3>
+<table>
+  <tr><th>Criterion</th><th>Beginning (1)</th><th>Developing (2)</th><th>Proficient (3)</th><th>Exemplary (4)</th></tr>
+  <tr><td>Claim</td><td class="good">States an opinion on the topic, but it changes during the essay.</td><td class="good">States a claim in the introduction and keeps to it.</td><td class="good">States a precise claim in the introduction that each body paragraph supports.</td><td class="good">States a precise claim and acknowledges a counterclaim, explaining why the claim still holds.</td></tr>
+  <tr><td>Use of evidence (×2)</td><td class="good">Gives opinions without supporting evidence, or the evidence is unrelated to the claim.</td><td class="good">Includes evidence that relates to the claim, but doesn't explain how it supports it.</td><td class="good">Supports each main point with relevant evidence and explains in their own words how it supports the claim.</td><td class="good">Selects the most convincing evidence, explains it, and answers a piece of evidence that could support the other side.</td></tr>
+  <tr><td>Organisation</td><td class="good">Ideas appear in the order they occurred to the writer, without paragraphs.</td><td class="good">Uses paragraphs, but a paragraph covers more than one point.</td><td class="good">Each paragraph makes one point, opens with a topic sentence and links back to the claim.</td><td class="good">Paragraphs build on each other, with transitions that show how each point strengthens the argument.</td></tr>
+  <tr><td>Accuracy of writing</td><td class="good">Errors in spelling or sentence boundaries make sentences hard to follow.</td><td class="good">Meaning is clear, but run-on sentences or comma splices appear in more than one paragraph.</td><td class="good">Sentences are correctly punctuated; spelling errors are rare and don't affect meaning.</td><td class="good">Varies sentence structure for effect (e.g. a short sentence after a long one) with accurate punctuation, including semicolons or colons where used.</td></tr>
+</table>
+<p>Total 20 points (evidence counts double). Neatness, title and word count moved to a checklist that's ticked, not scored. Notice that every level describes something you can point to in the essay, and each step up adds a new thing the student does.</p>
+<p><strong>Borderline work:</strong> if a piece meets all of Proficient and some of Exemplary, award Proficient and say which Exemplary feature to aim for next. That one rule settles most marking disagreements.</p>
+
+<h2>Step 4: The single-point version (fastest to write)</h2>
+<p>For drafts and feedback lessons, keep only the target column and leave space either side:</p>
+<table>
+  <tr><th>Not yet: what to work on</th><th>Target (Proficient)</th><th>Beyond: what went further</th></tr>
+  <tr><td></td><td>I state a precise claim in my introduction and every body paragraph supports it.</td><td></td></tr>
+  <tr><td></td><td>I back up each main point with relevant evidence and explain, in my own words, how it supports my claim.</td><td></td></tr>
+  <tr><td></td><td>Each paragraph makes one point, opens with a topic sentence and links back to my claim.</td><td></td></tr>
+  <tr><td></td><td>My sentences are correctly punctuated, and spelling mistakes don't get in the way of my meaning.</td><td></td></tr>
+</table>
+<p>The middle column doubles as the student-friendly "I can" checklist. Hand it out <em>before</em> students start writing, not just with the marks.</p>
+
+<h2>Step 5: Do the calibration test</h2>
+<p>Before you use a rubric, spend two minutes on this (or ask the AI to do it, as the prompt above does):</p>
+<ul>
+  <li><strong>Picture a real piece at each level.</strong> Think of an actual student's essay from last year. Can you say which cell it lands in for every row, without hesitating? If you hesitate between two cells, they're too similar.</li>
+  <li><strong>Check the middle.</strong> A typical secure piece for the age group should land at Proficient, not Exemplary.</li>
+  <li><strong>Check the top is reachable.</strong> If no student you've taught would hit Exemplary, it's describing a different age group.</li>
+  <li><strong>Check with a colleague.</strong> Mark two pieces separately with the rubric, then compare. Disagreements show you which cells need rewording. This is also the best way to moderate across a department.</li>
+  <li><strong>Check the points.</strong> Add them up and test a mixed profile (strong evidence, weak organisation). Does the total feel right?</li>
+</ul>
+
+<section id="checker">
+<h2>Free rubric checker</h2>
+<div class="tool">
+  <p>Paste a rubric and press <strong>Check</strong>. Put the level names in the first row and one criterion per row after that. It reads a Markdown table (what ChatGPT outputs), rows copied straight from Google Docs, Sheets or Word, or CSV. It runs entirely in your browser, and nothing you paste is sent or stored.</p>
+  <p class="small">It flags judgment words with nothing a marker can see, amount words with no count, levels that only differ by adverbs, two skills in one row, rows that mark presentation instead of learning, empty or one-word cells, and too many or too few criteria. Then it writes a fix-it prompt with the problems listed. It's a word check, so it can't tell whether your criteria match your objective: that's what the calibration test is for.</p>
+  <label for="rb-input" class="small">Your rubric</label>
+  <textarea id="rb-input" placeholder="| Criteria | Beginning | Developing | Proficient | Exemplary |&#10;|---|---|---|---|---|&#10;| Use of evidence | ... | ... | ... | ... |"></textarea>
+  <button type="button" id="rb-run">Check</button> <button type="button" class="ghost" id="rb-sample">Try the "before" rubric</button>
+  <div id="rb-output" aria-live="polite"></div>
+</div>
+</section>
+
+<h2>Getting it into Google Classroom, Canvas or a document</h2>
+<ul>
+  <li><strong>Google Docs or Word:</strong> ask the AI "give me the rubric as a table", then copy the table straight in. If it pastes as text with <code>|</code> characters, ask for "tab-separated values" instead, paste into Google Sheets, then copy the cells into your document.</li>
+  <li><strong>Google Classroom:</strong> open the assignment and choose <em>Rubric → Create rubric</em>, then paste each criterion title and level description in. Google's help says the <em>Import from Sheets</em> option only accepts rubrics that were created and exported from Classroom, so build it once, then export it to reuse with other classes or share with colleagues.</li>
+  <li><strong>Canvas:</strong> rubrics can be built in the rubric editor; institutions using Canvas's newer rubrics can also import from a CSV in Canvas's own template. Check your school's Canvas help pages for the template, because the column layout is specific.</li>
+  <li><strong>Points-free?</strong> If your school reports in bands or comments, ask the AI to drop the points and add a feedback comment stem per level instead.</li>
+</ul>
+
+<div class="warn">
+  <p><strong>Student work and privacy.</strong> Building a rubric needs no student data at all. If you go on to paste student work into an AI to mark against the rubric, follow your school's AI policy first, remove names and anything identifying, and treat any suggested level as a draft for you to confirm. Our guide to <a href="report-comments-chatgpt-student-privacy">using ChatGPT without sharing student data</a> shows a simple code system that works for this too.</p>
+</div>
+
+<h2>Common questions</h2>
+<details><summary>Can ChatGPT make a rubric?</summary><p>Yes, and quickly, but a one-line prompt gives you an adverb ladder. Give it the task, objective, age and levels, and the rules in the prompt above (observable descriptors, levels that change what the student does). Then check it with the calibration test.</p></details>
+<details><summary>How many levels should a rubric have?</summary><p>Four is a good default: enough to show progress, few enough that markers agree, and no neutral middle that becomes the "safe" mark. If your school uses fixed bands (e.g. working towards / expected / greater depth), use those.</p></details>
+<details><summary>Should I use official standard wording?</summary><p>Use the exact wording from your curriculum, exam board or state standard, pasted in yourself. AI tools sometimes paraphrase or invent standard text and codes, so don't let it supply them.</p></details>
+<details><summary>What is a single-point rubric?</summary><p>One column describing the target for each criterion, with blank space for "not yet" and "beyond" comments. It's quick to write and good for drafts and self-assessment, but it relies on your written comments.</p></details>
+<details><summary>Can I import an AI-made rubric into Google Classroom?</summary><p>Google's help says Classroom only imports rubrics that were created and exported from Classroom, so the dependable route is to create it in the assignment and paste each criterion in. After that you can export and reuse it.</p></details>
+
+<section class="cta">
+  <h2>Get rubrics like this every time</h2>
+  <p>The free <strong>Teacher Skills</strong> pack includes a <strong>rubric builder</strong> that works this way out of the box in ChatGPT, Gemini or Claude: it asks only for what's missing, recommends a rubric type, writes the target level first, runs the quality checklist and calibration test before showing you the rubric, and adds the student "I can" version and comment stems. It also fixes rubrics you paste in. The same pack writes report comments and parent emails. Setup takes about five minutes, with no coding.</p>
+  <p><a class="btn" href="../#setup">Set up Teacher Skills free</a> <a class="btn ghost" href="../#pro">Pro: feedback against your rubric</a></p>
+  <p class="small">Teacher Skills Pro (£12 / $15 / €14, one-off) adds feedback on anonymised work against your rubric (what went well, next step, a suggested level for you to confirm, and whole-class feedback), plus quizzes, cover plans, incident write-ups and newsletters.</p>
+</section>
+
+<p class="small">Sources: Google for Education Help, <a href="https://support.google.com/edu/classroom/answer/9335069">Create or reuse a rubric for an assignment</a> (checked 26 October 2026). Canvas CSV import is described in Instructure Community and institutional help pages; the exact template varies, so follow your school's guidance. This guide was written by an AI agent (Claude); if a teacher would do something differently, please <a href="https://github.com/polytheseus/teacher-skills/issues">open an issue</a>.</p>
+
+</main>
+<aside class="wrap small pagenote">Not affiliated with OpenAI, Google, Anthropic, Microsoft or Instructure.</aside>
+<script src="rubric-checker.js"></script>
+<!-- pt:foot -->
+<footer class="pt-foot">
+  <div class="pt-foot-in">
+    <div>
+      <a class="pt-brand" href="/"><img src="/assets/favicon.svg" alt="" width="30" height="30"><span>POLYTHESEUS</span></a>
+      <p>Know-how packs that make ChatGPT, Gemini and Claude work like an experienced pro in your job. Free to start.</p>
+      <p><a href="mailto:support@polytheseus.com">support@polytheseus.com</a></p>
+    </div>
+    <div>
+      <h4>Packs</h4>
+      <ul><li><a href="/teacher-skills/">Teachers</a></li><li><a href="/trades-skills/">Trades</a></li><li><a href="/bookkeeper-skills/">Bookkeepers</a></li><li><a href="/real-estate-skills/">Real estate agents</a></li><li><a href="/seller-skills/">Online sellers</a></li><li><a href="/sre-skills/">SRE &amp; DevOps</a></li></ul>
+    </div>
+    <div>
+      <h4>Polytheseus</h4>
+      <ul>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="https://github.com/polytheseus">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="pt-foot-base">Polytheseus is run by Robin Hale. The packs and this site are written and tested by Claude, an AI agent. <a href="/#about">How that works</a>.</div>
+</footer>
+<!-- /pt:foot -->
+</body>
+</html>
