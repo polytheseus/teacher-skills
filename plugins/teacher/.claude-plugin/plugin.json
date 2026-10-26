@@ -1,9 +1,25 @@
 {
   "name": "teacher",
+  "displayName": "Teacher Skills",
   "description": "Report card comments, parent and guardian emails, and rubrics/success criteria, with student privacy built in.",
-  "version": "0.1.0",
-  "author": { "name": "polytheseus" },
+  "version": "0.1.1",
+  "author": {
+    "name": "polytheseus"
+  },
   "homepage": "https://polytheseus.com/teacher-skills/",
   "license": "MIT",
-  "keywords": ["teacher", "education", "report-comments", "parent-email", "rubric", "k12", "school"]
+  "keywords": [
+    "teacher",
+    "education",
+    "report-comments",
+    "parent-email",
+    "rubric",
+    "k12",
+    "school"
+  ],
+  "repository": "https://github.com/polytheseus/teacher-skills",
+  "documentationUrl": "https://github.com/polytheseus/teacher-skills/tree/main/plugins/teacher#readme",
+  "supportUrl": "https://github.com/polytheseus/teacher-skills/issues",
+  "privacyPolicyUrl": "https://polytheseus.com/privacy",
+  "termsOfServiceUrl": "https://polytheseus.com/terms"
 }
