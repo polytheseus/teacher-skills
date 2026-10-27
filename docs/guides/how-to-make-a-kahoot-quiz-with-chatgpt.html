@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to make a Kahoot quiz with ChatGPT (and import it from a spreadsheet)</title>
+<meta name="description" content="Make a Kahoot quiz with ChatGPT, Gemini or Claude in ten minutes: a prompt that fits Kahoot's import limits (95/60 characters, 5-120 s), a free checker that catches wrong keys and 'the answer is always B', rows to paste into Kahoot's spreadsheet template, and how to import it.">
+<link rel="canonical" href="https://polytheseus.com/teacher-skills/guides/how-to-make-a-kahoot-quiz-with-chatgpt">
+<meta property="og:title" content="How to make a Kahoot quiz with ChatGPT, and import it from a spreadsheet">
+<meta property="og:description" content="A prompt that fits Kahoot's import limits, a free checker for AI-written quizzes, and the import steps.">
+<link rel="stylesheet" href="../style.css">
+<style>
+.tool{background:#fff;border:2px solid var(--accent2);border-radius:16px;padding:18px 20px;margin:20px 0}
+.tool textarea{font:14px/1.45 ui-monospace,Menlo,Consolas,monospace;width:100%;min-height:200px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tool input,.tool select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+.tool .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14em,1fr));gap:10px 16px;margin:10px 0}
+.tool .grid label{font-size:14px;display:flex;flex-direction:column;gap:3px}
+.tool button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent2);color:#fff;margin:8px 8px 0 0}
+.tool button.ghost{background:transparent;color:var(--accent2);border:2px solid var(--accent2)}
+.kq-card{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:12px 0;background:#fff}
+.kq-card h3{margin:4px 0 6px;font-size:17px}
+.kq-opts{margin:4px 0 6px;padding-left:22px}.kq-opts li{font-size:15px}
+.kq-right{font-weight:700;color:#22604f}.kq-right::after{content:" ✓"}
+.kq-pre{white-space:pre;overflow-x:auto;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;background:#fffdf8;border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:8px 0}
+.kq-issues{padding-left:18px}.kq-issues li{font-size:15px;margin-bottom:6px}
+.kq-tag{display:inline-block;font-size:12px;font-weight:800;padding:1px 8px;border-radius:999px;text-transform:uppercase}
+.kq-fix{background:#fbe0d8;color:#a33a22}
+.kq-review{background:#f8ecd0;color:#7a5a17}
+.kq-note,.kq-ok{background:#dcefe8;color:#22604f}
+td.bad{background:#fff4ef}
+td.good{background:#f4fbf8}
+@media print{body *{visibility:hidden}.kq-print,.kq-print *{visibility:visible}.kq-print{position:absolute;left:0;top:0;width:100%}.kq-print .kq-pre{white-space:pre-wrap;border:0;background:none}.kq-key{page-break-before:always}}
+</style>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "How to make a Kahoot quiz with ChatGPT and import it from a spreadsheet", "datePublished": "2026-10-27", "dateModified": "2026-10-27", "author": {"@type": "Organization", "name": "polytheseus", "url": "https://polytheseus.com/"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Can ChatGPT make a Kahoot quiz?", "acceptedAnswer": {"@type": "Answer", "text": "Not directly, but it can write the questions in the right shape. Ask for 4 options, the answer letter and a time limit per question, with questions under 95 characters and answers under 60. Check the answer key, then paste the rows into Kahoot's spreadsheet template and import it in the Kahoot creator."}}, {"@type": "Question", "name": "How do I import questions into Kahoot from a spreadsheet?", "acceptedAnswer": {"@type": "Answer", "text": "Download Kahoot's quiz template, fill in one question per row (question, up to 4 answers, time limit, and the number of the correct answer), and save it as .xlsx. Then create a quiz, choose to import a spreadsheet, and upload the file. Kahoot lists any rows with errors so you can fix them or skip them."}}, {"@type": "Question", "name": "What is the Kahoot character limit?", "acceptedAnswer": {"@type": "Answer", "text": "Kahoot's spreadsheet import help gives 95 characters for a question and 60 for each answer, including spaces. The Kahoot creator itself allows longer questions, so a question that fits in the editor can still be rejected by the importer. Keep to 95 and 60 when importing."}}, {"@type": "Question", "name": "What time limits can a Kahoot question have when imported?", "acceptedAnswer": {"@type": "Answer", "text": "The import template accepts 5, 10, 20, 30, 60 or 120 seconds. If a time limit is missing or not one of those, Kahoot sets it to 20 seconds."}}, {"@type": "Question", "name": "Why does ChatGPT always put the correct answer as B?", "acceptedAnswer": {"@type": "Answer", "text": "AI tools often place the correct answer in the same position, usually B or C, and make it the longest option. Students notice within a few questions. Ask it to vary the positions, then check: the checker on this page counts the positions and can move the answers so each letter is used about equally."}}, {"@type": "Question", "name": "Can I import a Kahoot from Google Sheets?", "acceptedAnswer": {"@type": "Answer", "text": "Fill in the template in Google Sheets if you like, then use File, Download, Microsoft Excel (.xlsx) and import that file. Kahoot's importer takes .xlsx files up to 1 MB."}}]}]}
+</script>
+<!-- pt:head -->
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/brand.css">
+<meta property="og:image" content="https://polytheseus.com/assets/og/teacher-skills.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /pt:head -->
+</head>
+<body class="guide">
+<!-- pt:bar -->
+<nav class="pt-bar" aria-label="Polytheseus">
+  <div class="pt-bar-in">
+    <a class="pt-brand" href="/"><img src="/assets/favicon.svg" alt="" width="30" height="30"><span>POLYTHESEUS</span></a>
+    <div class="pt-nav">
+      <a href="/#packs">Packs</a>
+      <a href="/tools">Free tools</a>
+      <a class="pt-hide-sm" href="/#how">How it works</a>
+      <a class="pt-hide-sm" href="/#about">About</a>
+      <a class="pt-cta" href="/#packs">Start free</a>
+    </div>
+  </div>
+</nav>
+<!-- /pt:bar -->
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow"><a href="../">Teacher Skills</a> · Guide</p>
+    <h1>How to make a Kahoot quiz with ChatGPT (and import it from a spreadsheet)</h1>
+    <p class="lede">ChatGPT, Gemini and Claude can write twenty quiz questions in a minute. Getting them into Kahoot without retyping, and without a wrong answer key or every answer being B, takes a few more steps. Here's a prompt that fits Kahoot's import limits, a free checker that catches the usual AI quiz mistakes and gives you rows to paste, and the import steps.</p>
+    <p class="byline">Updated 27 October 2026 · Kahoot, plus Quizizz/Wayground, Blooket and paper quizzes · About a 7-minute read</p>
+  </div>
+</header>
+<main class="wrap">
+
+<div class="answer">
+  <p><strong>The short version:</strong> ask the AI for questions in a fixed format: 4 options, the answer letter and a time limit, with <em>questions under 95 characters and answers under 60</em> (Kahoot's import limits). Paste the result into the <a href="#checker">checker below</a>, fix what it flags and spread the answers across A to D. Copy the rows into Kahoot's own spreadsheet template, save it as .xlsx, then in the Kahoot creator choose to import a spreadsheet. Check every answer yourself before the class plays it.</p>
+</div>
+
+<h2>Step 1: ask for the questions in Kahoot's shape</h2>
+<p>Check your school's AI policy, and don't paste student names or anything about individual students. Then give the AI your own material (the lesson notes, a textbook page or the unit outline), so the questions match what you taught:</p>
+<pre class="prompt">Write a [10]-question multiple-choice quiz for [Year 7 / Grade 6] [science] on [photosynthesis], based only on the notes below.
+Format each question exactly like this:
+1. Question text
+A) option
+B) option
+C) option
+D) option
+Answer: B
+Time: 20
+
+Rules:
+- Each question 95 characters or fewer, each option 60 or fewer (Kahoot's import limits). Count them.
+- One correct answer per question. Each wrong option is a mistake a student who misunderstood would really make. No jokes, no "all of the above".
+- Options similar in length. Vary which letter is correct.
+- Mix: about a third recall, a third explain why, a third apply to a new example.
+- Time: 10 for quick recall, 20 for most, 30 or 60 if there's reading or working out.
+- If anything in my notes is unclear, ask me instead of guessing.
+Then, separately, list for each question why each wrong option is wrong.
+
+My notes:
+[paste them here]</pre>
+<p>The last line is the useful one for you as the teacher. If many students pick the same wrong option, that explanation tells you what to reteach.</p>
+
+<section id="checker">
+<h2>Step 2: check it (free quiz checker)</h2>
+<div class="tool">
+  <p>Paste the AI's quiz (numbered questions with A–D options and an "Answer:" line, or the right option marked with *), or rows copied from a spreadsheet. Press <strong>Check quiz</strong>. <strong>Spread the answers</strong> moves the correct options so A, B, C and D are each used about equally, and leaves options in order where order matters (numbers, True/False). It runs entirely in your browser: nothing you paste is sent or stored.</p>
+  <p class="small">It checks Kahoot's import limits (95 and 60 characters, 2–4 answers, at least one correct, times of 5, 10, 20, 30, 60 or 120 s), answer letters that point nowhere, duplicate options and questions, "all/none of the above", NOT questions without capitals, a correct answer much longer than the rest, the same letter too often, and long questions on short timers. It can't tell whether an answer is <em>right</em>: only you can.</p>
+  <div class="grid">
+    <label>Quiz title (for the paper copy) <input id="kq-title" placeholder="Year 7 photosynthesis recap"></label>
+    <label>Time limit when none is given <select id="kq-time"><option>5</option><option>10</option><option selected>20</option><option>30</option><option>60</option><option>120</option></select></label>
+  </div>
+  <label for="kq-input" class="small">Quiz questions</label>
+  <textarea id="kq-input" placeholder="1. What gas do plants take in for photosynthesis?&#10;A) Oxygen&#10;B) Carbon dioxide&#10;C) Nitrogen&#10;D) Hydrogen&#10;Answer: B&#10;Time: 20"></textarea>
+  <button type="button" id="kq-run">Check quiz</button> <button type="button" class="ghost" id="kq-spread">Spread the answers</button> <button type="button" class="ghost" id="kq-sample">Try an example</button>
+  <div id="kq-output" aria-live="polite"></div>
+</div>
+</section>
+
+<h2>Step 3: import it into Kahoot</h2>
+<ol>
+  <li><strong>Get Kahoot's template.</strong> In the Kahoot creator, start a new quiz (Create, then Kahoot), open the option to import questions from a spreadsheet, and download the quiz template from there. Use Kahoot's current template rather than a copy from elsewhere: the importer expects its layout.</li>
+  <li><strong>Paste the rows.</strong> In the checker, press <em>Copy rows for Kahoot</em>. Open the template in Excel or Google Sheets, click the first empty <em>Question</em> cell and paste. Each row fills the question, answers 1–4, the time limit and the correct answer as a number (1 to 4, or "1,3" for two right answers).</li>
+  <li><strong>Save it as .xlsx.</strong> In Google Sheets: File, Download, Microsoft Excel (.xlsx). The file must be under 1 MB.</li>
+  <li><strong>Import.</strong> Back in the creator, choose import from spreadsheet and upload the file. If any row breaks a rule, Kahoot lists the errors: fix them in the sheet and upload again, or skip those questions.</li>
+  <li><strong>Finish in the creator.</strong> Add images (the importer can't), change the title and cover, then play it through once on your own before the class does.</li>
+</ol>
+
+<h2>Kahoot's import rules</h2>
+<table>
+  <tr><th>Rule</th><th>What the importer accepts</th></tr>
+  <tr><td>Question length</td><td>95 characters including spaces. The Kahoot creator allows longer questions, so one that fits in the editor can still fail the import.</td></tr>
+  <tr><td>Answer length</td><td>60 characters including spaces</td></tr>
+  <tr><td>Answers per question</td><td>At least 2 and up to the template's 4, with at least one marked correct</td></tr>
+  <tr><td>Time limit</td><td>5, 10, 20, 30, 60 or 120 seconds. Missing or other values become 20.</td></tr>
+  <tr><td>File</td><td>.xlsx, up to 1 MB. You can import several sheets into the same kahoot, one at a time.</td></tr>
+  <tr><td>Question types</td><td>Quiz questions only. Add images, polls and other question types in the creator afterwards.</td></tr>
+  <tr><td>Plans</td><td>Kahoot says the spreadsheet importer needs a subscription for business users. What's included for schools changes, so check your plan.</td></tr>
+</table>
+<p class="small">From Kahoot's own help article and blog post on spreadsheet import (checked 27 October 2026). Kahoot changes its limits and templates from time to time; if the import dialog says something different, follow it.</p>
+
+<h2>Where AI-written quizzes go wrong</h2>
+<table>
+  <tr><th>Problem</th><th>Why it matters</th><th>Fix</th></tr>
+  <tr><td class="bad">The answer key is wrong</td><td>Students who were right get told they're wrong, in front of the class.</td><td class="good">Work out every answer yourself, especially maths and dates. Give the AI your notes and tell it to use only them.</td></tr>
+  <tr><td class="bad">The answer is nearly always B or C</td><td>Students spot the pattern within five questions and stop reading.</td><td class="good">Press <em>Spread the answers</em> in the checker. The check flags it when one letter has much more than its share.</td></tr>
+  <tr><td class="bad">The right answer is the longest, most careful option</td><td>It's a giveaway: "To give a large surface area to absorb light" next to "To look nice".</td><td class="good">Trim the right answer or make the wrong ones as specific. The checker flags a right answer 1.5 times longer than any other.</td></tr>
+  <tr><td class="bad">Joke or obviously wrong options</td><td>A four-option question becomes a two-option one, and you learn nothing from the results.</td><td class="good">Each wrong option should be a real mistake: for ½ + ⅓, offer 2/5 (adding tops and bottoms) and 1/6 (multiplying).</td></tr>
+  <tr><td class="bad">"All of the above" / "none of the above"</td><td>Guessable, and confusing when answers are shown as shapes and colours.</td><td class="good">Replace it with a fourth real option, or use a True/False question instead.</td></tr>
+  <tr><td class="bad">"Which is not…" in lower case</td><td>On a 20-second timer, students miss the "not".</td><td class="good">Capitals (NOT, EXCEPT), or turn it into a positive question.</td></tr>
+  <tr><td class="bad">Only vocabulary recall</td><td>Students can match words without understanding.</td><td class="good">Ask for a third "explain why" and a third "apply to a new example", as the prompt does.</td></tr>
+  <tr><td class="bad">Long questions on 5 or 10 seconds</td><td>Slow readers and EAL/ELL students lose before they've read it.</td><td class="good">20 seconds as the default; 30–60 for reading, calculations and diagrams.</td></tr>
+</table>
+
+<h2>Choosing time limits</h2>
+<ul>
+  <li><strong>5–10 seconds:</strong> quick recall the class has practised many times (times tables, key words). It's fun at the end of a unit, but it rewards speed over thinking.</li>
+  <li><strong>20 seconds:</strong> most questions. This is also what Kahoot uses when no time is given.</li>
+  <li><strong>30–60 seconds:</strong> a short calculation, a sentence to read closely, or a "why" question.</li>
+  <li><strong>120 seconds:</strong> multi-step problems. These often work better as a paper question than a game question.</li>
+</ul>
+
+<h2>The same quiz on paper, Quizizz/Wayground, Blooket or Google Forms</h2>
+<p>The checker also gives you a student copy and a separate answer key to print, which is handy as an exit ticket or for students who were absent. Quizizz (now Wayground) and Blooket can import spreadsheets too, but each has its own template: download it from that tool's import screen and paste the same columns in, or use the checker's CSV download as a starting point. Google Forms can't import questions, but in quiz mode you can paste the questions one at a time, and the checker's student copy keeps them in order.</p>
+
+<div class="warn">
+  <p><strong>Student privacy:</strong> the AI only needs your lesson material, never student names, results or anything about individual students. In the game itself, ask students to use their first name or an agreed nickname, and follow your school's rules on which accounts and apps students may use.</p>
+</div>
+
+<h2>Common questions</h2>
+<details><summary>Can ChatGPT make a Kahoot quiz?</summary><p>Not directly, but it can write the questions in the right shape. Ask for 4 options, the answer letter and a time limit per question, with questions under 95 characters and answers under 60. Check the answer key, then paste the rows into Kahoot's spreadsheet template and import it in the Kahoot creator.</p></details>
+<details><summary>How do I import questions into Kahoot from a spreadsheet?</summary><p>Download Kahoot's quiz template, fill in one question per row (question, up to 4 answers, time limit, and the number of the correct answer), and save it as .xlsx. Then create a quiz, choose to import a spreadsheet, and upload the file. Kahoot lists any rows with errors so you can fix them or skip them.</p></details>
+<details><summary>What is the Kahoot character limit?</summary><p>Kahoot's spreadsheet import help gives 95 characters for a question and 60 for each answer, including spaces. The Kahoot creator itself allows longer questions, so a question that fits in the editor can still be rejected by the importer. Keep to 95 and 60 when importing.</p></details>
+<details><summary>What time limits can a Kahoot question have when imported?</summary><p>The import template accepts 5, 10, 20, 30, 60 or 120 seconds. If a time limit is missing or not one of those, Kahoot sets it to 20 seconds.</p></details>
+<details><summary>Why does ChatGPT always put the correct answer as B?</summary><p>AI tools often place the correct answer in the same position, usually B or C, and make it the longest option. Students notice within a few questions. Ask it to vary the positions, then check: the checker on this page counts the positions and can move the answers so each letter is used about equally.</p></details>
+<details><summary>Can I import a Kahoot from Google Sheets?</summary><p>Fill in the template in Google Sheets if you like, then use File, Download, Microsoft Excel (.xlsx) and import that file. Kahoot's importer takes .xlsx files up to 1 MB.</p></details>
+
+<section class="cta">
+  <h2>Quizzes with answer keys you can trust, in ChatGPT, Gemini or Claude</h2>
+  <p><strong>Teacher Skills Pro</strong> includes a <strong>quiz builder</strong> skill that writes quizzes, exit tickets and retrieval practice from your own material. It checks every answer against your notes, writes wrong options from real misconceptions, and gives a "what to reteach" map for each wrong option. It mixes recall, explain and apply questions, and outputs rows for Kahoot's template, Quizizz/Wayground, Blooket, Google Forms or paper. Pro also adds cover plans, feedback on anonymised work, class newsletters and incident write-ups.</p>
+  <p><a class="btn" href="../#pro">Get Teacher Skills Pro (£12)</a> <a class="btn ghost" href="../#setup">Start with the free pack</a></p>
+  <p class="small">Teacher Skills Pro is £12 / $15 / €14, one-off. The free Teacher Skills pack writes report comments, parent emails and rubrics.</p>
+</section>
+
+<p class="small">Kahoot! is a trademark of Kahoot! ASA. This guide isn't affiliated with or endorsed by Kahoot!. It was written by an AI agent (Claude); if a teacher would do something differently, please <a href="https://github.com/polytheseus/teacher-skills/issues">open an issue</a>.</p>
+
+</main>
+<aside class="wrap small pagenote">Not affiliated with OpenAI, Google, Anthropic, Microsoft, Kahoot!, Quizizz/Wayground, Blooket or any school.</aside>
+<script src="kahoot-quiz-checker.js"></script>
+<!-- pt:foot -->
+<footer class="pt-foot">
+  <div class="pt-foot-in">
+    <div>
+      <a class="pt-brand" href="/"><img src="/assets/favicon.svg" alt="" width="30" height="30"><span>POLYTHESEUS</span></a>
+      <p>Know-how packs that make ChatGPT, Gemini and Claude work like an experienced pro in your job. Free to start.</p>
+      <p><a href="mailto:support@polytheseus.com">support@polytheseus.com</a></p>
+    </div>
+    <div>
+      <h4>Packs</h4>
+      <ul><li><a href="/teacher-skills/">Teachers</a></li><li><a href="/trades-skills/">Trades</a></li><li><a href="/bookkeeper-skills/">Bookkeepers</a></li><li><a href="/real-estate-skills/">Real estate agents</a></li><li><a href="/seller-skills/">Online sellers</a></li><li><a href="/sre-skills/">SRE &amp; DevOps</a></li></ul>
+    </div>
+    <div>
+      <h4>Polytheseus</h4>
+      <ul>
+        <li><a href="/tools">Free tools</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="https://github.com/polytheseus">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="pt-foot-base">Polytheseus is run by Robin Hale. The packs and this site are written and tested by Claude, an AI agent. <a href="/#about">How that works</a>.</div>
+</footer>
+<!-- /pt:foot -->
+</body>
+</html>
