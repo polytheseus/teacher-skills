@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parents&#x27; evening notes builder (free tool) | Polytheseus</title>
+<meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="../style.css">
+<style>
+.tool{background:#fff;border:2px solid var(--accent2);border-radius:16px;padding:18px 20px;margin:20px 0}
+.tool textarea{font:14px/1.45 ui-monospace,Menlo,Consolas,monospace;width:100%;min-height:150px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tool input,.tool select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:9em}
+.tool .row{display:flex;flex-wrap:wrap;gap:10px 16px;margin:10px 0}
+.tool .row label{font-size:14px;display:flex;flex-direction:column;gap:3px}
+.tool button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent2);color:#fff;margin:8px 8px 0 0}
+.tool button.ghost{background:transparent;color:var(--accent2);border:2px solid var(--accent2)}
+.pe-card{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:12px 0;background:#fff}
+.pe-card h3{margin:4px 0 6px}
+.pe-card pre{white-space:pre-wrap;font:14px/1.5 inherit;font-family:inherit;margin:8px 0}
+.pe-issues{padding-left:18px}.pe-issues li{font-size:15px;margin-bottom:6px}
+.pe-tag{display:inline-block;font-size:12px;font-weight:800;padding:1px 8px;border-radius:999px;text-transform:uppercase}
+.pe-fix{background:#fbe0d8;color:#a33a22}
+.pe-review{background:#f8ecd0;color:#7a5a17}
+.pe-privacy{background:#e3e4fb;color:#3a3d8f}
+.pe-note{background:#dcefe8;color:#22604f}
+td.bad{background:#fff4ef}
+td.good{background:#f4fbf8}
+@media print{body *{visibility:hidden}#pe-output,#pe-output *{visibility:visible}#pe-output{position:absolute;left:0;top:0;width:100%}#pe-output button,#pe-output .pe-issues{display:none}.pe-card{break-inside:avoid}.pe-card details{display:none}}
+</style>
+<style>
+body{background:var(--bg)}
+.pt-embed-main{max-width:900px;margin:0 auto;padding:4px 14px 10px}
+.pt-embed-main h2{margin-top:12px}
+.pt-embed-by{font:14px/1.5 "Inter","Segoe UI",system-ui,sans-serif;color:#5d6268;margin:10px 0 0;padding-top:8px;border-top:1px solid #dedad2}
+@media print{.pt-embed-by{display:none}}
+</style>
+</head>
+<body>
+<main class="pt-embed-main">
+<h2>Free parents' evening notes builder</h2>
+<div class="tool">
+  <p>Type one line per student: <code>initials | strength | next step | home step | private note (optional)</code>. You can also paste rows from a spreadsheet (tab-separated) or a Markdown table from ChatGPT. Press <strong>Build notes</strong> to get a script per student with slot times, a follow-up message for each, and a printable sheet. It runs entirely in your browser: nothing you type is sent or stored, and it's gone when you close the page.</p>
+  <p class="small">It flags general praise with no example, targets like "try harder" or "focus more" (with a better pattern), more than one target, missing home steps, scripts too long for the slot, full names (use initials), and sensitive words such as diagnoses, safeguarding or family circumstances, which belong in a private conversation, not on a sheet or in an AI chat. It's a word check: it can't tell whether a target is the right one for that child.</p>
+  <div class="row">
+    <label>First slot <input id="pe-start" value="16:00" inputmode="numeric"></label>
+    <label>Minutes per slot <input id="pe-mins" type="number" min="1" max="60" value="5"></label>
+    <label>Break after every <input id="pe-every" type="number" min="0" max="40" value="0"> slots</label>
+    <label>Break length (min) <input id="pe-break" type="number" min="0" max="60" value="10"></label>
+    <label>Subject (optional) <input id="pe-subject" placeholder="maths"></label>
+    <label>Follow-up wording <select id="pe-style"><option value="uk">Parents' evening</option><option value="us">Conference (US)</option></select></label>
+  </div>
+  <label for="pe-input" class="small">Your notes</label>
+  <textarea id="pe-input" placeholder="AB | explains her method out loud, e.g. the fractions task | show every step of working on 2-mark questions | ask her to teach you one homework question each week"></textarea>
+  <button type="button" id="pe-run">Build notes</button> <button type="button" class="ghost" id="pe-sample">Try an example</button>
+  <div id="pe-output" aria-live="polite"></div>
+</div>
+<p class="pt-embed-by">Free tool by <a href="https://polytheseus.com/" target="_blank" rel="noopener">Polytheseus</a> · <a href="https://polytheseus.com/teacher-skills/guides/parents-evening-script-and-notes#builder" target="_blank" rel="noopener">Full guide and how to use it</a> · Nothing you type leaves your browser.</p>
+</main>
+<script src="../guides/parents-evening.js"></script>
+<script>
+(function () {
+  var last = 0;
+  function send() {
+    var h = Math.ceil(document.documentElement.scrollHeight);
+    if (h !== last && window.parent !== window) { last = h; window.parent.postMessage({ptHeight: h}, "*"); }
+  }
+  addEventListener("load", send);
+  if (window.ResizeObserver) new ResizeObserver(send).observe(document.body);
+  else setInterval(send, 700);
+})();
+</script>
+</body>
+</html>

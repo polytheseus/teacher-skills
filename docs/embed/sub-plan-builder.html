@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sub plan builder (free tool) | Polytheseus</title>
+<meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="../style.css">
+<style>
+.tool{background:#fff;border:2px solid var(--accent2);border-radius:16px;padding:18px 20px;margin:20px 0}
+.tool textarea{font:14px/1.45 ui-monospace,Menlo,Consolas,monospace;width:100%;min-height:150px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tool input,.tool select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+.tool .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14em,1fr));gap:10px 16px;margin:10px 0}
+.tool .grid label{font-size:14px;display:flex;flex-direction:column;gap:3px}
+.tool fieldset{border:1px solid var(--line);border-radius:12px;padding:8px 14px 12px;margin:12px 0}
+.tool legend{font-weight:700;font-size:15px;padding:0 6px}
+.tool button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent2);color:#fff;margin:8px 8px 0 0}
+.tool button.ghost{background:transparent;color:var(--accent2);border:2px solid var(--accent2)}
+.sp-card{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:12px 0;background:#fff}
+.sp-card h3{margin:4px 0 6px}
+.sp-plan{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:12px 0;background:#fffdf8}
+.sp-plan pre{white-space:pre-wrap;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:4px 0}
+.sp-issues{padding-left:18px}.sp-issues li{font-size:15px;margin-bottom:6px}
+.sp-tag{display:inline-block;font-size:12px;font-weight:800;padding:1px 8px;border-radius:999px;text-transform:uppercase}
+.sp-fix{background:#fbe0d8;color:#a33a22}
+.sp-review{background:#f8ecd0;color:#7a5a17}
+.sp-privacy{background:#e3e4fb;color:#3a3d8f}
+.sp-note{background:#dcefe8;color:#22604f}
+td.bad{background:#fff4ef}
+td.good{background:#f4fbf8}
+ul.check{list-style:none;padding-left:4px}ul.check li::before{content:"☐ ";font-weight:700}
+@media print{body *{visibility:hidden}.sp-plan,.sp-plan *{visibility:visible}.sp-plan{position:absolute;left:0;top:0;width:100%;border:0}}
+</style>
+<style>
+body{background:var(--bg)}
+.pt-embed-main{max-width:900px;margin:0 auto;padding:4px 14px 10px}
+.pt-embed-main h2{margin-top:12px}
+.pt-embed-by{font:14px/1.5 "Inter","Segoe UI",system-ui,sans-serif;color:#5d6268;margin:10px 0 0;padding-top:8px;border-top:1px solid #dedad2}
+@media print{.pt-embed-by{display:none}}
+</style>
+</head>
+<body>
+<main class="pt-embed-main">
+<h2>Free sub plan builder</h2>
+<div class="tool">
+  <p>Fill in the class details once, then type one line per block: <code>time | class or subject | task | materials | collect</code>. You can paste rows from a spreadsheet (tab-separated) or a Markdown table from ChatGPT. Press <strong>Build sub plan</strong> to get the one-page plan with checks, then print it, copy it or download it as text. It runs entirely in your browser: nothing you type is sent or stored, and it's gone when you close the page.</p>
+  <p class="small">It flags blocks with no time or a vague task ("continue with their work"), anything that needs your own login, tech with no paper fallback, new content, no materials location, nothing to collect, long blocks with no early-finisher task, missing help contact, attendance, seating plan or routines, full names, and sensitive details like diagnoses or family circumstances. It's a word check: it can't tell whether the work is right for your class.</p>
+  <fieldset><legend>Class details</legend>
+  <div class="grid">
+    <label>Plan wording <select id="sp-style"><option value="us">Sub plan (US)</option><option value="uk">Cover work (UK)</option></select></label>
+    <label>Teacher <input id="sp-teacher" placeholder="Ms Rivera"></label>
+    <label>Class or grade <input id="sp-class" placeholder="Grade 4 / 8B Science"></label>
+    <label>Room <input id="sp-room" placeholder="12"></label>
+    <label>Date (blank = emergency plan) <input id="sp-date" placeholder="Tuesday 3 November"></label>
+    <label>If you need help <input id="sp-help" placeholder="Office ext. 200, or the teacher next door"></label>
+    <label>Attendance / register <input id="sp-attendance" placeholder="Paper list by the door, to the office by 8:45"></label>
+    <label>Seating plan <input id="sp-seating" placeholder="Red folder on my desk"></label>
+    <label>Arrival routine <input id="sp-arrival" placeholder="Line up, enter quietly, start the board task"></label>
+    <label>Bathroom / toilets <input id="sp-bathroom" placeholder="One at a time with the pass"></label>
+    <label>Tech notes <input id="sp-tech" placeholder="Board works without login; no student devices"></label>
+    <label>Helpful students (initials) <input id="sp-helpers" placeholder="A.K. and R.M."></label>
+    <label>Early finishers <input id="sp-early" placeholder="Reading book or puzzle sheet in the tray"></label>
+    <label>End of day / lesson <input id="sp-dismissal" placeholder="Tidy, stand behind chairs, dismiss by rows"></label>
+    <label>Good to know <input id="sp-notes" placeholder="Fire exit: left out of the door"></label>
+  </div>
+  </fieldset>
+  <label for="sp-input" class="small">Schedule: one line per block</label>
+  <textarea id="sp-input" placeholder="8:50-9:50 | Reading | Read pp. 42-47 together, then answer Q1-6 in full sentences | question sheets in the blue tray | question sheets, names on top"></textarea>
+  <button type="button" id="sp-run">Build sub plan</button> <button type="button" class="ghost" id="sp-sample">Try an example</button>
+  <div id="sp-output" aria-live="polite"></div>
+</div>
+<p class="pt-embed-by">Free tool by <a href="https://polytheseus.com/" target="_blank" rel="noopener">Polytheseus</a> · <a href="https://polytheseus.com/teacher-skills/guides/sub-plan-template#builder" target="_blank" rel="noopener">Full guide and how to use it</a> · Nothing you type leaves your browser.</p>
+</main>
+<script src="../guides/sub-plan-builder.js"></script>
+<script>
+(function () {
+  var last = 0;
+  function send() {
+    var h = Math.ceil(document.documentElement.scrollHeight);
+    if (h !== last && window.parent !== window) { last = h; window.parent.postMessage({ptHeight: h}, "*"); }
+  }
+  addEventListener("load", send);
+  if (window.ResizeObserver) new ResizeObserver(send).observe(document.body);
+  else setInterval(send, 700);
+})();
+</script>
+</body>
+</html>

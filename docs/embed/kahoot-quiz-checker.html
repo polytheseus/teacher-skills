@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kahoot quiz checker (free tool) | Polytheseus</title>
+<meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="../style.css">
+<style>
+.tool{background:#fff;border:2px solid var(--accent2);border-radius:16px;padding:18px 20px;margin:20px 0}
+.tool textarea{font:14px/1.45 ui-monospace,Menlo,Consolas,monospace;width:100%;min-height:200px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tool input,.tool select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+.tool .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14em,1fr));gap:10px 16px;margin:10px 0}
+.tool .grid label{font-size:14px;display:flex;flex-direction:column;gap:3px}
+.tool button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent2);color:#fff;margin:8px 8px 0 0}
+.tool button.ghost{background:transparent;color:var(--accent2);border:2px solid var(--accent2)}
+.kq-card{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:12px 0;background:#fff}
+.kq-card h3{margin:4px 0 6px;font-size:17px}
+.kq-opts{margin:4px 0 6px;padding-left:22px}.kq-opts li{font-size:15px}
+.kq-right{font-weight:700;color:#22604f}.kq-right::after{content:" ✓"}
+.kq-pre{white-space:pre;overflow-x:auto;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;background:#fffdf8;border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:8px 0}
+.kq-issues{padding-left:18px}.kq-issues li{font-size:15px;margin-bottom:6px}
+.kq-tag{display:inline-block;font-size:12px;font-weight:800;padding:1px 8px;border-radius:999px;text-transform:uppercase}
+.kq-fix{background:#fbe0d8;color:#a33a22}
+.kq-review{background:#f8ecd0;color:#7a5a17}
+.kq-note,.kq-ok{background:#dcefe8;color:#22604f}
+td.bad{background:#fff4ef}
+td.good{background:#f4fbf8}
+@media print{body *{visibility:hidden}.kq-print,.kq-print *{visibility:visible}.kq-print{position:absolute;left:0;top:0;width:100%}.kq-print .kq-pre{white-space:pre-wrap;border:0;background:none}.kq-key{page-break-before:always}}
+</style>
+<style>
+body{background:var(--bg)}
+.pt-embed-main{max-width:900px;margin:0 auto;padding:4px 14px 10px}
+.pt-embed-main h2{margin-top:12px}
+.pt-embed-by{font:14px/1.5 "Inter","Segoe UI",system-ui,sans-serif;color:#5d6268;margin:10px 0 0;padding-top:8px;border-top:1px solid #dedad2}
+@media print{.pt-embed-by{display:none}}
+</style>
+</head>
+<body>
+<main class="pt-embed-main">
+<h2>Step 2: check it (free quiz checker)</h2>
+<div class="tool">
+  <p>Paste the AI's quiz (numbered questions with A–D options and an "Answer:" line, or the right option marked with *), or rows copied from a spreadsheet. Press <strong>Check quiz</strong>. <strong>Spread the answers</strong> moves the correct options so A, B, C and D are each used about equally, and leaves options in order where order matters (numbers, True/False). It runs entirely in your browser: nothing you paste is sent or stored.</p>
+  <p class="small">It checks Kahoot's import limits (95 and 60 characters, 2–4 answers, at least one correct, times of 5, 10, 20, 30, 60 or 120 s), answer letters that point nowhere, duplicate options and questions, "all/none of the above", NOT questions without capitals, a correct answer much longer than the rest, the same letter too often, and long questions on short timers. It can't tell whether an answer is <em>right</em>: only you can.</p>
+  <div class="grid">
+    <label>Quiz title (for the paper copy) <input id="kq-title" placeholder="Year 7 photosynthesis recap"></label>
+    <label>Time limit when none is given <select id="kq-time"><option>5</option><option>10</option><option selected>20</option><option>30</option><option>60</option><option>120</option></select></label>
+  </div>
+  <label for="kq-input" class="small">Quiz questions</label>
+  <textarea id="kq-input" placeholder="1. What gas do plants take in for photosynthesis?&#10;A) Oxygen&#10;B) Carbon dioxide&#10;C) Nitrogen&#10;D) Hydrogen&#10;Answer: B&#10;Time: 20"></textarea>
+  <button type="button" id="kq-run">Check quiz</button> <button type="button" class="ghost" id="kq-spread">Spread the answers</button> <button type="button" class="ghost" id="kq-sample">Try an example</button>
+  <div id="kq-output" aria-live="polite"></div>
+</div>
+<p class="pt-embed-by">Free tool by <a href="https://polytheseus.com/" target="_blank" rel="noopener">Polytheseus</a> · <a href="https://polytheseus.com/teacher-skills/guides/how-to-make-a-kahoot-quiz-with-chatgpt#checker" target="_blank" rel="noopener">Full guide and how to use it</a> · Nothing you type leaves your browser.</p>
+</main>
+<script src="../guides/kahoot-quiz-checker.js"></script>
+<script>
+(function () {
+  var last = 0;
+  function send() {
+    var h = Math.ceil(document.documentElement.scrollHeight);
+    if (h !== last && window.parent !== window) { last = h; window.parent.postMessage({ptHeight: h}, "*"); }
+  }
+  addEventListener("load", send);
+  if (window.ResizeObserver) new ResizeObserver(send).observe(document.body);
+  else setInterval(send, 700);
+})();
+</script>
+</body>
+</html>

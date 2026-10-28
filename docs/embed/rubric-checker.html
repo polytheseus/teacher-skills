@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rubric checker (free tool) | Polytheseus</title>
+<meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="../style.css">
+<style>
+.tool{background:#fff;border:2px solid var(--accent2);border-radius:16px;padding:18px 20px;margin:20px 0}
+.tool textarea{font:14px/1.45 ui-monospace,Menlo,Consolas,monospace;width:100%;min-height:170px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tool button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent2);color:#fff;margin:8px 8px 0 0}
+.tool button.ghost{background:transparent;color:var(--accent2);border:2px solid var(--accent2)}
+.rb-tag{display:inline-block;font-size:12px;font-weight:800;padding:1px 8px;border-radius:999px}
+.rb-fix{background:#fbe0d8;color:#a33a22}
+.rb-review{background:#f8ecd0;color:#7a5a17}
+.rb-note{background:#dcefe8;color:#22604f}
+.rb-list li{margin-bottom:8px;font-size:15px}
+td.bad{background:#fff4ef}
+td.good{background:#f4fbf8}
+</style>
+<style>
+body{background:var(--bg)}
+.pt-embed-main{max-width:900px;margin:0 auto;padding:4px 14px 10px}
+.pt-embed-main h2{margin-top:12px}
+.pt-embed-by{font:14px/1.5 "Inter","Segoe UI",system-ui,sans-serif;color:#5d6268;margin:10px 0 0;padding-top:8px;border-top:1px solid #dedad2}
+@media print{.pt-embed-by{display:none}}
+</style>
+</head>
+<body>
+<main class="pt-embed-main">
+<h2>Free rubric checker</h2>
+<div class="tool">
+  <p>Paste a rubric and press <strong>Check</strong>. Put the level names in the first row and one criterion per row after that. It reads a Markdown table (what ChatGPT outputs), rows copied straight from Google Docs, Sheets or Word, or CSV. It runs entirely in your browser, and nothing you paste is sent or stored.</p>
+  <p class="small">It flags judgment words with nothing a marker can see, amount words with no count, levels that only differ by adverbs, two skills in one row, rows that mark presentation instead of learning, empty or one-word cells, and too many or too few criteria. Then it writes a fix-it prompt with the problems listed. It's a word check, so it can't tell whether your criteria match your objective: that's what the calibration test is for.</p>
+  <label for="rb-input" class="small">Your rubric</label>
+  <textarea id="rb-input" placeholder="| Criteria | Beginning | Developing | Proficient | Exemplary |&#10;|---|---|---|---|---|&#10;| Use of evidence | ... | ... | ... | ... |"></textarea>
+  <button type="button" id="rb-run">Check</button> <button type="button" class="ghost" id="rb-sample">Try the "before" rubric</button>
+  <div id="rb-output" aria-live="polite"></div>
+</div>
+<p class="pt-embed-by">Free tool by <a href="https://polytheseus.com/" target="_blank" rel="noopener">Polytheseus</a> · <a href="https://polytheseus.com/teacher-skills/guides/how-to-make-a-rubric-with-chatgpt#checker" target="_blank" rel="noopener">Full guide and how to use it</a> · Nothing you type leaves your browser.</p>
+</main>
+<script src="../guides/rubric-checker.js"></script>
+<script>
+(function () {
+  var last = 0;
+  function send() {
+    var h = Math.ceil(document.documentElement.scrollHeight);
+    if (h !== last && window.parent !== window) { last = h; window.parent.postMessage({ptHeight: h}, "*"); }
+  }
+  addEventListener("load", send);
+  if (window.ResizeObserver) new ResizeObserver(send).observe(document.body);
+  else setInterval(send, 700);
+})();
+</script>
+</body>
+</html>
