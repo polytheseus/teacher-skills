@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preschool comment builder (free tool) | Polytheseus</title>
+<meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="../style.css">
+<style>
+.tool{background:#fff;border:2px solid var(--accent2);border-radius:16px;padding:18px 20px;margin:20px 0}
+.tool textarea{font:15px/1.5 inherit;font-family:inherit;width:100%;min-height:120px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tool input,.tool select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+.tool .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14em,1fr));gap:10px 16px;margin:10px 0}
+.tool .grid label{font-size:14px;display:flex;flex-direction:column;gap:3px}
+.tool fieldset{border:1px solid var(--line);border-radius:12px;padding:8px 14px 12px;margin:12px 0}
+.tool legend{font-weight:700;font-size:15px;padding:0 6px}
+.tool button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent2);color:#fff;margin:8px 8px 0 0}
+.tool button.ghost{background:transparent;color:var(--accent2);border:2px solid var(--accent2)}
+.kc-issues{padding-left:18px}.kc-issues li{font-size:15px;margin-bottom:6px}
+.kc-tag{display:inline-block;font-size:12px;font-weight:800;padding:1px 8px;border-radius:999px;text-transform:uppercase}
+.kc-fix{background:#fbe0d8;color:#a33a22}
+.kc-review{background:#f8ecd0;color:#7a5a17}
+.kc-note{background:#e3e4fb;color:#3a3d8f}
+.kc-ok{background:#dcefe8;color:#22604f}
+table.bank td{vertical-align:top}
+.lvl{display:inline-block;font-size:11px;font-weight:800;padding:1px 7px;border-radius:999px;text-transform:uppercase;margin-right:4px}
+.lvl-strength{background:#dcefe8;color:#22604f}
+.lvl-on{background:#e3e4fb;color:#3a3d8f}
+.lvl-next{background:#f8ecd0;color:#7a5a17}
+.lvl-at{background:#f3e6f6;color:#6b2f7a}
+td.bad{background:#fff4ef}
+td.good{background:#f4fbf8}
+.ex{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0}
+.ex p{margin:0}
+.exmeta{font-size:13px;color:var(--muted);margin-top:6px!important}
+</style>
+<style>
+body{background:var(--bg)}
+.pt-embed-main{max-width:900px;margin:0 auto;padding:4px 14px 10px}
+.pt-embed-main h2{margin-top:12px}
+.pt-embed-by{font:14px/1.5 "Inter","Segoe UI",system-ui,sans-serif;color:#5d6268;margin:10px 0 0;padding-top:8px;border-top:1px solid #dedad2}
+@media print{.pt-embed-by{display:none}}
+</style>
+</head>
+<body>
+<main class="pt-embed-main">
+<h2>Free preschool comment builder</h2>
+<div class="tool">
+  <p>Set a level for the two or three areas you want to mention: <strong>Strength</strong>, <strong>On track</strong> or <strong>Next step</strong>. Add one moment you noticed if you have one, then press <strong>Write comment</strong>. If it runs over your character limit, it drops the optional sentences first. Switch <em>Wording</em> to <strong>UK progress check at age 2</strong> for a written summary under the three prime areas. You can edit the result and check it again, or paste a comment from ChatGPT, Gemini, Claude or a colleague into the box at the bottom. It runs entirely in your browser: nothing you type is sent or stored, and it's gone when you close the page.</p>
+  <p class="small">It flags labels ("naughty", "clingy", "bossy"), verdicts ("behind", "can't", "never"), comparisons with other children, diagnosis or support-plan words, family details, jargon families won't know (fine motor, self-regulation, domain names), placeholders left in, mixed he/she pronouns from a copied comment, a missing next step or home tip, stock phrases, your character limit, and curly quotes or dashes that some report systems turn into "?". It's a word check: you know the child, it doesn't.</p>
+  <fieldset><legend>The child</legend>
+  <div class="grid">
+    <label>First name <input id="pc-name" placeholder="Rosa (or leave blank for [Name])" autocomplete="off"></label>
+    <label>Pronoun <select id="pc-pronoun"><option value="she">she / her</option><option value="he">he / him</option><option value="they">they / them</option></select></label>
+    <label>Wording <select id="pc-style"><option value="us">US preschool / pre-K</option><option value="uk">UK nursery / pre-school</option><option value="two">UK progress check at age 2</option></select></label>
+    <label class="pc-report">Report <select id="pc-timing"><option value="early">During the year</option><option value="end">End of year</option></select></label>
+    <label class="pc-report">Report period <select id="pc-period"><option value="quarter">quarter</option><option value="trimester">trimester</option><option value="term">term</option><option value="semester">semester</option></select></label>
+    <label class="pc-report">Opening <select id="pc-opening"><option value="settled">Settled in / great year</option><option value="confident">Growing in confidence</option><option value="curious">Curious learner</option><option value="kind">Kind friend</option><option value="none">No opening</option></select></label>
+    <label class="pc-report">Character limit (0 = none) <input id="pc-limit" type="number" min="0" step="50" value="700"></label>
+    <label class="pc-two" hidden>Review the support plan in <select id="pc-review"><option>four weeks</option><option selected>six weeks</option><option>half a term</option></select></label>
+    <label class="pc-two" hidden><span><input id="pc-senco" type="checkbox" style="width:auto"> Mention asking our SENCO (only if you've agreed it with the parents)</span></label>
+  </div>
+  <label class="small" for="pc-moment">One moment you noticed (optional, starting with a verb): "I loved seeing Rosa …"</label>
+  <input id="pc-moment" placeholder="count all the ducks in our pond book" autocomplete="off" style="font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;width:100%">
+  </fieldset>
+  <fieldset><legend>Areas to mention</legend>
+  <div class="grid" id="pc-skills"></div>
+  </fieldset>
+  <button type="button" id="pc-run">Write comment</button> <button type="button" class="ghost" id="pc-sample">Try an example</button> <button type="button" class="ghost" id="pc-next">Next child</button>
+  <div id="pc-output" aria-live="polite"></div>
+  <fieldset><legend>Or check a comment you already have</legend>
+  <textarea id="pc-paste" placeholder="Paste one comment here"></textarea>
+  <button type="button" id="pc-check">Check this comment</button>
+  </fieldset>
+</div>
+<p class="pt-embed-by">Free tool by <a href="https://polytheseus.com/" target="_blank" rel="noopener">Polytheseus</a> · <a href="https://polytheseus.com/teacher-skills/guides/preschool-progress-report-comments#builder" target="_blank" rel="noopener">Full guide and how to use it</a> · Nothing you type leaves your browser.</p>
+</main>
+<script src="../guides/preschool-comments.js"></script>
+<script>
+(function () {
+  var last = 0;
+  function send() {
+    var h = Math.ceil(document.documentElement.scrollHeight);
+    if (h !== last && window.parent !== window) { last = h; window.parent.postMessage({ptHeight: h}, "*"); }
+  }
+  addEventListener("load", send);
+  if (window.ResizeObserver) new ResizeObserver(send).observe(document.body);
+  else setInterval(send, 700);
+})();
+</script>
+</body>
+</html>
