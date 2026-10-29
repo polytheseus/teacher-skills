@@ -6,7 +6,7 @@ function has(issues, level, re) { return issues.some(function (i) { return i.lev
 function serious(issues) { return issues.filter(function (i) { return i.level !== "note"; }); }
 
 // Every built comment, at every level, style, pronoun and timing, passes its own checker.
-var styles = ["us", "uk"], prons = ["she", "he", "they"], timings = ["early", "end"], lv = ["s", "g", "f"];
+var styles = ["us", "uk", "au", "au-kindy", "au-prep", "au-reception", "au-pp", "au-transition"], prons = ["she", "he", "they"], timings = ["early", "end"], lv = ["s", "g", "f"];
 var all = 0, clean = 0, bad = [];
 k.AREAS.forEach(function (a, i) {
   lv.forEach(function (l) {

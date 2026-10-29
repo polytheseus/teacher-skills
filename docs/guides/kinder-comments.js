@@ -97,7 +97,7 @@
     none: [""]
   };
   var OPENINGS_END = {
-    settled: ["{name} has had a wonderful year in {class} and has grown so much since September.", "{name} has made great progress this year and comes in ready to learn every day."]
+    settled: ["{name} has had a wonderful year in {class} and has grown so much since {since}.", "{name} has made great progress this year and comes in ready to learn every day."]
   };
   var CLOSES = {
     early: ["Thank you for your support at home. I'm looking forward to the rest of the year with {name}.", "Thank you for all you do at home; I'm looking forward to seeing {name}'s progress next {period}."],
@@ -108,6 +108,18 @@
     us: { math: "math", class: "kindergarten", next: "first grade", practise: "practice", practised: "practiced", practising: "practicing", recognises: "recognizes", recognising: "recognizing", recognise: "recognize", favourite: "favorite" },
     uk: { math: "maths", class: "Reception", next: "Year 1", practise: "practise", practised: "practised", practising: "practising", recognises: "recognises", recognising: "recognising", recognise: "recognise", favourite: "favourite" }
   };
+  // Australia: the first year of school has a different name in each state
+  // (style "au" is the Australian Curriculum's "Foundation"). School years run
+  // late January to December, so "since September" becomes "the first day of school".
+  var AU_CLASS = { au: "Foundation", "au-kindy": "Kindergarten", "au-prep": "Prep", "au-reception": "Reception", "au-pp": "Pre-primary", "au-transition": "Transition" };
+  function isAU(o) { return /^au/.test(o.style || ""); }
+  function words(o) {
+    var w = WORDS[o.style === "uk" || isAU(o) ? "uk" : "us"], r = {};
+    for (var k in w) r[k] = w[k];
+    r.since = isAU(o) ? "the first day of school" : "September";
+    if (isAU(o)) r["class"] = AU_CLASS[o.style] || "Foundation";
+    return r;
+  }
 
   function plural(vp) {
     return vp.replace(/(^|, and |, | and )(\S+)/g, function (m, sep, w) {
@@ -124,11 +136,11 @@
   function area(id) { for (var i = 0; i < AREAS.length; i++) if (AREAS[i].id === id) return AREAS[i]; return null; }
 
   function fill(t, o) {
-    var w = WORDS[o.style === "uk" ? "uk" : "us"], p = PRON[o.pronoun] || PRON.they;
+    var w = words(o), p = PRON[o.pronoun] || PRON.they;
     return t.replace(/\{(\w+)\}/g, function (m, k) {
       if (k === "name") return o.name || "[Name]";
       if (k === "their" || k === "them") return p[k];
-      if (k === "period") return o.period || (o.style === "uk" ? "term" : "quarter");
+      if (k === "period") return o.period || (o.style === "uk" ? "term" : isAU(o) ? "semester" : "quarter");
       if (k in w) return w[k];
       return m;
     }).replace(/\b(practised|recognises|recognising|recognise|practising)\b/g, function (m) { return w[m]; });
@@ -211,7 +223,7 @@
     [/\b(than (most|many|the other|other|some) (children|kids|students|classmates|of the class)|compared (to|with) (the class|the others|other children|classmates|(his|her|their) (friends|classmates|peers))|the rest of the class|most of the class|(youngest|oldest|smallest|best|worst) in the class|top of the class)\b/i, "fix", "Comparison with other children: \"$1\". Report on this child's own progress."],
     [/\b(adhd|autis\w*|asd|on the spectrum|dyslexi\w*|dyspraxi\w*|sensory processing|speech delay|language delay|developmental delay|delayed|speech therapy|speech therapist|ot referral|iep|504( plan)?|ehcp|sen(d)?|special needs|needs (to be )?(tested|assessed|evaluated)|evaluation|diagnos\w*)\b/i, "fix", "Diagnosis or support-plan language: \"$1\". Never suggest or mention a diagnosis on a report; raise concerns with parents in person and follow your school's referral process."],
     [/\b(divorc\w*|custody|(parents|mom|mum|dad) (are |have |has )?(separated|split up)|separation|single (mom|mum|dad|parent)|at (mom|mum|dad)'?s house|new baby|social worker|foster\w*|free (school )?(lunch|meals)|medication|meds)\b/i, "fix", "Family or private detail: \"$1\". Keep it out of the written report."],
-    [/\b(phonemic|phonological|cvc|ccvc|onset|rime|graphemes?|phonemes?|gpcs?|digraphs?|segment(ing|s)?|blend(ing|s)? (sounds|words)|cardinality|subitiz\w*|subitis\w*|decodable|decoding|k\.(cc|oa|g|md|nbt)\.\w+|rf\.k\.\w+|ccss|elgs?|early learning goals?|benchmark)\b/i, "review", "Jargon: \"$1\". Most parents won't know it; say what the child does (\"sounds out short words like cat and sun\")."],
+    [/\b(phonemic|phonological|cvc|ccvc|onset|rime|graphemes?|phonemes?|gpcs?|digraphs?|segment(ing|s)?|blend(ing|s)? (sounds|words)|cardinality|subitiz\w*|subitis\w*|decodable|decoding|k\.(cc|oa|g|md|nbt)\.\w+|rf\.k\.\w+|ccss|elgs?|early learning goals?|benchmark|early stage 1|es1|achievement standards?|ac9\w*|acara|(ene|mae)-[a-z]+-\d+)\b/i, "review", "Jargon: \"$1\". Most parents won't know it; say what the child does (\"sounds out short words like cat and sun\")."],
     [/\b(a joy to have in (class|the classroom)|a pleasure to (have|teach)|delightful|journey|thrives?|thriving|blossom\w*|tapestry|embark\w*|testament|truly|shines?|shining star|little ray of sunshine|superstar)\b/i, "note", "Stock phrase: \"$1\". Parents see it on every report (and it reads as AI-written). A specific moment says more."],
     [/(\[(name|student|child|first name|pronoun)[^\]]*\]|\{(name|student)\}|<name>|\bXX+\b|student'?s name|child'?s name)/i, "fix", "Placeholder left in: \"$1\"."],
     [/(\b(we|i) (are|am) (worried|concerned)|concerning|red flag|alarming)\b/i, "review", "\"$1\" on a written report can alarm a family. If you're worried, talk to them in person first and keep the report to what you're working on."],
@@ -242,6 +254,7 @@
     var m = t.match(/[—–‘’“”…]/g);
     if (m) issues.push({ level: "note", msg: "Curly quotes, dashes or … (" + m.length + "). Some report systems show these as ? or boxes. \"Plain text\" below swaps them for straight ones." });
     if (o.style === "uk" && o.timing !== "end" && /\b(expected|emerging|exceeding|good level of development|gld)\b/i.test(t)) issues.push({ level: "review", msg: "\"Expected\", \"emerging\" and GLD are the end-of-Reception EYFS profile judgements. In autumn and spring, describe progress instead." });
+    if (isAU(o) && (m = t.match(/\b(first grade|second grade|grade (one|two|1|2)|kindergartners?|kindergarteners?|math)\b/i))) issues.push({ level: "review", msg: "\"" + m[1] + "\" is US wording. Australian families expect \"Year 1\", \"maths\" and the name your state uses for the first year of school." });
     var sentences = t.split(/(?<=[.!?])\s+/).filter(Boolean);
     var long = sentences.filter(function (s) { return s.split(/\s+/).length > 32; });
     if (long.length) issues.push({ level: "note", msg: long.length + " sentence" + (long.length === 1 ? " is" : "s are") + " over 32 words. Shorter sentences are easier for families reading in a second language." });
