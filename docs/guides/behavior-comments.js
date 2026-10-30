@@ -21,6 +21,9 @@
   var BANDS = { k2: "Grades K–2", "35": "Grades 3–5", "68": "Grades 6–8" };
   var BANDS_UK = { k2: "Years 1–3", "35": "Years 4–6", "68": "Years 7–9" };
   var BANDS_CA = { k2: "Grades 1–2", "35": "Grades 3–5", "68": "Grades 6–8" };
+  // Australia: Foundation is the year before Year 1, so Year N lines up with
+  // US grade N. Style "au" keeps UK spelling and reports by semester.
+  var BANDS_AU = { k2: "Foundation–Year 2", "35": "Years 3–5", "68": "Years 6–8" };
   var GROUPS = { w: "Work habits", s: "Behaviour and getting on with others" };
   var LS = { r: "Responsibility", o: "Organisation", iw: "Independent work", c: "Collaboration", i: "Initiative", sr: "Self-regulation" };
   var AREAS = [
@@ -171,15 +174,18 @@
     t = t.replace(/\{(\w+)\}/g, function (m, k) {
       if (k === "name") return o.name || "[Name]";
       if (k === "their" || k === "them") return p[k];
-      if (k === "period") return o.period || (st === "uk" ? "term" : st === "ca" ? "term" : "quarter");
+      if (k === "period") return o.period || (st === "au" ? "semester" : st === "uk" || st === "ca" ? "term" : "quarter");
       return m;
     });
     if (st === "ca") t = t.replace(CA_RE, function (m, pre, w) { return pre + CA[w]; });
-    else if (st !== "uk") t = t.replace(US_RE, function (m, pre, w) { return pre + US[w]; });
+    else if (st !== "uk" && st !== "au") t = t.replace(US_RE, function (m, pre, w) { return pre + US[w]; });
+    // Australia: the end-of-year report goes home before the summer holidays.
+    if (st === "au") t = t.replace(/\bOver the summer\b/g, "Over the summer holidays");
     return t;
   }
+  function bandNames(o) { return o.style === "au" ? BANDS_AU : o.style === "uk" ? BANDS_UK : o.style === "ca" ? BANDS_CA : BANDS; }
 
-  // opts: { name, pronoun, style: us|uk|ca, band: k2|35|68, timing: early|end,
+  // opts: { name, pronoun, style: us|uk|ca|au, band: k2|35|68, timing: early|end,
   //         period, opening, moment, limit, levels: { areaId: "s"|"g"|"f" } }
   function build(o) {
     o = o || {};
@@ -266,6 +272,10 @@
   var UK_SPELL = /\b(behaviours?|favourite|colours?|organis\w+|recognis\w+|apologis\w+|practis\w+)\b/i;
   var CA_US = /\b(behavior\w*|favorite|colors?|practic(ing|ed))\b/i;
   var CA_UK = /\b(organis\w+|recognis\w+|apologis\w+)\b/i;
+  // Australia: US school words, and the curriculum or program names behind
+  // behaviour reporting (Personal and Social Capability, PBL) that families won't know.
+  var AU_US = /\b((first|second|third|fourth|fifth|sixth|seventh|eighth) grade|kindergartners?|kindergarteners?|this quarter|marking period|middle school|report card|summer vacation|mom)\b/i;
+  var AU_JARGON = /\b(personal and social capability|general capabilit(y|ies)|learning continuum|VC2?[A-Z]{2,5}\d\w*|AC9\w*|positive behaviou?r for learning|PBL|SWPBS|PBS|achievement standards?|content descriptions?|early stage 1|stage [1-3])(?![\w-])/i;
 
   function check(text, o) {
     o = o || {};
@@ -293,6 +303,8 @@
     }
     var sp;
     if (o.style === "uk" && (sp = t.match(US_SPELL))) issues.push({ level: "review", msg: "\"" + sp[0] + "\" is US spelling in a UK report. Families notice." });
+    if (o.style === "au" && (sp = t.match(US_SPELL) || t.match(AU_US))) issues.push({ level: "review", msg: "\"" + sp[0] + "\" is US wording. Australian families expect Year 3 (not third grade), term or semester, and Australian spelling (behaviour, organised, practising)." });
+    if (o.style === "au" && (sp = t.match(AU_JARGON))) issues.push({ level: "review", msg: "Jargon: \"" + sp[1] + "\". Families won't know it; say what the student does (\"waits for a turn and listens to others' ideas\")." });
     if (o.style === "us" && (sp = t.match(UK_SPELL))) issues.push({ level: "review", msg: "\"" + sp[0] + "\" is UK spelling in a US report. Families notice." });
     if (o.style === "ca" && (sp = t.match(CA_US) || t.match(CA_UK))) issues.push({ level: "review", msg: "\"" + sp[0] + "\" isn't the usual Canadian spelling (behaviour, favourite, organize, recognize)." });
     var m = t.match(/[—–‘’“”…]/g);
@@ -307,7 +319,7 @@
     return String(t).replace(/[‘’]/g, "'").replace(/[“”]/g, "\"").replace(/\s*[—–]\s*/g, ", ").replace(/…/g, "...");
   }
 
-  var api = { AREAS: AREAS, BANDS: BANDS, BANDS_UK: BANDS_UK, BANDS_CA: BANDS_CA, GROUPS: GROUPS, LS: LS, areasFor: areasFor, bt: bt, plural: plural, build: build, check: check, plain: plain, fill: fill, area: area };
+  var api = { AREAS: AREAS, BANDS: BANDS, BANDS_UK: BANDS_UK, BANDS_CA: BANDS_CA, BANDS_AU: BANDS_AU, bandNames: bandNames, GROUPS: GROUPS, LS: LS, areasFor: areasFor, bt: bt, plural: plural, build: build, check: check, plain: plain, fill: fill, area: area };
   if (typeof module !== "undefined" && module.exports) { module.exports = api; return; }
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]; }); }
@@ -335,12 +347,16 @@
       });
       grid.innerHTML = html;
       Array.prototype.forEach.call(grid.querySelectorAll("select"), function (s) { if (keep[s.getAttribute("data-area")]) s.value = keep[s.getAttribute("data-area")]; });
-      var bs = document.getElementById("bh-band"), names = o.style === "uk" ? BANDS_UK : o.style === "ca" ? BANDS_CA : BANDS;
+      var bs = document.getElementById("bh-band"), names = bandNames(o);
       Array.prototype.forEach.call(bs.options, function (op) { op.textContent = names[op.value]; });
     }
     draw();
     document.getElementById("bh-band").addEventListener("change", draw);
-    document.getElementById("bh-style").addEventListener("change", draw);
+    document.getElementById("bh-style").addEventListener("change", function () {
+      var per = document.getElementById("bh-period"), st = val("bh-style");
+      if (per && per.tagName === "SELECT") per.value = st === "au" ? "semester" : st === "uk" || st === "ca" ? "term" : "quarter";
+      draw();
+    });
     function opts() {
       var levels = {};
       Array.prototype.forEach.call(grid.querySelectorAll("select"), function (s) { if (s.value) levels[s.getAttribute("data-area")] = s.value; });

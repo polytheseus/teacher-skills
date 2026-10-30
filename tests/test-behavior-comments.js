@@ -12,7 +12,7 @@ var all = 0, clean = 0, bad = [];
 Object.keys(k.BANDS).forEach(function (band) {
   var list = k.areasFor(band);
   list.forEach(function (a, i) { LV.forEach(function (lv, j) {
-    ["us", "uk", "ca"].forEach(function (st) { ["she", "he", "they"].forEach(function (p) { ["early", "end"].forEach(function (tm) { ["kind", "hardworking", "helpful", "enthusiastic", "calm", "growing", "none"].forEach(function (op, oi) {
+    ["us", "uk", "ca", "au"].forEach(function (st) { ["she", "he", "they"].forEach(function (p) { ["early", "end"].forEach(function (tm) { ["kind", "hardworking", "helpful", "enthusiastic", "calm", "growing", "none"].forEach(function (op, oi) {
       var levels = {}; levels[a.id] = lv; levels[list[(i + 3 + oi) % list.length].id] = LV[(j + 1) % 3];
       var r = k.build({ name: "Ava", pronoun: p, style: st, band: band, timing: tm, opening: op, levels: levels, moment: oi === 1 ? "helped a classmate find a lost coat" : "" });
       all++;
@@ -171,6 +171,29 @@ rw.forEach(function (x, i) {
   t("rewrite before flagged " + i + " " + x[0], k.check(x[0]).some(function (y) { return !/No (next step|home tip)/.test(y.msg); }));
   t("rewrite after clean " + i + " " + x[1], !k.check(x[1]).some(function (y) { return y.level !== "note" && !/No (next step|home tip)/.test(y.msg); }));
 });
+
+// Australia mode: bands, semester, summer holidays, Australian wording checks.
+(function () {
+  var au = { style: "au" };
+  t("au bands", k.bandNames(au).k2 === "Foundation–Year 2" && k.bandNames(au)["68"] === "Years 6–8" && k.bandNames({ style: "ca" }).k2 === "Grades 1–2" && k.bandNames({}).k2 === "Grades K–2");
+  t("au period semester", k.fill("this {period}", au) === "this semester" && k.fill("this {period}", { style: "au", period: "term" }) === "this term");
+  t("au keeps UK spelling", k.fill("behaviour, organised, practise", au) === "behaviour, organised, practise");
+  t("au summer holidays", k.fill("Over the summer, you could", au) === "Over the summer holidays, you could" && k.fill("Over the summer, you could", { style: "uk" }) === "Over the summer, you could");
+  var list = k.areasFor("35"), lv = {}; lv[list[0].id] = "s"; lv[list[4].id] = "f";
+  var r = k.build({ name: "Ruby", pronoun: "she", style: "au", band: "35", timing: "end", levels: lv });
+  t("au end comment clean", r.ok && !serious(r.issues).length && /summer holidays/.test(r.text) && !/organiz|behavior|practic(ing|ed)/.test(r.text));
+  var ok = " Our next step is waiting for a turn. At home, you could play a board game together.";
+  function ci(x) { return k.check("Ruby listens carefully." + x + ok, au); }
+  t("au flags third grade", has(ci(" Ruby is in third grade."), "review", /US wording/));
+  t("au flags US spelling", has(ci(" Ruby's behavior is settled."), "review", /US wording/));
+  t("au flags middle school", has(ci(" Ruby is ready for middle school."), "review", /US wording/));
+  t("au flags Personal and Social Capability", has(ci(" Ruby is working on Personal and Social Capability."), "review", /Jargon/));
+  t("au flags VC code", has(ci(" Ruby meets VC2CPSC2E01."), "review", /Jargon/));
+  t("au flags PBL", has(ci(" Ruby earns PBL points."), "review", /Jargon/));
+  t("au flags Stage 2", has(ci(" Ruby is in Stage 2."), "review", /Jargon/));
+  t("au Year 4 fine", !serious(ci(" Ruby has had a settled semester in Year 4.")).length);
+  t("us not flagged for third grade", !has(k.check("Ruby is in third grade." + ok, { style: "us" }), "review", /US wording/));
+})();
 
 console.log(pass + " passed, " + fail + " failed");
 process.exitCode = fail ? 1 : 0;

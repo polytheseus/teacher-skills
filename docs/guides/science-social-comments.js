@@ -37,6 +37,12 @@
     7: { HA: "New France and British North America, 1713-1800", HB: "Canada, 1800-1850: Conflict and Challenges", GA: "Physical Patterns in a Changing World", GB: "Natural Resources around the World: Use and Sustainability" },
     8: { HA: "Creating Canada, 1850-1890", HB: "Canada, 1890-1914: A Changing Society", GA: "Global Settlement: Patterns and Sustainability", GB: "Global Inequalities: Economic Development and Quality of Life" }
   };
+  // Australia (style "au"): Foundation is the year before Year 1, so Year N
+  // lines up with US grade N. Australian Curriculum v9: Science, and HASS
+  // (humanities and social sciences) for F-6; history and geography are
+  // separate subjects from Year 7. Optional A-E grade (ae) beside the comment.
+  var BANDS_AU = { k2: "Foundation–Year 2", "35": "Years 3–5", "68": "Years 6–8" };
+  var SUBJECTS_AU = { sci: "Science", ss: "HASS (history and geography in Years 7–8)" };
   var ON_REPORTS = { progress: "Progress report (fall)", r1: "Provincial report 1 (winter)", r2: "Provincial report 2 (June)" };
   var ON_PROGRESS = { pwd: "Progressing With Difficulty", pw: "Progressing Well", pvw: "Progressing Very Well" };
   function onGrade(o) { var g = parseInt(o.grade, 10); return g >= 1 && g <= 8 ? g : 0; }
@@ -258,20 +264,23 @@
       var st = (o.strands || []).join(""), h = /H/.test(st), g = /G/.test(st);
       return h && !g ? "history" : g && !h ? "geography" : "history and geography";
     }
+    if (o.style === "au") return o.subject !== "ss" ? "science" : o.band === "68" ? "history and geography" : "HASS";
     return o.subject === "ss" ? (o.style === "uk" ? "history and geography" : "social studies") : "science";
   }
 
   function fill(t, o) {
-    var uk = o.style === "uk" || o.style === "ca", p = PRON[o.pronoun] || PRON.they;
+    var au = o.style === "au", uk = o.style === "uk" || o.style === "ca" || au, p = PRON[o.pronoun] || PRON.they;
     t = t.replace(/\{(\w+)\}/g, function (m, k) {
       if (k === "name") return o.name || "[Name]";
       if (p[k]) return p[k];
-      if (k === "period") return o.period || (uk ? "term" : "quarter");
+      if (k === "period") return o.period || (au ? "semester" : uk ? "term" : "quarter");
       if (k === "subject") return subjName(o);
       return m;
     });
     if (!uk) t = t.replace(US_RE, function (m) { return US[m]; }).replace(/\b([Oo])rganis/g, "$1rganiz");
     // Canada: UK spelling (colour, practise, labelled) but -ize.
+    // Australia: the end-of-year report goes home before the summer holidays.
+    if (au) t = t.replace(/\bOver the summer\b/g, "Over the summer holidays");
     if (o.style === "ca") t = t.replace(/\b([Oo])rganis/g, "$1rganiz").replace(/\banalyses\b/g, "analyzes").replace(/\banalyse\b/g, "analyze");
     return t;
   }
@@ -301,7 +310,8 @@
   //         timing: early|end, period, opening, moment, limit,
   //         levels: { areaId: "s"|"g"|"f" },
   //         Ontario (style ca): grade 1-8, onReport: progress|r1|r2,
-  //         progress: pwd|pw|pvw (progress report), strands: [keys], unit }
+  //         progress: pwd|pw|pvw (progress report), strands: [keys], unit,
+  //         ae: ""|A-E (the grade beside the comment, mainly Australia) }
   function build(o) {
     o = o || {};
     var ca = o.style === "ca", grade = ca ? onGrade(o) : 0;
@@ -327,6 +337,13 @@
     if (ca && o.progress === "pvw" && focus.length > strong.length) issues.push({ level: "review", msg: "Progressing Very Well is checked, but there are more next steps than strengths. Lead with what {name} does well." });
     if (ca && o.progress === "pvw" && !strong.length) issues.push({ level: "review", msg: "Progressing Very Well is checked, but no strength is picked." });
     if (ca && grade && o.onReport !== "progress" && !(o.strands || []).length) issues.push({ level: "review", msg: "Growing Success asks the provincial report card comment to say which strands are reported this term. Tick them under Strands." });
+    // A-E grade beside the comment (Australian reports must have one for
+    // Years 1-10; the comment has to agree with it, so an A doesn't read like a D).
+    var ae = /^[A-E]$/.test(o.ae || "") ? o.ae : "";
+    if ((ae === "A" || ae === "B") && !strong.length) issues.push({ level: "review", msg: "The grade is " + ae + " but no strand is a strength. Families read the comment against the grade: lead with what the student does well." });
+    if ((ae === "A" || ae === "B") && focus.length > strong.length + growing.length) issues.push({ level: "review", msg: "More next steps than strengths beside " + an(ae) + ". Keep one next step and say what's strong." });
+    if ((ae === "D" || ae === "E") && !focus.length) issues.push({ level: "review", msg: cap(an(ae)) + " needs one clear next step and the support in place, so the family isn't surprised by the grade." });
+    if ((ae === "D" || ae === "E") && strong.length > 1 && focus.length < 2 && !growing.length) issues.push({ level: "review", msg: "Two strengths and one next step can read like a B. Beside " + an(ae) + ", say plainly that this is the area to work on." });
     if (ca && !grade) issues.push({ level: "note", msg: "Pick the grade (1 to 8) to add this term's strands." });
     var parts = [];
     var open = (o.timing === "end" && OPENINGS_END[o.opening || "hardworking"]) || OPENINGS[o.opening] || OPENINGS.hardworking;
@@ -345,9 +362,10 @@
       return cap((pron ? SUBJ[o.pronoun] : "{name}") + " " + vp + (tail || "") + ".");
     }
     var onTrack = 0;
+    if (ae === "C") parts.push(sentence(o.style === "us" || !o.style ? "is working at grade level in {subject}" : "is working at the expected standard in {subject}"));
     list.forEach(function (a, i) { if (levels[a.id] === "s") parts.push(sentence(pick(bt(a.s, band), seed + i))); });
     list.forEach(function (a, i) {
-      if (levels[a.id] === "g") parts.push(sentence(pick(bt(a.g, band), seed + i), (o.timing !== "end" && o.progress !== "pwd" && !onTrack++) ? ", which is right on track for this point in the year" : ""));
+      if (levels[a.id] === "g") parts.push(sentence(pick(bt(a.g, band), seed + i), (o.timing !== "end" && o.progress !== "pwd" && ae !== "D" && ae !== "E" && !onTrack++) ? ", which is right on track for this point in the year" : ""));
     });
     var home = null;
     if (focus.length) {
@@ -412,9 +430,16 @@
   // The IEP statement Growing Success (p. 61) requires on the provincial report card.
   var IEP_STATEMENT = /this (letter grade|percentage mark|grade|mark) is based on achievement of (alternative learning )?expectations in the IEP[^.]*\./i;
 
+  // Australia: US school words, and curriculum or syllabus wording families
+  // won't know (AC9 codes, strand names, NSW outcome codes, stages).
+  var AU_US = /\b(math|social studies|(first|second|third|fourth|fifth|sixth|seventh|eighth) grade|kindergartners?|kindergarteners?|this quarter|marking period|middle school|report card|summer vacation|mom)\b/i;
+  var AU_JARGON = /\b(AC9\w*|achievement standards?|content descriptions?|elaborations?|science understanding|science as a human endeavou?r|science inquiry( skills)?|inquiry skills|(historical|geographical) (concepts|skills|thinking)|concepts for developing \w+ thinking|(ST|HT|GE|SC)[0-9e]-[\w-]+|early stage 1|stage [1-3])(?![\w-])/i;
+  function bandNames(o) { return o.style === "au" ? BANDS_AU : o.style === "uk" ? BANDS_UK : o.style === "ca" ? BANDS_CA : BANDS; }
+  function an(g) { return (/^[AE]/.test(g) ? "an " : "a ") + g; }
+
   function check(text, o) {
     o = o || {};
-    var t = String(text || ""), issues = [], ca = o.style === "ca";
+    var t = String(text || ""), issues = [], ca = o.style === "ca", au = o.style === "au";
     if (!t.trim()) return [{ level: "fix", msg: "Nothing to check." }];
     var tc = t;
     if (ca && IEP_STATEMENT.test(t)) {
@@ -451,6 +476,13 @@
     if (ca && o.progress === "pwd" && (sp = t.match(/\b(excellent|outstanding|exceptional|superb|excels?)\b/i))) issues.push({ level: "review", msg: "\"" + sp[1] + "\" beside Progressing With Difficulty: families will wonder which is right. Keep the praise specific and small, and make the next step clear." });
     if (ca && o.progress === "pvw" && (sp = t.match(/\b(is having difficulty|has difficulty|finds it (hard|difficult)|is not yet|is still learning)\b/i))) issues.push({ level: "note", msg: "\"" + sp[1] + "\" beside Progressing Very Well: make sure the comment and the box agree." });
     if (ca && onGrade(o) >= 7 && /\bsocial studies\b/i.test(t)) issues.push({ level: "note", msg: "Grades 7 and 8 in Ontario report history and geography, not social studies." });
+    if (au && (sp = t.match(US_SPELL) || t.match(AU_US))) issues.push({ level: "review", msg: "\"" + sp[0] + "\" is US wording. Australian families expect Year 3 (not third grade), HASS or history and geography (not social studies), semester or term, and Australian spelling (organised, colour, practising)." });
+    if (au && (sp = t.match(AU_JARGON))) issues.push({ level: "review", msg: "Curriculum jargon: \"" + sp[1] + "\". Families won't know it; say what the student does (\"plans a fair test and explains what the results show\")." });
+    if (au && /\bNAPLAN\b/.test(t)) issues.push({ level: "note", msg: "NAPLAN results go home separately. Keep the comment about this semester's classwork." });
+    var ae = /^[A-E]$/.test(o.ae || "") ? o.ae : "";
+    if ((ae === "D" || ae === "E") && (sp = t.match(/\b(excellent|outstanding|exceptional|excels?|superb|brilliant|impressive|above (the )?expected standard|above grade level|exceed\w*)\b/i))) issues.push({ level: "review", msg: "\"" + sp[1] + "\" beside " + an(ae) + " sends mixed messages. Keep the praise specific (\"planned a fair test on his own\") and name the next step." });
+    if ((ae === "A" || ae === "B") && (sp = t.match(/\b(working towards|below (the )?expected standard|below grade level|basic understanding|elementary understanding|limited understanding|with (a lot of|significant|considerable) support)\b/i))) issues.push({ level: "review", msg: "\"" + sp[1] + "\" reads like a D or E, but the grade is " + ae + ". Check the comment and the grade agree." });
+    if (ae === "C" && (sp = t.match(/\b(excellent|outstanding|exceptional|excels?|above (the )?expected standard|above grade level)\b/i))) issues.push({ level: "note", msg: "\"" + sp[1] + "\" can read like an A beside a C. A C means working at the expected standard; say so plainly." });
     if (o.style === "uk" && /\bsocial studies\b/i.test(t)) issues.push({ level: "note", msg: "\"Social studies\" in a UK report: most UK schools report history and geography (or \"topic\") instead." });
     var m = t.match(/[—–‘’“”…]/g);
     if (m) issues.push({ level: "note", msg: "Curly quotes, dashes or … (" + m.length + "). Some report systems show these as ? or boxes. \"Plain text\" below swaps them for straight ones." });
@@ -464,7 +496,7 @@
     return String(t).replace(/[‘’]/g, "'").replace(/[“”]/g, "\"").replace(/\s*[—–]\s*/g, ", ").replace(/…/g, "...");
   }
 
-  var api = { AREAS: AREAS, BANDS: BANDS, BANDS_UK: BANDS_UK, BANDS_CA: BANDS_CA, SUBJECTS: SUBJECTS, SUBJECTS_UK: SUBJECTS_UK, SUBJECTS_CA: SUBJECTS_CA, ON_SCI: ON_SCI, ON_SS: ON_SS, ON_REPORTS: ON_REPORTS, ON_PROGRESS: ON_PROGRESS, onStrands: onStrands, onBand: onBand, areasFor: areasFor, bt: bt, plural: plural, build: build, check: check, plain: plain, fill: fill, area: area };
+  var api = { AREAS: AREAS, BANDS: BANDS, BANDS_UK: BANDS_UK, BANDS_CA: BANDS_CA, BANDS_AU: BANDS_AU, SUBJECTS_AU: SUBJECTS_AU, bandNames: bandNames, SUBJECTS: SUBJECTS, SUBJECTS_UK: SUBJECTS_UK, SUBJECTS_CA: SUBJECTS_CA, ON_SCI: ON_SCI, ON_SS: ON_SS, ON_REPORTS: ON_REPORTS, ON_PROGRESS: ON_PROGRESS, onStrands: onStrands, onBand: onBand, areasFor: areasFor, bt: bt, plural: plural, build: build, check: check, plain: plain, fill: fill, area: area };
   if (typeof module !== "undefined" && module.exports) { module.exports = api; return; }
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]; }); }
@@ -487,9 +519,9 @@
       });
       grid.innerHTML = html;
       Array.prototype.forEach.call(grid.querySelectorAll("select"), function (s) { if (keep[s.getAttribute("data-area")]) s.value = keep[s.getAttribute("data-area")]; });
-      var uk = o.style === "uk", bs = document.getElementById("ss-band"), ss = document.getElementById("ss-subject");
-      Array.prototype.forEach.call(bs.options, function (op) { op.textContent = (uk ? BANDS_UK : ca ? BANDS_CA : BANDS)[op.value]; });
-      Array.prototype.forEach.call(ss.options, function (op) { op.textContent = ca && op.value === "ss" && grade >= 7 ? "History and geography" : (uk ? SUBJECTS_UK : ca ? SUBJECTS_CA : SUBJECTS)[op.value]; });
+      var uk = o.style === "uk", au = o.style === "au", bs = document.getElementById("ss-band"), ss = document.getElementById("ss-subject");
+      Array.prototype.forEach.call(bs.options, function (op) { op.textContent = bandNames(o)[op.value]; });
+      Array.prototype.forEach.call(ss.options, function (op) { op.textContent = ca && op.value === "ss" && grade >= 7 ? "History and geography" : (uk ? SUBJECTS_UK : ca ? SUBJECTS_CA : au ? SUBJECTS_AU : SUBJECTS)[op.value]; });
       // Ontario: grade, report and strands replace the band and timing.
       document.getElementById("ss-on").hidden = !ca;
       bs.parentNode.hidden = ca;
@@ -507,7 +539,7 @@
     document.getElementById("ss-style").addEventListener("change", function () {
       // Ontario reports go home by term; US quarter otherwise.
       var st = val("ss-style"), pe = document.getElementById("ss-period");
-      if (st === "ca" || st === "uk") pe.value = "term"; else if (pe.value === "term") pe.value = "quarter";
+      if (st === "ca" || st === "uk") pe.value = "term"; else if (st === "au") pe.value = "semester"; else if (pe.value === "term" || pe.value === "semester") pe.value = "quarter";
       draw();
     });
     function opts() {
@@ -516,7 +548,7 @@
       var strands = [];
       Array.prototype.forEach.call(document.querySelectorAll("#ss-strands input"), function (c) { if (c.checked) strands.push(c.value); });
       return { name: val("ss-name").trim(), pronoun: val("ss-pronoun"), style: val("ss-style"), subject: val("ss-subject"), band: val("ss-band"), timing: val("ss-timing"), period: val("ss-period"), opening: val("ss-opening"), moment: val("ss-moment"), limit: val("ss-limit"), levels: levels,
-        grade: val("ss-grade"), onReport: val("ss-onreport"), progress: val("ss-progress"), strands: strands, unit: val("ss-unit") };
+        ae: val("ss-ae"), grade: val("ss-grade"), onReport: val("ss-onreport"), progress: val("ss-progress"), strands: strands, unit: val("ss-unit") };
     }
     var out = document.getElementById("ss-output");
     function show(text, issues, n) {

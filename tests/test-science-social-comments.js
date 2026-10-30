@@ -12,9 +12,9 @@ var all = 0, clean = 0, bad = [];
 ["sci", "ss"].forEach(function (subj) { Object.keys(k.BANDS).forEach(function (band) {
   var list = k.areasFor(band, subj);
   list.forEach(function (a, i) { LV.forEach(function (lv, j) {
-    ["us", "uk"].forEach(function (st) { ["she", "he", "they"].forEach(function (p) { ["early", "end"].forEach(function (tm) { ["hardworking", "curious", "careful", "enthusiastic", "growing", "none"].forEach(function (op, oi) {
+    ["us", "uk", "au"].forEach(function (st) { ["she", "he", "they"].forEach(function (p) { ["early", "end"].forEach(function (tm) { ["hardworking", "curious", "careful", "enthusiastic", "growing", "none"].forEach(function (op, oi) {
       var levels = {}, o2 = (i + 3 + oi) % list.length; if (o2 === i) o2 = (i + 1) % list.length; levels[a.id] = lv; levels[list[o2].id] = LV[(j + 1) % 3];
-      var r = k.build({ name: "Ava", pronoun: p, style: st, subject: subj, band: band, timing: tm, opening: op, levels: levels, moment: oi === 1 ? "brought in a fossil to show the class" : "" });
+      var r = k.build({ name: "Ava", pronoun: p, style: st, subject: subj, band: band, timing: tm, opening: op, levels: levels, ae: st === "au" && oi === 2 ? "C" : "", moment: oi === 1 ? "brought in a fossil to show the class" : "" });
       all++;
       var s = serious(r.issues).filter(function (x) { return !/No strength/.test(x.msg); });
       if (r.ok && !s.length && !/\{|\}|\[Name\]|undefined|\|/.test(r.text)) clean++;
@@ -263,6 +263,47 @@ t("CA alt IEP statement", has(C("This mark is based on achievement of alternativ
 // US/UK unchanged by Ontario options
 r = k.build({ name: "Leo", pronoun: "he", style: "us", subject: "sci", band: "35", grade: 7, strands: ["B"], onReport: "r2", progress: "pwd", levels: { investigate: "s", measure: "g" } });
 t("US ignores Ontario options", !/Life Systems/.test(r.text) && /right on track/.test(r.text) && /progress in science\./.test(r.text));
+
+// Australia mode: bands, subject names, semester, A-E grade agreement, AU wording.
+(function () {
+  var au = { style: "au" };
+  t("au bands", k.bandNames(au).k2 === "Foundation–Year 2" && k.bandNames(au)["35"] === "Years 3–5");
+  t("au subject HASS", k.fill("{subject}", { style: "au", subject: "ss", band: "35" }) === "HASS" && k.fill("{subject}", { style: "au", subject: "ss", band: "68" }) === "history and geography" && k.fill("{subject}", { style: "au", subject: "sci", band: "68" }) === "science");
+  t("au period semester", k.fill("this {period}", au) === "this semester");
+  t("au UK spelling", /organis/.test(k.fill("organised", au)) && /labelled/.test(k.fill("labelled", au)));
+  var r = k.build({ name: "Ruby", pronoun: "she", style: "au", subject: "ss", band: "35", timing: "end", ae: "C", levels: { sources: "s" } });
+  var ids = k.areasFor("35", "ss").map(function (a) { return a.id; });
+  var lv = {}; lv[ids[0]] = "s"; lv[ids[1]] = "f";
+  r = k.build({ name: "Ruby", pronoun: "she", style: "au", subject: "ss", band: "35", timing: "end", ae: "C", levels: lv });
+  t("au C sentence HASS", /Ruby is working at the expected standard in HASS\./.test(r.text) && /summer holidays/.test(r.text) && !serious(r.issues).length);
+  t("us C grade level", /working at grade level in social studies/.test(k.build({ name: "Ruby", pronoun: "she", style: "us", subject: "ss", band: "35", ae: "C", levels: lv }).text));
+  var only = {}; only[ids[0]] = "f";
+  t("A with no strength", has(k.build({ name: "Ruby", pronoun: "she", style: "au", subject: "ss", band: "35", ae: "A", levels: only }).issues, "review", /no strand is a strength/));
+  var st = {}; st[ids[0]] = "s";
+  t("D without next step", has(k.build({ name: "Ruby", pronoun: "she", style: "au", subject: "ss", band: "35", ae: "D", levels: st }).issues, "review", /^A D needs/));
+  t("E article", has(k.build({ name: "Ruby", pronoun: "she", style: "au", subject: "ss", band: "35", ae: "E", levels: st }).issues, "review", /^An E needs/));
+  var two = {}; two[ids[0]] = "s"; two[ids[1]] = "s"; two[ids[2]] = "f";
+  t("D two strengths", has(k.build({ name: "Ruby", pronoun: "she", style: "au", subject: "ss", band: "35", ae: "D", levels: two }).issues, "review", /read like a B/));
+  var gr = {}; gr[ids[0]] = "g"; gr[ids[1]] = "f";
+  t("D no on-track tail", !/right on track/.test(k.build({ name: "Ruby", pronoun: "she", style: "au", subject: "ss", band: "35", ae: "D", levels: gr }).text) && /right on track/.test(k.build({ name: "Ruby", pronoun: "she", style: "au", subject: "ss", band: "35", ae: "C", levels: gr }).text));
+  t("B fine", !serious(k.build({ name: "Ruby", pronoun: "she", style: "au", subject: "ss", band: "35", ae: "B", levels: two }).issues).length);
+  var ok = " Our next step is explaining results with evidence. At home, you could cook together.";
+  function ci(x, g) { return k.check("Ruby plans careful tests." + x + ok, { style: "au", ae: g || "" }); }
+  t("au flags social studies", has(ci(" Ruby enjoys social studies."), "review", /US wording/));
+  t("au flags third grade", has(ci(" Ruby is in third grade."), "review", /US wording/));
+  t("au flags US spelling", has(ci(" Ruby labeled the diagram."), "review", /US wording/));
+  t("au flags AC9", has(ci(" Ruby meets AC9S4U01."), "review", /jargon/));
+  t("au flags Science Inquiry", has(ci(" Ruby is developing Science Inquiry skills."), "review", /jargon/));
+  t("au flags Science as a Human Endeavour", has(ci(" Ruby understands Science as a Human Endeavour."), "review", /jargon/));
+  t("au flags NSW code", has(ci(" Ruby meets ST2-1WS-S."), "review", /jargon/));
+  t("au flags Early Stage 1", has(ci(" Ruby is in Early Stage 1."), "review", /jargon/));
+  t("au NAPLAN note", has(ci(" Ruby did well in NAPLAN."), "note", /NAPLAN/));
+  t("au Year 4 HASS fine", !serious(ci(" Ruby has had a great semester in Year 4 HASS.")).length);
+  t("D excellent", has(ci(" Ruby does excellent work.", "D"), "review", /beside a D/));
+  t("A basic understanding", has(ci(" Ruby has a basic understanding of this.", "A"), "review", /reads like a D or E/));
+  t("C excellent note", has(ci(" Ruby does excellent work.", "C"), "note", /beside a C/));
+  t("us unaffected", !k.check("Ruby enjoys social studies." + ok, { style: "us" }).some(function (i) { return /Australian/.test(i.msg); }));
+})();
 
 console.log(pass + " passed, " + fail + " failed");
 process.exitCode = fail ? 1 : 0;
