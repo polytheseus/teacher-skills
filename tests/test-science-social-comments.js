@@ -169,5 +169,100 @@ rw.forEach(function (r, i) {
   t("rewrite after clean " + i + " " + r[0], !k.check(r[1]).some(function (x) { return x.level !== "note" && !/No (next step|home tip)/.test(x.msg); }));
 });
 
+
+// ---- Ontario (style "ca") ----
+// Every subject x grade x area x level x report x progress builds a clean comment.
+var caAll = 0, caClean = 0, caBad = [];
+["sci", "ss"].forEach(function (subj) { [1, 2, 3, 4, 5, 6, 7, 8].forEach(function (g) {
+  var band = k.onBand(g), list = k.areasFor(band, subj), strands = k.onStrands(subj, g).map(function (x) { return x.key; });
+  list.forEach(function (a, i) { LV.forEach(function (lv, j) { ["progress", "r1", "r2"].forEach(function (rep, ri) { ["she", "they"].forEach(function (p) {
+    var levels = {}, o2 = (i + 1) % list.length; levels[a.id] = lv; levels[list[o2].id] = LV[(j + 1) % 3];
+    var hasF = lv === "f" || LV[(j + 1) % 3] === "f";
+    var prog = rep === "progress" ? (hasF ? ["", "pw", "pwd"][i % 3] : ["", "pw", "pvw"][i % 3]) : "";
+    var pickS = strands.filter(function (x, si) { return (si + i + ri) % 2 === 0; });
+    var r = k.build({ name: "Ava", pronoun: p, style: "ca", subject: subj, grade: g, onReport: rep, progress: prog, strands: pickS, unit: i % 4 === 0 && subj === "sci" ? "habitats and communities" : "", opening: ["hardworking", "curious", "careful", "enthusiastic", "growing"][i % 5], levels: levels });
+    caAll++;
+    var s = serious(r.issues).filter(function (x) { return !/No strength|Very Well is checked, but no strength/.test(x.msg); });
+    if (r.ok && !s.length && !/\{|\}|\[Name\]|undefined|\||[—–]/.test(r.text)) caClean++;
+    else caBad.push([subj, g, a.id, lv, rep, prog, p].join("/") + ": " + JSON.stringify(s) + " " + r.text);
+  }); }); }); });
+}); });
+t("Ontario: all " + caAll + " built comments pass the checker", caClean === caAll);
+if (caBad.length) console.log(caBad.slice(0, 3).join("\n"));
+
+function ca(o) { return k.build(Object.assign({ name: "Maya", pronoun: "she", style: "ca", subject: "sci", grade: 4, onReport: "progress" }, o)); }
+var r = ca({ levels: { investigate: "s", explain: "f" } });
+t("CA science named science and technology", /science and technology/.test(r.text));
+t("CA progress report: no strand sentence when none picked", !/we have been studying/.test(r.text));
+t("CA progress report: no strand warning", !has(r.issues, "review", /which strands/));
+t("CA spelling practising kept", /practising/.test(ca({ levels: { explain: "f" } }).text));
+r = ca({ onReport: "r1", levels: { investigate: "s" } });
+t("CA provincial report without strands warns", has(r.issues, "review", /which strands/));
+r = ca({ onReport: "r1", strands: ["B", "E"], levels: { investigate: "s" } });
+t("CA science strands sentence", /In science and technology this term, we have been studying Life Systems and Earth and Space Systems\./.test(r.text));
+t("CA strands: no warning", !has(r.issues, "review", /which strands/));
+r = ca({ onReport: "r2", strands: ["C"], unit: "properties of liquids and solids", levels: { investigate: "s" } });
+t("CA r2 uses past tense + one unit", /we studied Matter and Energy, through our unit on properties of liquids and solids\./.test(r.text));
+t("CA r2 is end of year", /this year/.test(r.text));
+r = ca({ onReport: "r1", strands: ["B", "D"], unit: "habitats, machines", levels: { investigate: "s" } });
+t("CA units plural with comma", /through our units on habitats, machines\./.test(r.text));
+r = ca({ subject: "ss", grade: 4, onReport: "r1", strands: ["A", "B"], levels: { maps: "s" } });
+t("CA grade 4 SS strands", /In social studies this term, we have been studying Early Societies to 1500 CE and Political and Physical Regions of Canada\./.test(r.text));
+r = ca({ subject: "ss", grade: 1, onReport: "r1", strands: ["B"], levels: { maps: "s" } });
+t("CA grade 1 SS strand B", /The Local Community\./.test(r.text));
+r = ca({ subject: "ss", grade: 7, onReport: "r1", strands: ["HA"], opening: "hardworking", levels: { sources: "s", cause: "f" } });
+t("CA grade 7 history only: names history", /(approach to|works hard in) history[ .]/.test(r.text) && !/history and geography/.test(r.text));
+t("CA grade 7 history only: geography NA sentence", /Geography is not part of our program this term\./.test(r.text));
+r = ca({ subject: "ss", grade: 8, onReport: "r2", strands: ["GA", "GB"], levels: { maps: "s" } });
+t("CA grade 8 geography only: history NA sentence", /History is not part of our program this term\./.test(r.text) && /In geography this term, we studied Global Settlement: Patterns and Sustainability and Global Inequalities/.test(r.text));
+r = ca({ subject: "ss", grade: 8, onReport: "r1", strands: ["HA", "GB"], opening: "hardworking", levels: { maps: "s" } });
+t("CA grade 8 both: two sentences, no NA", /In history this term, we have been studying Creating Canada, 1850-1890\. In geography, we have been studying Global Inequalities/.test(r.text) && !/not part of/.test(r.text));
+t("CA grade 8 both: history and geography", /history and geography/.test(r.text));
+t("CA grade band derived", k.onBand(1) === "k2" && k.onBand(3) === "k2" && k.onBand(4) === "35" && k.onBand(6) === "35" && k.onBand(7) === "68");
+t("CA strands lists", k.onStrands("sci", 3).length === 4 && k.onStrands("ss", 5).length === 2 && k.onStrands("ss", 7).length === 4 && k.onStrands("ss", 7)[0].group === "History");
+r = ca({ progress: "pwd", levels: { investigate: "s", measure: "g" } });
+t("CA PWD without next step warns", has(r.issues, "review", /With Difficulty is checked, but no next step/));
+t("CA PWD drops 'right on track'", !/right on track/.test(r.text));
+r = ca({ progress: "pwd", levels: { investigate: "s", explain: "f" } });
+t("CA PWD with next step: no warning", !has(r.issues, "review", /With Difficulty/));
+r = ca({ progress: "pvw", levels: { explain: "f", measure: "f", investigate: "s" } });
+t("CA PVW more next steps than strengths warns", has(r.issues, "review", /Very Well is checked, but there are more next steps/));
+r = ca({ progress: "pw", levels: { measure: "g" } });
+t("CA PW keeps right on track", /right on track/.test(r.text));
+r = ca({ onReport: "r1", progress: "pwd", strands: ["B"], levels: { investigate: "s", measure: "g" } });
+t("CA progress box ignored on provincial report", !has(r.issues, "review", /With Difficulty/));
+t("CA no grade: note", has(k.build({ style: "ca", subject: "sci", levels: { investigate: "s" } }).issues, "note", /Pick the grade/));
+// Checker
+var C = function (txt, o) { return k.check(txt, Object.assign({ style: "ca" }, o || {})); };
+t("CA flags color", has(C("Maya mixes paint colors carefully. Next, at home try it."), "review", /US spelling in a Canadian/));
+t("CA flags behavior", has(C("Maya's behavior in the lab is great. Next step, at home."), "review", /US spelling in a Canadian/));
+t("CA flags practicing", has(C("We are practicing this. Next step at home."), "review", /US spelling in a Canadian/));
+t("CA practice noun ok", !has(C("Maya does practice questions. Our next step at home."), "review", /US spelling/));
+t("CA colour ok", !C("Maya mixes paint colours carefully. Next, at home try it.").some(function (i) { return /spelling/.test(i.msg); }));
+t("CA organise note", has(C("Maya organises her notes. Next step at home."), "note", /-ize/));
+t("CA organize ok", !C("Maya organizes her notes. Next step at home.").some(function (i) { return /spelling|-ize/.test(i.msg); }));
+["Maya has met expectation B2.3.", "Maya meets the overall expectations.", "Maya is working at level 3.", "Maya is at Level 2+ in science.", "Maya is strong in STEM Skills and Connections.", "Maya uses the social studies thinking concepts.", "Maya applies the engineering design process.", "Maya follows the scientific experimentation process.", "On the achievement chart, Maya is strong.", "Maya understands spatial significance."].forEach(function (x) {
+  t("CA jargon: " + x, has(C(x + " Next step at home."), "review", /Curriculum wording/));
+});
+["Maya builds a model on level ground.", "Maya read 3.5 books.", "Maya designs and builds a bridge.", "Maya explains her thinking clearly."].forEach(function (x) {
+  t("CA jargon ok: " + x, !has(C(x + " Next step at home."), "review", /Curriculum wording/));
+});
+t("US style ignores Ontario jargon", !has(k.check("Maya is at level 3. Next step at home.", { style: "us" }), "review", /Curriculum wording/));
+t("CA quarter note", has(C("This quarter Maya grew. Next step at home."), "note", /by term/));
+t("CA progressing note", has(C("Maya is progressing well. Next step at home."), "note", /progress box already/));
+t("CA PWD + excellent", has(C("Maya is an excellent observer. Next step at home.", { progress: "pwd" }), "review", /beside Progressing With Difficulty/));
+t("CA PW + excellent fine", !has(C("Maya is an excellent observer. Next step at home.", { progress: "pw" }), "review", /beside Progressing/));
+t("CA PVW + still learning note", has(C("Maya is still learning to graph. Next step at home.", { progress: "pvw" }), "note", /Very Well/));
+t("CA grade 7 social studies note", has(C("Maya enjoys social studies. Next step at home.", { grade: 7 }), "note", /history and geography/));
+t("CA grade 5 social studies fine", !has(C("Maya enjoys social studies. Next step at home.", { grade: 5 }), "note", /history and geography, not/));
+var iep = "This letter grade is based on achievement of expectations in the IEP that vary from the Grade 5 expectations. Maya plans fair tests. Next step at home.";
+t("CA IEP statement allowed (note)", !has(C(iep), "fix", /Diagnosis/) && has(C(iep), "note", /IEP statement found/));
+t("CA IEP elsewhere still flagged", has(C("Maya has an IEP. Next step at home."), "fix", /Diagnosis/));
+t("US IEP statement still flagged", has(k.check(iep, { style: "us" }), "fix", /Diagnosis/));
+t("CA alt IEP statement", has(C("This mark is based on achievement of alternative learning expectations in the IEP, which are not based on the Ontario curriculum. Maya plans fair tests. Next step at home."), "note", /IEP statement found/));
+// US/UK unchanged by Ontario options
+r = k.build({ name: "Leo", pronoun: "he", style: "us", subject: "sci", band: "35", grade: 7, strands: ["B"], onReport: "r2", progress: "pwd", levels: { investigate: "s", measure: "g" } });
+t("US ignores Ontario options", !/Life Systems/.test(r.text) && /right on track/.test(r.text) && /progress in science\./.test(r.text));
+
 console.log(pass + " passed, " + fail + " failed");
 process.exitCode = fail ? 1 : 0;

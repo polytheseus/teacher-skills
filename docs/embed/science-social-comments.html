@@ -56,7 +56,7 @@ body{background:var(--bg)}
   <div class="grid">
     <label>First name <input id="ss-name" placeholder="Maya (or leave blank for [Name])" autocomplete="off"></label>
     <label>Pronoun <select id="ss-pronoun"><option value="she">she / her</option><option value="he">he / him</option><option value="they">they / them</option></select></label>
-    <label>Wording <select id="ss-style"><option value="us">US (practice, organize, quarter)</option><option value="uk">UK (practise, organise, term)</option></select></label>
+    <label>Wording <select id="ss-style"><option value="us">US (practice, organize, quarter)</option><option value="uk">UK (practise, organise, term)</option><option value="ca">Canada (Ontario): colour, organize, term</option></select></label>
     <label>Subject <select id="ss-subject"><option value="sci">Science</option><option value="ss">Social studies</option></select></label>
     <label>Grade band <select id="ss-band"><option value="k2">Grades K–2</option><option value="35" selected>Grades 3–5</option><option value="68">Grades 6–8</option></select></label>
     <label>Report <select id="ss-timing"><option value="early">During the year</option><option value="end">End of year</option></select></label>
@@ -64,6 +64,16 @@ body{background:var(--bg)}
     <label>Opening <select id="ss-opening"><option value="hardworking">Works hard</option><option value="enthusiastic">Enthusiastic</option><option value="curious">Curious, asks why</option><option value="careful">Careful and thoughtful</option><option value="growing">Growing in confidence</option><option value="none">No opening line</option></select></label>
     <label>Character limit (0 = none) <input id="ss-limit" type="number" min="0" step="50" value="800"></label>
   </div>
+  <fieldset id="ss-on" hidden><legend>Ontario report card</legend>
+  <div class="grid">
+    <label>Grade <select id="ss-grade"><option value="1">Grade 1</option><option value="2">Grade 2</option><option value="3">Grade 3</option><option value="4" selected>Grade 4</option><option value="5">Grade 5</option><option value="6">Grade 6</option><option value="7">Grade 7</option><option value="8">Grade 8</option></select></label>
+    <label>Report <select id="ss-onreport"><option value="progress">Progress report (fall)</option><option value="r1">Provincial report 1 (winter)</option><option value="r2">Provincial report 2 (June)</option></select></label>
+    <label>Progress box <select id="ss-progress"><option value="">Not set</option><option value="pwd">Progressing With Difficulty</option><option value="pw">Progressing Well</option><option value="pvw">Progressing Very Well</option></select></label>
+    <label>Unit names (optional) <input id="ss-unit" placeholder="habitats and communities" autocomplete="off"></label>
+  </div>
+  <p class="small">Strands reported this term (the provincial report cards ask you to name them):</p>
+  <div class="grid" id="ss-strands"></div>
+  </fieldset>
   <label class="small" for="ss-moment">A moment you noticed (optional): "I was impressed when Maya …"</label>
   <input id="ss-moment" placeholder="brought in a fossil and explained how it formed" autocomplete="off" style="font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;width:100%">
   </fieldset>

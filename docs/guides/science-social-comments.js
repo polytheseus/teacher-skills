@@ -19,6 +19,34 @@
   var BANDS_UK = { k2: "Years 1–3", "35": "Years 4–6", "68": "Years 7–9" };
   var SUBJECTS = { sci: "Science", ss: "Social studies" };
   var SUBJECTS_UK = { sci: "Science", ss: "History and geography" };
+  // Ontario (style "ca"): pick a grade 1-8; it sets the band. Science and
+  // Technology (2022) strands B-E (strand A, STEM skills, runs through all of
+  // them); Social Studies 1-6 and History and Geography 7-8 (2018) strands by
+  // grade. Growing Success (2010) p. 62: provincial report card comments say
+  // which strands are reported that term.
+  var BANDS_CA = { k2: "Grades 1–3", "35": "Grades 4–6", "68": "Grades 7–8" };
+  var SUBJECTS_CA = { sci: "Science and technology", ss: "Social studies" };
+  var ON_SCI = { B: "Life Systems", C: "Matter and Energy", D: "Structures and Mechanisms", E: "Earth and Space Systems" };
+  var ON_SS = {
+    1: { A: "Our Changing Roles and Responsibilities", B: "The Local Community" },
+    2: { A: "Changing Family and Community Traditions", B: "Global Communities" },
+    3: { A: "Communities in Canada, 1780-1850", B: "Living and Working in Ontario" },
+    4: { A: "Early Societies to 1500 CE", B: "Political and Physical Regions of Canada" },
+    5: { A: "Interactions of Indigenous Peoples and Europeans prior to 1713, in What Would Eventually Become Canada", B: "The Role of Government and Responsible Citizenship" },
+    6: { A: "Communities in Canada, Past and Present", B: "Canada's Interactions with the Global Community" },
+    7: { HA: "New France and British North America, 1713-1800", HB: "Canada, 1800-1850: Conflict and Challenges", GA: "Physical Patterns in a Changing World", GB: "Natural Resources around the World: Use and Sustainability" },
+    8: { HA: "Creating Canada, 1850-1890", HB: "Canada, 1890-1914: A Changing Society", GA: "Global Settlement: Patterns and Sustainability", GB: "Global Inequalities: Economic Development and Quality of Life" }
+  };
+  var ON_REPORTS = { progress: "Progress report (fall)", r1: "Provincial report 1 (winter)", r2: "Provincial report 2 (June)" };
+  var ON_PROGRESS = { pwd: "Progressing With Difficulty", pw: "Progressing Well", pvw: "Progressing Very Well" };
+  function onGrade(o) { var g = parseInt(o.grade, 10); return g >= 1 && g <= 8 ? g : 0; }
+  function onBand(g) { return g <= 3 ? "k2" : g <= 6 ? "35" : "68"; }
+  // Strands to pick for a subject and grade: [{ key, name, group }].
+  function onStrands(subj, grade) {
+    if (subj === "sci") return Object.keys(ON_SCI).map(function (k) { return { key: k, name: ON_SCI[k], group: "Science and technology" }; });
+    var m = ON_SS[grade] || {};
+    return Object.keys(m).map(function (k) { return { key: k, name: m[k], group: k.charAt(0) === "H" && k.length === 2 ? "History" : k.charAt(0) === "G" && k.length === 2 ? "Geography" : "Social studies" }; });
+  }
   var ALL = ["k2", "35", "68"];
   var AREAS = [
     // Science
@@ -222,10 +250,19 @@
   function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
   function area(id) { for (var i = 0; i < AREAS.length; i++) if (AREAS[i].id === id) return AREAS[i]; return null; }
   function areasFor(band, subj) { return AREAS.filter(function (a) { return a.bands.indexOf(band) >= 0 && (!subj || a.subj === subj); }); }
-  function subjName(o) { return o.subject === "ss" ? (o.style === "uk" ? "history and geography" : "social studies") : "science"; }
+  function subjName(o) {
+    if (o.style === "ca") {
+      if (o.subject !== "ss") return "science and technology";
+      if (!(onGrade(o) >= 7 || (!onGrade(o) && o.band === "68"))) return "social studies";
+      // Only one of history or geography this term: name that one.
+      var st = (o.strands || []).join(""), h = /H/.test(st), g = /G/.test(st);
+      return h && !g ? "history" : g && !h ? "geography" : "history and geography";
+    }
+    return o.subject === "ss" ? (o.style === "uk" ? "history and geography" : "social studies") : "science";
+  }
 
   function fill(t, o) {
-    var uk = o.style === "uk", p = PRON[o.pronoun] || PRON.they;
+    var uk = o.style === "uk" || o.style === "ca", p = PRON[o.pronoun] || PRON.they;
     t = t.replace(/\{(\w+)\}/g, function (m, k) {
       if (k === "name") return o.name || "[Name]";
       if (p[k]) return p[k];
@@ -234,16 +271,48 @@
       return m;
     });
     if (!uk) t = t.replace(US_RE, function (m) { return US[m]; }).replace(/\b([Oo])rganis/g, "$1rganiz");
+    // Canada: UK spelling (colour, practise, labelled) but -ize.
+    if (o.style === "ca") t = t.replace(/\b([Oo])rganis/g, "$1rganiz").replace(/\banalyses\b/g, "analyzes").replace(/\banalyse\b/g, "analyze");
     return t;
   }
 
-  // opts: { name, pronoun, style: us|uk, subject: sci|ss, band: k2|35|68,
+  // Ontario strand sentence: "In social studies this term, we have been
+  // studying ..." (history and geography get one sentence each).
+  function strandSentence(o, subj, grade) {
+    var picked = (o.strands || []).filter(function (k) { return subj === "sci" ? ON_SCI[k] : (ON_SS[grade] || {})[k]; });
+    var done = o.onReport === "r2", verb = done ? "we studied " : "we have been studying ";
+    function list(a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+    if (!picked.length) return "";
+    if (subj === "sci") {
+      var unit = String(o.unit || "").trim().replace(/[.!]+$/, "");
+      return "In science and technology this {period}, " + verb + list(picked.map(function (k) { return ON_SCI[k]; })) + (unit ? ", through our unit" + (/[,;]/.test(unit) ? "s" : "") + " on " + unit : "") + ".";
+    }
+    if (grade <= 6) return "In social studies this {period}, " + verb + list(picked.map(function (k) { return ON_SS[grade][k]; })) + ".";
+    var h = picked.filter(function (k) { return k.charAt(0) === "H"; }), g = picked.filter(function (k) { return k.charAt(0) === "G"; }), out = [];
+    if (h.length) out.push("In history this {period}, " + verb + list(h.map(function (k) { return ON_SS[grade][k]; })) + ".");
+    if (g.length) out.push((h.length ? "In geography, " : "In geography this {period}, ") + verb + list(g.map(function (k) { return ON_SS[grade][k]; })) + ".");
+    // Growing Success p. 62: if history or geography isn't taught this term, say so in the comments.
+    if (!g.length) out.push("Geography is not part of our program this {period}.");
+    if (!h.length) out.push("History is not part of our program this {period}.");
+    return out.join(" ");
+  }
+
+  // opts: { name, pronoun, style: us|uk|ca, subject: sci|ss, band: k2|35|68,
   //         timing: early|end, period, opening, moment, limit,
-  //         levels: { areaId: "s"|"g"|"f" } }
+  //         levels: { areaId: "s"|"g"|"f" },
+  //         Ontario (style ca): grade 1-8, onReport: progress|r1|r2,
+  //         progress: pwd|pw|pvw (progress report), strands: [keys], unit }
   function build(o) {
     o = o || {};
-    var band = BANDS[o.band] ? o.band : "35", subj = SUBJECTS[o.subject] ? o.subject : "sci";
-    o = Object.assign({}, o, { subject: subj });
+    var ca = o.style === "ca", grade = ca ? onGrade(o) : 0;
+    var band = grade ? onBand(grade) : BANDS[o.band] ? o.band : "35", subj = SUBJECTS[o.subject] ? o.subject : "sci";
+    o = Object.assign({}, o, { subject: subj, band: band });
+    if (ca) {
+      if (!ON_REPORTS[o.onReport]) o.onReport = "progress";
+      o.timing = o.onReport === "r2" ? "end" : "early";
+      if (o.onReport !== "progress") o.progress = "";
+      if (!o.period) o.period = "term";
+    } else o.progress = "";
     var levels = o.levels || {}, seed = hash(String(o.name || "") + (o.moment || ""));
     var list = areasFor(band, subj), strong = [], growing = [], focus = [];
     list.forEach(function (a) {
@@ -254,10 +323,16 @@
     if (total > 4) issues.push({ level: "review", msg: "That's " + total + " strands. A {subject} comment reads best with two or three; the grade boxes cover the rest." });
     if (focus.length > 2) issues.push({ level: "review", msg: "Three or more next steps is a lot for a family to act on. Pick the one or two that matter most." });
     if (!strong.length && !o.moment) issues.push({ level: o.opening === "none" ? "review" : "note", msg: "No strength picked. Start with something the student does well in {subject}, even a small thing, or add a moment you noticed." });
+    if (ca && o.progress === "pwd" && !focus.length) issues.push({ level: "review", msg: "Progressing With Difficulty is checked, but no next step is picked. Name the one thing {name} is working on and how class is helping." });
+    if (ca && o.progress === "pvw" && focus.length > strong.length) issues.push({ level: "review", msg: "Progressing Very Well is checked, but there are more next steps than strengths. Lead with what {name} does well." });
+    if (ca && o.progress === "pvw" && !strong.length) issues.push({ level: "review", msg: "Progressing Very Well is checked, but no strength is picked." });
+    if (ca && grade && o.onReport !== "progress" && !(o.strands || []).length) issues.push({ level: "review", msg: "Growing Success asks the provincial report card comment to say which strands are reported this term. Tick them under Strands." });
+    if (ca && !grade) issues.push({ level: "note", msg: "Pick the grade (1 to 8) to add this term's strands." });
     var parts = [];
     var open = (o.timing === "end" && OPENINGS_END[o.opening || "hardworking"]) || OPENINGS[o.opening] || OPENINGS.hardworking;
     var idxOpen = -1, idxFew = -1;
     if (o.opening !== "none") { idxOpen = parts.length; parts.push(pick(open, seed)); }
+    if (ca && grade) { var ss = strandSentence(o, subj, grade); if (ss) parts.push(ss); }
     var moment = String(o.moment || "").trim().replace(/[.!]+$/, "");
     if (moment) parts.push("I was impressed when {name} " + moment.charAt(0).toLowerCase() + moment.slice(1) + ".");
     // Subjects alternate between the name and a pronoun so the name isn't on
@@ -272,7 +347,7 @@
     var onTrack = 0;
     list.forEach(function (a, i) { if (levels[a.id] === "s") parts.push(sentence(pick(bt(a.s, band), seed + i))); });
     list.forEach(function (a, i) {
-      if (levels[a.id] === "g") parts.push(sentence(pick(bt(a.g, band), seed + i), (o.timing !== "end" && !onTrack++) ? ", which is right on track for this point in the year" : ""));
+      if (levels[a.id] === "g") parts.push(sentence(pick(bt(a.g, band), seed + i), (o.timing !== "end" && o.progress !== "pwd" && !onTrack++) ? ", which is right on track for this point in the year" : ""));
     });
     var home = null;
     if (focus.length) {
@@ -330,13 +405,24 @@
   ];
   var US_SPELL = /\b(labeled|modeling|organiz\w+|analyz\w+|moldy|colors?|practic(ing|ed))\b/i;
   var UK_SPELL = /\b(labelled|modelling|organis\w+|analys(e|es|ing|ed)|mouldy|colours?|practis\w+)\b/i;
+  var CA_US = /\b(labeled|modeling|moldy|colors?|behaviors?|favorites?|centers?|neighbors?|practic(ing|ed))\b/i;
+  // Growing Success (2010) p. 64: comments in language parents understand, not
+  // the wording of the curriculum expectations or the achievement chart.
+  var ON_JARGON = /\b([A-E][1-3]\.\d{1,2}|overall expectations?|specific expectations?|achievement chart|(at |a )?level [1-4][+-]?|stem skills and connections|(social studies |historical |geographic |political )?thinking concepts?|spatial significance|engineering design process|scientific (research|experimentation) process|fundamental concepts?|big ideas)(?!\w)/i;
+  // The IEP statement Growing Success (p. 61) requires on the provincial report card.
+  var IEP_STATEMENT = /this (letter grade|percentage mark|grade|mark) is based on achievement of (alternative learning )?expectations in the IEP[^.]*\./i;
 
   function check(text, o) {
     o = o || {};
-    var t = String(text || ""), issues = [];
+    var t = String(text || ""), issues = [], ca = o.style === "ca";
     if (!t.trim()) return [{ level: "fix", msg: "Nothing to check." }];
+    var tc = t;
+    if (ca && IEP_STATEMENT.test(t)) {
+      tc = t.replace(IEP_STATEMENT, "");
+      issues.push({ level: "note", msg: "IEP statement found. Growing Success requires it on the provincial report card when the IEP changes the expectations; check it matches your board's wording, and keep any other support-plan detail out." });
+    }
     CHECKS.forEach(function (c) {
-      var m = t.match(c[0]);
+      var m = tc.match(c[0]);
       if (m) issues.push({ level: c[1], msg: c[2].replace("$1", m[1] || m[0]) });
     });
     var needs = (t.match(/\bneeds to\b/gi) || []).length;
@@ -357,6 +443,14 @@
     var sp;
     if (o.style === "uk" && (sp = t.match(US_SPELL))) issues.push({ level: "review", msg: "\"" + sp[0] + "\" is US spelling in a UK report. Families notice." });
     if (o.style === "us" && (sp = t.match(UK_SPELL))) issues.push({ level: "review", msg: "\"" + sp[0] + "\" is UK spelling in a US report. Families notice." });
+    if (ca && (sp = t.match(CA_US))) issues.push({ level: "review", msg: "\"" + sp[0] + "\" is US spelling in a Canadian report (colour, behaviour, labelled, practising)." });
+    if (ca && (sp = t.match(/\borganis\w+/i))) issues.push({ level: "note", msg: "\"" + sp[0] + "\": Canadian spelling usually uses -ize (organize)." });
+    if (ca && (sp = t.match(ON_JARGON))) issues.push({ level: "review", msg: "Curriculum wording: \"" + sp[1] + "\". Growing Success asks for language parents understand, not the wording of the expectations or the achievement chart. Say what the student does." });
+    if (ca && /\bquarter\b/i.test(t)) issues.push({ level: "note", msg: "\"Quarter\": Ontario elementary reports go home by term (a fall progress report, then two provincial report cards)." });
+    if (ca && /\bprogressing (with difficulty|well|very well)\b/i.test(t)) issues.push({ level: "note", msg: "The progress box already says \"progressing ...\". Use the comment for the strength, the next step and how to help at home." });
+    if (ca && o.progress === "pwd" && (sp = t.match(/\b(excellent|outstanding|exceptional|superb|excels?)\b/i))) issues.push({ level: "review", msg: "\"" + sp[1] + "\" beside Progressing With Difficulty: families will wonder which is right. Keep the praise specific and small, and make the next step clear." });
+    if (ca && o.progress === "pvw" && (sp = t.match(/\b(is having difficulty|has difficulty|finds it (hard|difficult)|is not yet|is still learning)\b/i))) issues.push({ level: "note", msg: "\"" + sp[1] + "\" beside Progressing Very Well: make sure the comment and the box agree." });
+    if (ca && onGrade(o) >= 7 && /\bsocial studies\b/i.test(t)) issues.push({ level: "note", msg: "Grades 7 and 8 in Ontario report history and geography, not social studies." });
     if (o.style === "uk" && /\bsocial studies\b/i.test(t)) issues.push({ level: "note", msg: "\"Social studies\" in a UK report: most UK schools report history and geography (or \"topic\") instead." });
     var m = t.match(/[—–‘’“”…]/g);
     if (m) issues.push({ level: "note", msg: "Curly quotes, dashes or … (" + m.length + "). Some report systems show these as ? or boxes. \"Plain text\" below swaps them for straight ones." });
@@ -370,7 +464,7 @@
     return String(t).replace(/[‘’]/g, "'").replace(/[“”]/g, "\"").replace(/\s*[—–]\s*/g, ", ").replace(/…/g, "...");
   }
 
-  var api = { AREAS: AREAS, BANDS: BANDS, BANDS_UK: BANDS_UK, SUBJECTS: SUBJECTS, SUBJECTS_UK: SUBJECTS_UK, areasFor: areasFor, bt: bt, plural: plural, build: build, check: check, plain: plain, fill: fill, area: area };
+  var api = { AREAS: AREAS, BANDS: BANDS, BANDS_UK: BANDS_UK, BANDS_CA: BANDS_CA, SUBJECTS: SUBJECTS, SUBJECTS_UK: SUBJECTS_UK, SUBJECTS_CA: SUBJECTS_CA, ON_SCI: ON_SCI, ON_SS: ON_SS, ON_REPORTS: ON_REPORTS, ON_PROGRESS: ON_PROGRESS, onStrands: onStrands, onBand: onBand, areasFor: areasFor, bt: bt, plural: plural, build: build, check: check, plain: plain, fill: fill, area: area };
   if (typeof module !== "undefined" && module.exports) { module.exports = api; return; }
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]; }); }
@@ -385,22 +479,44 @@
     function draw() {
       var keep = {};
       Array.prototype.forEach.call(grid.querySelectorAll("select"), function (s) { if (s.value) keep[s.getAttribute("data-area")] = s.value; });
-      var band = val("ss-band") || "35", subj = val("ss-subject") || "sci", o = { style: val("ss-style") }, html = "";
+      var o = { style: val("ss-style") }, ca = o.style === "ca", grade = parseInt(val("ss-grade"), 10) || 4;
+      if (ca) document.getElementById("ss-band").value = onBand(grade);
+      var band = val("ss-band") || "35", subj = val("ss-subject") || "sci", html = "";
       areasFor(band, subj).forEach(function (a) {
         html += "<label>" + esc(fill(bt(a.label, band), o)) + " <select data-area=\"" + a.id + "\"><option value=\"\">Not this time</option><option value=\"s\">Strength</option><option value=\"g\">On track</option><option value=\"f\">Next step</option></select></label>";
       });
       grid.innerHTML = html;
       Array.prototype.forEach.call(grid.querySelectorAll("select"), function (s) { if (keep[s.getAttribute("data-area")]) s.value = keep[s.getAttribute("data-area")]; });
       var uk = o.style === "uk", bs = document.getElementById("ss-band"), ss = document.getElementById("ss-subject");
-      Array.prototype.forEach.call(bs.options, function (op) { op.textContent = (uk ? BANDS_UK : BANDS)[op.value]; });
-      Array.prototype.forEach.call(ss.options, function (op) { op.textContent = (uk ? SUBJECTS_UK : SUBJECTS)[op.value]; });
+      Array.prototype.forEach.call(bs.options, function (op) { op.textContent = (uk ? BANDS_UK : ca ? BANDS_CA : BANDS)[op.value]; });
+      Array.prototype.forEach.call(ss.options, function (op) { op.textContent = ca && op.value === "ss" && grade >= 7 ? "History and geography" : (uk ? SUBJECTS_UK : ca ? SUBJECTS_CA : SUBJECTS)[op.value]; });
+      // Ontario: grade, report and strands replace the band and timing.
+      document.getElementById("ss-on").hidden = !ca;
+      bs.parentNode.hidden = ca;
+      document.getElementById("ss-timing").parentNode.hidden = ca;
+      document.getElementById("ss-progress").parentNode.hidden = !ca || val("ss-onreport") !== "progress";
+      document.getElementById("ss-unit").parentNode.hidden = !ca || subj !== "sci";
+      var sg = document.getElementById("ss-strands"), keepS = {};
+      Array.prototype.forEach.call(sg.querySelectorAll("input"), function (c) { if (c.checked) keepS[c.value] = 1; });
+      sg.innerHTML = ca ? onStrands(subj, grade).map(function (st) {
+        return "<label><input type=\"checkbox\" value=\"" + st.key + "\"" + (keepS[st.key] ? " checked" : "") + "> " + (st.group === "Social studies" || st.group === "Science and technology" ? "" : st.group + ": ") + esc(st.name) + "</label>";
+      }).join("") : "";
     }
     draw();
-    ["ss-band", "ss-style", "ss-subject"].forEach(function (id) { document.getElementById(id).addEventListener("change", draw); });
+    ["ss-band", "ss-subject", "ss-grade", "ss-onreport"].forEach(function (id) { document.getElementById(id).addEventListener("change", draw); });
+    document.getElementById("ss-style").addEventListener("change", function () {
+      // Ontario reports go home by term; US quarter otherwise.
+      var st = val("ss-style"), pe = document.getElementById("ss-period");
+      if (st === "ca" || st === "uk") pe.value = "term"; else if (pe.value === "term") pe.value = "quarter";
+      draw();
+    });
     function opts() {
       var levels = {};
       Array.prototype.forEach.call(grid.querySelectorAll("select"), function (s) { if (s.value) levels[s.getAttribute("data-area")] = s.value; });
-      return { name: val("ss-name").trim(), pronoun: val("ss-pronoun"), style: val("ss-style"), subject: val("ss-subject"), band: val("ss-band"), timing: val("ss-timing"), period: val("ss-period"), opening: val("ss-opening"), moment: val("ss-moment"), limit: val("ss-limit"), levels: levels };
+      var strands = [];
+      Array.prototype.forEach.call(document.querySelectorAll("#ss-strands input"), function (c) { if (c.checked) strands.push(c.value); });
+      return { name: val("ss-name").trim(), pronoun: val("ss-pronoun"), style: val("ss-style"), subject: val("ss-subject"), band: val("ss-band"), timing: val("ss-timing"), period: val("ss-period"), opening: val("ss-opening"), moment: val("ss-moment"), limit: val("ss-limit"), levels: levels,
+        grade: val("ss-grade"), onReport: val("ss-onreport"), progress: val("ss-progress"), strands: strands, unit: val("ss-unit") };
     }
     var out = document.getElementById("ss-output");
     function show(text, issues, n) {
