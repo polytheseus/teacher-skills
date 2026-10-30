@@ -53,6 +53,7 @@ t("focus default area1 when area2 higher", /working on adding more detail/.test(
 t("is also", /Ava is also kind and encouraging/.test(k.build({ name: "Ava", subject: "art", strengths: ["effort", "kind"] }).text));
 t("also works", /Ava also works hard/.test(k.build({ name: "Ava", subject: "art", strengths: ["kind", "effort"] }).text));
 t("unit cleaned", /In our work on clay animals, /.test(k.build({ subject: "art", unit: "Our clay animals.", strengths: ["kind"] }).text));
+t("unit keeps the", /In our work on the recorder, /.test(k.build({ subject: "music", unit: "the recorder", strengths: ["kind"] }).text));
 t("unit cleaned 2", /In our work on clay animals, /.test(k.build({ subject: "art", unit: "in our work on clay animals", strengths: ["kind"] }).text));
 var uk = k.build({ name: "Maya", pronoun: "she", style: "uk", subject: "pe", area: "games", level: "strong", strengths: ["care"], habit: "kit", home: "active", timing: "end" });
 t("uk pe", /organising her team/.test(uk.text) && /bringing PE kit/.test(uk.text) && /UK guidelines suggest children are active for an average of at least 60 minutes a day across the week\./.test(uk.text));

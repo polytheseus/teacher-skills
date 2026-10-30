@@ -161,7 +161,7 @@
     var strengths = (o.strengths || []).map(function (id) { return find(STRENGTHS, id); }).filter(Boolean);
     var habit = find(habitsFor(subject), o.habit || "");
     var home = find(homesFor(subject), o.home || "");
-    var unit = String(o.unit || "").trim().replace(/[.!,;:]+$/, "").replace(/^(in |during )?(our |the )?(work on |unit on )?/i, "");
+    var unit = String(o.unit || "").trim().replace(/[.!,;:]+$/, "").replace(/^(in |during )?((our |the )(work on |unit on )|our )?/i, "");
     var issues = [], seed = hash(String(o.name || "") + subject + a1.id + l1);
     if (!strengths.length) issues.push({ level: "review", msg: "No participation strength picked. In " + fill(find(SUBJECTS, subject).label, o) + ", effort, care and how the student treats others matter to families as much as the skill; tick one that's true." });
     if (strengths.length > 2) { issues.push({ level: "note", msg: "Used the first two strengths; a short comment reads better with one or two." }); strengths = strengths.slice(0, 2); }

@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Report card comments for middle and high school: examples and a free builder</title>
+<meta name="description" content="Middle and high school report card comments for any subject, by area and level, with learning strengths, next steps, wording for missing work and students at risk of failing, 18 rewrites of phrases to avoid, and a free builder that writes and checks each comment.">
+<link rel="canonical" href="https://polytheseus.com/teacher-skills/guides/report-card-comments-for-middle-and-high-school">
+<meta property="og:title" content="Report card comments for middle and high school">
+<meta property="og:description" content="For subject teachers with 150 report cards: wording for any subject by area and level, next steps, missing work and at-risk lines, and a free builder that writes and checks each comment.">
+<link rel="stylesheet" href="../style.css">
+<style>
+.tool{background:#fff;border:2px solid var(--accent2);border-radius:16px;padding:18px 20px;margin:20px 0}
+.tool textarea{font:15px/1.5 inherit;font-family:inherit;width:100%;min-height:120px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tool input,.tool select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+.tool .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14em,1fr));gap:10px 16px;margin:10px 0}
+.tool .grid label{font-size:14px;display:flex;flex-direction:column;gap:3px}
+.tool .grid label.sc-box{flex-direction:row;align-items:center;gap:8px}
+.tool .grid label.sc-box input{width:auto}
+.tool fieldset{border:1px solid var(--line);border-radius:12px;padding:8px 14px 12px;margin:12px 0}
+.tool legend{font-weight:700;font-size:15px;padding:0 6px}
+.tool button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent2);color:#fff;margin:8px 8px 0 0}
+.tool button.ghost{background:transparent;color:var(--accent2);border:2px solid var(--accent2)}
+.kc-issues{padding-left:18px}.kc-issues li{font-size:15px;margin-bottom:6px}
+.kc-tag{display:inline-block;font-size:12px;font-weight:800;padding:1px 8px;border-radius:999px;text-transform:uppercase}
+.kc-fix{background:#fbe0d8;color:#a33a22}
+.kc-review{background:#f8ecd0;color:#7a5a17}
+.kc-note{background:#e3e4fb;color:#3a3d8f}
+.kc-ok{background:#dcefe8;color:#22604f}
+table.bank td{vertical-align:top}
+.lvl{display:inline-block;font-size:11px;font-weight:800;padding:1px 7px;border-radius:999px;text-transform:uppercase;margin-right:4px}
+.lvl-strength{background:#dcefe8;color:#22604f}
+.lvl-on{background:#e3e4fb;color:#3a3d8f}
+.lvl-next{background:#f8ecd0;color:#7a5a17}
+.lvl-at{background:#f3e6f6;color:#6b2f7a}
+td.bad{background:#fff4ef}
+td.good{background:#f4fbf8}
+.ex{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0}
+.ex p{margin:0}
+.exmeta{font-size:13px;color:var(--muted);margin-top:6px!important}
+[hidden]{display:none!important}
+</style>
+<style>table.bank th{font-size:14px}</style>
+<style>.lvl-strong{background:#dcefe8;color:#22604f}.lvl-secure{background:#e3e4fb;color:#3a3d8f}.lvl-developing{background:#f8ecd0;color:#7a5a17}</style>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Report card comments for middle and high school: examples for any subject, and a free comment builder", "datePublished": "2026-10-30", "dateModified": "2026-10-30", "author": {"@type": "Organization", "name": "polytheseus", "url": "https://polytheseus.com/"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do you write a report card comment for a high school student?", "acceptedAnswer": {"@type": "Answer", "text": "Name one learning strength that's true for the student, then one real skill in your subject at the level they're working at (name the unit if you can), then one next step they can act on in the next unit. If there's a concern such as missing work, add one plain sentence with a deadline and where to get help. Three or four short sentences fit most comment boxes."}}, {"@type": "Question", "name": "What should I write for a student who is failing?", "acceptedAnswer": {"@type": "Answer", "text": "Say it once, plainly, with what will help: for example 'Sam is currently at risk of not passing Algebra 1, and there is still time to turn this around.' Then give one specific next step, where to get help (an extra-help session, math lab or catch-up club) and an invitation to get in touch. Lead with a strength that's true, and contact the family before the report goes home rather than letting the comment be the first they hear."}}, {"@type": "Question", "name": "How do you write about missing assignments on a report card?", "acceptedAnswer": {"@type": "Answer", "text": "Name it without blame and give a deadline: 'Jordan has some missing work this quarter, and handing it in by November 20 will give a fuller picture of what Jordan can do.' Add where to get help and one next step, such as handing in every assignment by its deadline."}}, {"@type": "Question", "name": "Should I put the student's grade or percentage in the comment?", "acceptedAnswer": {"@type": "Answer", "text": "Usually not. The grade is already on the report, so the comment is better spent on what's behind it and the one thing that would move it. Predictions such as 'will fail' or 'won't get into college' are best left out too."}}, {"@type": "Question", "name": "Is 'could do better' or 'not working to potential' a good comment?", "acceptedAnswer": {"@type": "Answer", "text": "It's very common, but the student can't act on it. Say what would make the difference instead: 'Next, Mia is working on adding a specific piece of evidence to support each point.'"}}, {"@type": "Question", "name": "Can I use ChatGPT to write middle and high school report card comments?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, within your school's AI policy, if you use a code or first initial instead of names and leave out grades, medical, family, discipline and support-plan details. Give it the course, the unit, a level and one note per student, ask for short comments with one next step, and read every comment before it goes home."}}]}]}
+</script>
+<!-- pt:head -->
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/brand.css">
+<meta property="og:image" content="https://polytheseus.com/assets/og/teacher-skills.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /pt:head -->
+</head>
+<body class="guide">
+<!-- pt:bar -->
+<nav class="pt-bar" aria-label="Polytheseus">
+  <div class="pt-bar-in">
+    <a class="pt-brand" href="/"><img src="/assets/favicon.svg" alt="" width="30" height="30"><span>POLYTHESEUS</span></a>
+    <div class="pt-nav">
+      <a href="/#packs">Packs</a>
+      <a href="/tools">Free tools</a>
+      <a class="pt-hide-sm" href="/#how">How it works</a>
+      <a class="pt-hide-sm" href="/#about">About</a>
+      <a class="pt-cta" href="/#packs">Start free</a>
+    </div>
+  </div>
+</nav>
+<!-- /pt:bar -->
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow"><a href="../">Teacher Skills</a> · Guide</p>
+    <h1>Report card comments for middle and high school: examples for any subject, and a free comment builder</h1>
+    <p class="lede">A middle or high school teacher might have 150 students across five or six sections, a 500-character box, and a few evenings to fill it. So the comment bank comes out: "A pleasure to have in class." "Could do better if he applied himself." Students read these now, and so do their families, and neither can do anything with them. A good secondary comment is short and says three things: one thing the student does well in your class, where they are in a real skill, and one next step they can act on in the next unit. Below: wording for seven areas that work in any subject at three levels, learning strengths, habit next steps, careful wording for missing work and students at risk of failing, 18 rewrites of phrases to avoid, and a free builder that writes and checks each comment in your character limit.</p>
+    <p class="byline">Updated 30 October 2026 · Grades 6–12, with UK wording for Years 7–13 (term, target grade, past papers) · About an 8-minute read</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<div class="answer">
+  <p><strong>The short version:</strong> a good middle or high school comment has three parts. <em>A learning strength</em> ("acts on feedback to improve her work", "asks thoughtful questions when something is unclear"). <em>One real skill at the student's level</em>, named for your subject or unit ("In our work on cells and microscopy, Jordan plans and carries out practical work carefully"). <em>One next step the student can act on</em> ("Next, Jordan is working on explaining what his results show and why"). If there's a problem, add one plain sentence about it and where to get help. Leave out grades and percentages (they're already on the report), predictions ("will fail"), discipline records, home circumstances, medical and support-plan details, comparisons with classmates, and vague lines like "could reach his full potential". The <a href="#builder">builder below</a> puts it together and checks it.</p>
+</div>
+
+<h2>The pattern</h2>
+<table>
+  <tr><th>Part</th><th>Why</th><th>Example</th></tr>
+  <tr><td><strong>1. Learning strength</strong></td><td>Teenagers read the first line and decide whether the rest is worth reading; make it true and specific</td><td>"Maya acts on feedback to improve her work."</td></tr>
+  <tr><td><strong>2. A real skill, named for your class</strong></td><td>Shows you know the student, not just the gradebook; name the unit if you can</td><td>"In our work on <em>Of Mice and Men</em>, Maya writes clear, well-organized answers that support each point with precise evidence."</td></tr>
+  <tr><td><strong>3. One next step</strong></td><td>Something the student can start doing next week, in plain words</td><td>"Next, Maya is working on volunteering ideas more often in whole-class discussion."</td></tr>
+  <tr><td><strong>4. Concern and help (only if needed)</strong></td><td>One plain sentence, then where to get help and how to reach you</td><td>"Sam is welcome at math lab during lunch on Mondays and Wednesdays."</td></tr>
+</table>
+
+<h2 id="before">Before you write: five things that are different in middle and high school</h2>
+<ul>
+  <li><strong>The student is your main reader.</strong> From about grade 6, students read their own reports, and many open them before their families do. Write a next step they can act on themselves ("planning each answer before writing"), not a verdict on them ("needs to try harder").</li>
+  <li><strong>The grade is already there.</strong> Don't spend your characters repeating "62%" or "a C". Use the comment for what's behind the grade and the one thing that would move it.</li>
+  <li><strong>You teach a subject, not a class of 25.</strong> The seven areas below work in any subject: knowledge, problem solving, written work, discussion, assessments, practical work and independent study. Pick the one or two that matter most for this student, and add the unit to make it yours.</li>
+  <li><strong>Problems need a plan, not a complaint.</strong> Missing work, a failing grade or gaps after absences belong in the comment, said once and plainly, with a deadline and where to get help. Discipline incidents, home circumstances and medical details don't: they go through your school's systems and a conversation.</li>
+  <li><strong>Keep the door open.</strong> In England, a pupil's annual report must include brief particulars of achievements, "highlighting strengths and developmental needs", and tell parents how to arrange a discussion about the report (<a href="https://www.gov.uk/guidance/school-reports-on-pupil-performance-guide-for-headteachers">DfE guidance</a>). US districts set their own rules, but the same shape works: strength, next step, and an invitation to get in touch when there's a concern.</li>
+</ul>
+
+<h2 id="areas">Comments for any subject, by area and level</h2>
+<p>Seven areas, each at three levels: <span class="lvl lvl-strong">Above</span> expectations (UK: above target), <span class="lvl lvl-secure">Meeting</span> expectations (on target), and <span class="lvl lvl-developing">Not yet</span> meeting expectations (below target). Add the unit at the front ("In our work on quadratic equations, …") to make any line specific to your class.</p>
+<!-- gen:bank -->
+<h3 id="knowledge">Knowledge and understanding</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Maya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Maya has a detailed grasp of the key ideas in this class and uses them confidently in unfamiliar questions.</td><td>Next, Maya is working on explaining how the key ideas connect across different units.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Maya understands the key ideas we have covered and uses them accurately in class work.</td><td>Next, Maya is working on reviewing earlier units regularly so that the knowledge sticks.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Not yet</span></td><td>Maya is building her understanding of the key ideas we have covered and is more confident when working through examples step by step.</td><td>Next, Maya is working on reviewing class notes after each lesson and asking about anything that is unclear.</td></tr>
+</table>
+<h3 id="applying">Problem solving and applying skills</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Maya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Maya applies her skills to unfamiliar problems and explains her reasoning clearly.</td><td>Next, Maya is working on tackling the most challenging extension problems.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Maya applies her skills accurately to familiar problems and shows each step of her working.</td><td>Next, Maya is working on using the same skills on less familiar problems.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Not yet</span></td><td>Maya is learning to apply new skills to problems, and does this well when following a worked example.</td><td>Next, Maya is working on trying each problem independently before checking a worked example.</td></tr>
+</table>
+<h3 id="writing">Written work and explanations</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Maya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Maya writes clear, well-organized answers that support each point with precise evidence.</td><td>Next, Maya is working on developing her analysis further by explaining why each piece of evidence matters.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Maya writes organized answers that make clear points with some supporting evidence.</td><td>Next, Maya is working on adding a specific piece of evidence or an example to support each point.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Not yet</span></td><td>Maya is learning to organize written answers so that each one makes a clear point.</td><td>Next, Maya is working on planning each answer before writing and backing up every point with one piece of evidence.</td></tr>
+</table>
+<h3 id="discussion">Class discussion</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Maya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Maya contributes thoughtful ideas to class discussion and builds on what others say.</td><td>Next, Maya is working on asking questions that take the discussion further.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Maya contributes to class discussion and answers questions clearly when asked.</td><td>Next, Maya is working on volunteering ideas more often in whole-class discussion.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Not yet</span></td><td>Maya is becoming more comfortable sharing ideas in pairs and small groups.</td><td>Next, Maya is working on sharing at least one idea in each lesson's discussion.</td></tr>
+</table>
+<h3 id="assessments">Tests and assessments</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Maya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Maya prepares thoroughly for assessments and does consistently well on them.</td><td>Next, Maya is working on using the feedback from each assessment to set her own targets.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Maya prepares for assessments and shows a sound understanding of the material in them.</td><td>Next, Maya is working on preparing with practice questions and past tests, not only by rereading notes.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Not yet</span></td><td>Maya is learning effective ways to prepare for assessments.</td><td>Next, Maya is working on practicing with short quizzes and practice questions in the week before each assessment.</td></tr>
+</table>
+<h3 id="practical">Labs, projects and practical work</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Maya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Maya plans and carries out practical work and projects carefully and reflects thoughtfully on the results.</td><td>Next, Maya is working on evaluating her methods and suggesting how to improve them.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Maya completes practical work and projects carefully, following instructions accurately.</td><td>Next, Maya is working on explaining what her results show and why.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Not yet</span></td><td>Maya is building confidence in practical work and projects, especially when following clear step-by-step instructions.</td><td>Next, Maya is working on planning each stage of a project before starting.</td></tr>
+</table>
+<h3 id="independent">Independent study and organization</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Maya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Maya manages her time well, keeps organized notes and often goes beyond the work that is set.</td><td>Next, Maya is working on taking on wider reading or extension work in areas of interest.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Maya keeps organized notes and completes most work on time.</td><td>Next, Maya is working on using a planner to spread work on longer assignments over several days.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Not yet</span></td><td>Maya is learning to keep track of assignments and deadlines.</td><td>Next, Maya is working on writing every assignment and deadline in a planner and checking it each day.</td></tr>
+</table>
+<!-- /gen:bank -->
+
+<h2 id="strengths">Learning strengths</h2>
+<p>Start with one of these. Pick one that's true for this student, even if the rest of the comment is about a concern.</p>
+<!-- gen:strengths -->
+<table>
+  <tr><th>Strength</th><th>Line</th></tr>
+  <tr><td><strong>Works hard</strong></td><td>Leo works hard in lessons and keeps going when the work gets difficult.</td></tr>
+  <tr><td><strong>Arrives ready to learn</strong></td><td>Leo arrives ready to learn, with the right materials.</td></tr>
+  <tr><td><strong>Asks good questions</strong></td><td>Leo asks thoughtful questions when something is unclear.</td></tr>
+  <tr><td><strong>Seeks help when needed</strong></td><td>Leo seeks help when needed and makes good use of it.</td></tr>
+  <tr><td><strong>Acts on feedback</strong></td><td>Leo acts on feedback to improve his work.</td></tr>
+  <tr><td><strong>Respectful and supportive</strong></td><td>Leo is respectful and supportive of classmates.</td></tr>
+  <tr><td><strong>Strong in group work</strong></td><td>Leo works well in group tasks and shares the workload fairly.</td></tr>
+  <tr><td><strong>Curious about the subject</strong></td><td>Leo shows real curiosity about chemistry.</td></tr>
+  <tr><td><strong>Careful, on-time homework</strong></td><td>Leo completes homework carefully and on time.</td></tr>
+</table>
+<!-- /gen:strengths -->
+
+<h2 id="habits">Habit next steps</h2>
+<p>A second, smaller next step about how the student works. Use one at most, and only if it's the main thing that would help.</p>
+<!-- gen:habits -->
+<ul>
+<li>Sam is also working on handing in every assignment by its deadline.</li>
+<li>Sam is also working on staying focused for the whole lesson.</li>
+<li>Sam is also working on keeping their phone put away during lessons.</li>
+<li>Sam is also working on taking full notes in every lesson.</li>
+<li>Sam is also working on asking for help as soon as something is unclear.</li>
+<li>Sam is also working on reviewing their notes for ten minutes after each lesson.</li>
+<li>Sam is also working on starting work promptly at the beginning of each lesson.</li>
+<li>Sam is also working on reading each question carefully before answering.</li>
+</ul>
+<!-- /gen:habits -->
+
+<h2 id="concerns">Missing work and students at risk of failing</h2>
+<p>When there's a real problem, say it once, plainly, with what will help. The builder adds the sentence below, then the next step, then where to get help (your extra-help session, lab or catch-up club), and ends with "Please get in touch if you would like to talk about how we can support [Name]." Families should never learn from the end-of-year report that a student was failing all year: if a student is at risk, most schools expect a call or email before the report goes home, and the comment confirms the plan.</p>
+<!-- gen:concerns -->
+<table>
+  <tr><th>Concern</th><th>US wording</th><th>UK wording</th></tr>
+  <tr><td><strong>Missing work</strong></td><td>Jordan has some missing work this quarter, and handing it in by November 20 will give a fuller picture of what Jordan can do.</td><td>Jordan has some missing work this term, and handing it in by Friday 20 November will give a fuller picture of what Jordan can do.</td></tr>
+  <tr><td><strong>At risk of not passing</strong></td><td>Jordan is currently at risk of not passing Algebra 1, and there is still time to turn this around.</td><td>Jordan is currently working below his target grade, and there is still time to close the gap.</td></tr>
+  <tr><td><strong>Gaps after missed lessons</strong></td><td>Missed lessons have left some gaps in Jordan's notes, so catching up on that work by November 20 is the priority.</td><td>Missed lessons have left some gaps in Jordan's notes, so catching up on that work by Friday 20 November is the priority.</td></tr>
+  <tr><td><strong>Effort is holding back progress</strong></td><td>Jordan is capable of more than his current work shows, and more consistent effort in lessons would make a real difference.</td><td>Jordan is capable of more than his current work shows, and more consistent effort in lessons would make a real difference.</td></tr>
+</table>
+<!-- /gen:concerns -->
+<p class="small">The "effort" line is the one to use most carefully. Only use it when you've seen the student do better work, and pair it with a specific next step and a real strength.</p>
+
+<h2 id="rewrites">18 phrases to avoid, rewritten</h2>
+<!-- gen:rewrites -->
+<table>
+  <tr><th>Instead of</th><th>Write</th></tr>
+  <tr><td class="bad">Ava is not a math person.</td><td class="good">Ava is learning to apply new skills to problems, and does this well when following a worked example. Next, she is working on trying each problem independently before checking the example.</td></tr>
+  <tr><td class="bad">Leo is lazy and does the bare minimum.</td><td class="good">Leo understands the key ideas we have covered when he works through examples step by step. Next, he is working on handing in every assignment by its deadline.</td></tr>
+  <tr><td class="bad">Mia could do better if she applied herself.</td><td class="good">Mia writes organized answers that make clear points. Next, she is working on adding a specific piece of evidence to support each point.</td></tr>
+  <tr><td class="bad">Noah needs to reach his full potential.</td><td class="good">Noah applies his skills accurately to familiar problems. Next, he is working on using the same skills on less familiar problems.</td></tr>
+  <tr><td class="bad">Ella will fail this class unless things change.</td><td class="good">Ella is currently at risk of not passing this class, and there is still time to turn this around. Next, she is working on catching up on the missing lab reports by December 4.</td></tr>
+  <tr><td class="bad">Jack has a 54% average.</td><td class="good">Jack is building his understanding of the key ideas in Algebra 1. Next, he is working on reviewing class notes after each lesson and asking about anything that is unclear.</td></tr>
+  <tr><td class="bad">Grace had three detentions for talking this term.</td><td class="good">Grace contributes to class discussion and answers questions clearly when asked. Next, she is working on staying focused for the whole lesson.</td></tr>
+  <tr><td class="bad">Omar's ADHD makes it hard for him to focus in tests.</td><td class="good"><em>Leave it out.</em> "Omar prepares for assessments and shows a sound understanding of the material. Next, he is working on reading each question carefully before answering."</td></tr>
+  <tr><td class="bad">Since her parents' divorce, Zoe's work has slipped.</td><td class="good"><em>Leave it out.</em> "Zoe has some missing work this term, and handing it in by Friday will give a fuller picture of what she can do. Next, she is working on using a planner for longer assignments."</td></tr>
+  <tr><td class="bad">Ben is the best writer in the class.</td><td class="good">Ben writes clear, well-organized essays that support each point with precise evidence. Next, he is working on explaining why each piece of evidence matters.</td></tr>
+  <tr><td class="bad">Lily is always on her phone.</td><td class="good">Lily keeps organized notes in most lessons. Next, she is working on keeping her phone put away during lessons.</td></tr>
+  <tr><td class="bad">Max is a pleasure to have in class.</td><td class="good">Max asks thoughtful questions when something is unclear and contributes ideas to class discussion. Next, he is working on volunteering ideas more often.</td></tr>
+  <tr><td class="bad">Ruby has a bad attitude to homework.</td><td class="good">Ruby completes practical work carefully, following instructions accurately. Next, she is working on handing in every assignment by its deadline.</td></tr>
+  <tr><td class="bad">Finn is meeting the success criteria at DOK level 2.</td><td class="good">Finn explains each step of his working on familiar problems. Next, he is working on tackling less familiar problems that need more than one step.</td></tr>
+  <tr><td class="bad">Aria is very bright but disappointing in exams.</td><td class="good">Aria understands the key ideas we have covered. Next, she is working on preparing with practice questions and past papers, not only by rereading notes.</td></tr>
+  <tr><td class="bad">Theo can't write a paragraph.</td><td class="good">Theo is learning to organize written answers so that each one makes a clear point. Next, he is working on planning each answer before writing.</td></tr>
+  <tr><td class="bad">Isla is in the bottom set for maths.</td><td class="good">Isla is becoming more confident with the key ideas in maths when working through examples step by step. Next, she is working on asking for help as soon as something is unclear.</td></tr>
+  <tr><td class="bad">Sam won't get into college with these grades.</td><td class="good">Sam is learning effective ways to prepare for assessments. Next, Sam is working on practicing with short quizzes in the week before each test.</td></tr>
+</table>
+<!-- /gen:rewrites -->
+
+<h2 id="examples">6 complete examples</h2>
+<p>All made with the builder below, and all pass its checks.</p>
+<!-- gen:samples -->
+<div class="ex"><p>Jordan shows real curiosity about Biology. In our work on cells and microscopy, Jordan plans and carries out practical work and projects carefully and reflects thoughtfully on the results. Jordan has some missing work this quarter, and handing it in by November 20 will give a fuller picture of what Jordan can do. Next, Jordan is working on evaluating his methods and suggesting how to improve them. Jordan is welcome at Tuesday after-school help in room 114. Please get in touch if you would like to talk about how we can support Jordan.</p><p class="exmeta">Grade 10 Biology, Q1, strong in the lab, missing work · 539 characters</p></div>
+<div class="ex"><p>Maya acts on feedback to improve her work. In our work on Of Mice and Men, Maya writes clear, well-organized answers that support each point with precise evidence. Maya also contributes to class discussion and answers questions clearly when asked. Next, Maya is working on volunteering ideas more often in whole-class discussion. I look forward to seeing Maya's progress next quarter.</p><p class="exmeta">Grade 9 English, Q1, above expectations · 384 characters</p></div>
+<div class="ex"><p>Sam is respectful and supportive of classmates. Sam also seeks help when needed and makes good use of it. Sam is learning to apply new skills to problems, and does this well when following a worked example. Sam is currently at risk of not passing Algebra 1, and there is still time to turn this around. Next, Sam is working on trying each problem independently before checking a worked example. Sam is welcome at math lab during lunch on Mondays and Wednesdays. Please get in touch if you would like to talk about how we can support Sam.</p><p class="exmeta">Grade 8 Algebra 1, at risk of not passing (they/them) · 537 characters</p></div>
+<div class="ex"><p>Leo works hard in lessons and keeps going when the work gets difficult. Leo contributes to class discussion and answers questions clearly when asked. Next, Leo is working on volunteering ideas more often in whole-class discussion. Leo is also working on reviewing his notes for ten minutes after each lesson. I have enjoyed teaching Leo this year.</p><p class="exmeta">Grade 11 Spanish, end of semester · 347 characters</p></div>
+<div class="ex"><p>Amira arrives ready to learn, with the right materials. In our work on the Cold War, Amira understands the key ideas we have covered and uses them accurately in class work. Amira is also learning effective ways to prepare for assessments. Next, Amira is working on practising with short quizzes and practice questions in the week before each assessment. I look forward to seeing Amira's progress next term.</p><p class="exmeta">UK Year 10 history (GCSE), autumn term, on target · 406 characters</p></div>
+<div class="ex"><p>Callum works well in group tasks and shares the workload fairly. Callum is learning to keep track of assignments and deadlines. Callum is currently working below his target grade, and there is still time to close the gap. Next, Callum is working on writing every assignment and deadline in a planner and checking it each day. Callum is welcome at Thursday lunchtime catch-up in S12. Please get in touch if you would like to talk about how we can support Callum.</p><p class="exmeta">UK Year 11 science, below target, 500-character box · 461 characters</p></div>
+<!-- /gen:samples -->
+
+<section id="builder">
+<h2>Free middle and high school report card comment builder</h2>
+<div class="tool">
+  <p>Pick the <strong>area</strong> and <strong>level</strong>, tick one or two strengths, add a concern only if there is one, then press <strong>Write comment</strong>. Press <strong>Next student</strong> to clear the name, strengths and concern and keep the course, unit and limit. Or paste a comment from ChatGPT, Gemini, Claude or your school's comment bank into the box at the bottom. It runs entirely in your browser: nothing you type is sent or stored.</p>
+  <p class="small">It flags fixed-ability labels ("not a math person", "not academic"), predictions ("will fail", "won't get into college"), grades and percentages, discipline records (detentions, referrals), home and personal circumstances, medical and support-plan details (IEP, 504, EHCP, ADHD, extra time in exams), comparisons with classmates ("best in the class", "bottom set"), labels ("lazy", "bad attitude", "class clown"), vague lines ("could do better", "full potential"), "can't", "always" and "never", teacher jargon (DOK, success criteria, AO3, formative), stock and AI-sounding phrases ("a pleasure to have in class", "showcases"), comments with no real learning or no next step, mixing "you" with the student's name, placeholders, mixed he/she pronouns and curly quotes that some report systems turn into question marks.</p>
+  <fieldset><legend>The student</legend>
+  <div class="grid">
+    <label>First name <input id="hs-name" placeholder="Jordan (or leave blank for [Name])" autocomplete="off"></label>
+    <label>Pronoun <select id="hs-pronoun"><option value="she">she / her</option><option value="he">he / him</option><option value="they">they / them</option></select></label>
+    <label>Wording <select id="hs-style"><option value="us">US (quarter, at risk of not passing)</option><option value="uk">UK (term, target grade, past papers)</option></select></label>
+    <label>Report <select id="hs-timing"><option value="early">During the year</option><option value="end">End of year</option></select></label>
+    <label>Report period <select id="hs-period"><option value="quarter">quarter</option><option value="semester">semester</option><option value="trimester">trimester</option><option value="marking period">marking period</option><option value="grading period">grading period</option><option value="term">term</option></select></label>
+    <label>Character limit (0 = none) <input id="hs-limit" type="number" min="0" step="50" value="500"></label>
+  </div>
+  </fieldset>
+  <fieldset><legend>Your class and the skills</legend>
+  <div class="grid">
+    <label>Course or subject (optional) <input id="hs-course" placeholder="Algebra 1, Biology, English 10" autocomplete="off"></label>
+    <label>Unit or topic (optional) <input id="hs-unit" placeholder="cells and microscopy" autocomplete="off"></label>
+    <label>Main area <select id="hs-area"></select></label>
+    <label>Level in that area <select id="hs-level"></select></label>
+    <label>Second area (optional) <select id="hs-area2"></select></label>
+    <label>Level in the second area <select id="hs-level2"></select></label>
+    <label>Next step from <select id="hs-focus"></select></label>
+    <label>Habit next step <select id="hs-habit"></select></label>
+  </div>
+  </fieldset>
+  <fieldset><legend>Learning strengths (one or two)</legend>
+  <div class="grid" id="hs-strengths"></div>
+  </fieldset>
+  <fieldset><legend>Only if there's a concern</legend>
+  <div class="grid">
+    <label>Concern <select id="hs-concern"></select></label>
+    <label>Deadline for catching up (optional) <input id="hs-deadline" placeholder="November 20" autocomplete="off"></label>
+    <label>Where to get help (optional) <input id="hs-help" placeholder="Tuesday after-school help in room 114" autocomplete="off"></label>
+  </div>
+  </fieldset>
+  <button type="button" id="hs-run">Write comment</button> <button type="button" class="ghost" id="hs-sample">Try an example</button> <button type="button" class="ghost" id="hs-next">Next student</button>
+  <div id="hs-output" aria-live="polite"></div>
+  <fieldset><legend>Or check a comment you already have</legend>
+  <textarea id="hs-paste" placeholder="Paste one comment here"></textarea>
+  <button type="button" id="hs-check">Check this comment</button>
+  </fieldset>
+</div>
+</section>
+<!-- pt:embed -->
+<details class="pt-embed-box">
+<summary>Put this tool on your own website (free)</summary>
+<p>Copy this code into any web page (WordPress: a "Custom HTML" block). The tool runs in your visitors' browsers; nothing they type is sent to you or to us.</p>
+<textarea readonly rows="6" onclick="this.select()" aria-label="Embed code">&lt;iframe src=&quot;https://polytheseus.com/teacher-skills/embed/secondary-comments&quot; title=&quot;Middle and high school comment builder&quot; width=&quot;100%&quot; height=&quot;1200&quot; style=&quot;border:0;max-width:900px&quot; loading=&quot;lazy&quot;&gt;&lt;/iframe&gt;
+&lt;p style=&quot;font-size:13px&quot;&gt;Free &lt;a href=&quot;https://polytheseus.com/teacher-skills/guides/report-card-comments-for-middle-and-high-school&quot;&gt;middle and high school comment builder&lt;/a&gt; for teachers by Polytheseus&lt;/p&gt;
+&lt;script&gt;addEventListener(&quot;message&quot;,function(e){if(e.origin===&quot;https://polytheseus.com&quot;&amp;&amp;e.data&amp;&amp;e.data.ptHeight){document.querySelectorAll(&#x27;iframe[src^=&quot;https://polytheseus.com/&quot;]&#x27;).forEach(function(f){if(f.contentWindow===e.source)f.style.height=e.data.ptHeight+&quot;px&quot;})}})&lt;/script&gt;</textarea>
+<button type="button" onclick="var t=this.previousElementSibling;t.select();navigator.clipboard&&navigator.clipboard.writeText(t.value);this.textContent='Copied'">Copy code</button>
+</details>
+<style>.pt-embed-box{margin:6px 0 24px;font-size:15.5px}.pt-embed-box summary{cursor:pointer;font-weight:700}.pt-embed-box textarea{width:100%;box-sizing:border-box;font:13px/1.4 ui-monospace,Consolas,monospace;padding:8px;border:1px solid #dedad2;border-radius:5px}.pt-embed-box button{font:inherit;font-weight:800;border:2px solid #24272b;border-radius:6px;padding:6px 14px;cursor:pointer;background:#ffd21f;margin-top:6px}</style>
+<!-- /pt:embed -->
+
+<h2 id="uk">UK secondary reports: target grades, GCSE and A level</h2>
+<p>Switch the builder to <strong>UK</strong> for "term", "below target", "past papers", "practising" and UK spelling. Most secondary reports in England show a working-at grade and a target grade next to the comment, so the comment doesn't need to repeat them: "is currently working below her target grade, and there is still time to close the gap" says what the numbers mean. Keep exam-board language (AO1, AO3, assessment objectives) out of the comment; say what the student does instead ("backs up each point with a quotation and explains it").</p>
+
+<h2 id="codes">If your school only gives you comment codes</h2>
+<p>Some report systems only let you pick from a fixed list of coded comments. If yours has a short free-text box as well, use it for the next step alone: "Next, Jordan is working on explaining what his results show and why." Set the limit to 150 and the builder keeps the strength, skill and next step and drops the rest. If there's no free text at all, put the next step in your next email home or on the student's work.</p>
+
+<h2 id="to-student">Writing to the student instead</h2>
+<p>Some schools ask teachers to write comments to the student ("You write clear answers…"). Pick one voice and keep it all the way through: the checker flags comments that mix "you" with the student's name. The builder writes about the student by name; to switch, change the name to "You" and the verbs that follow ("You write", "You are working on").</p>
+
+<h2 id="chatgpt">Using ChatGPT, Gemini or Claude for 150 comments</h2>
+<p>An AI assistant can draft a whole section from a short note per student, within your school's AI policy. Use initials or codes instead of names, and leave out grades, medical, family, discipline and support-plan details. Paste in:</p>
+<pre class="prompt">Write report card comments for my grade 10 Biology class (US spelling, end of first quarter, up to 450 characters each). Our unit was cells and microscopy.
+
+For each student, in this order:
+1. One learning strength from my note.
+2. One real skill at the level I give (ABOVE, MEETING or NOT YET), naming the unit.
+3. If I write CONCERN, one plain sentence about it and the deadline I give.
+4. "Next, [Name] is working on ..." with one specific next step.
+
+Use [Name] and they/them; I'll add names and pronouns. Never use grades or percentages, predictions (will fail, won't pass), talent or ability labels, comparisons with other students, "could do better", "full potential", exclamation marks or stock phrases like "a pleasure to have in class". Vary the openings so no two comments start the same way.
+
+S1: ABOVE; careful lab work, good conclusions; next: evaluating methods; curious, asks questions
+S2: MEETING; understands key ideas; next: past tests not rereading notes; helps lab partners
+S3: NOT YET; written answers unorganized; CONCERN missing two lab reports, due Nov 20; next: plan answers; works hard in labs</pre>
+<p>Then read every comment, and paste any you're unsure of into the checker above.</p>
+
+<h2>Common questions</h2>
+<details><summary>How do you write a report card comment for a high school student?</summary><p>Name one learning strength that's true for the student, then one real skill in your subject at the level they're working at (name the unit if you can), then one next step they can act on in the next unit. If there's a concern such as missing work, add one plain sentence with a deadline and where to get help. Three or four short sentences fit most comment boxes.</p></details>
+<details><summary>What should I write for a student who is failing?</summary><p>Say it once, plainly, with what will help: for example 'Sam is currently at risk of not passing Algebra 1, and there is still time to turn this around.' Then give one specific next step, where to get help (an extra-help session, math lab or catch-up club) and an invitation to get in touch. Lead with a strength that's true, and contact the family before the report goes home rather than letting the comment be the first they hear.</p></details>
+<details><summary>How do you write about missing assignments on a report card?</summary><p>Name it without blame and give a deadline: 'Jordan has some missing work this quarter, and handing it in by November 20 will give a fuller picture of what Jordan can do.' Add where to get help and one next step, such as handing in every assignment by its deadline.</p></details>
+<details><summary>Should I put the student's grade or percentage in the comment?</summary><p>Usually not. The grade is already on the report, so the comment is better spent on what's behind it and the one thing that would move it. Predictions such as 'will fail' or 'won't get into college' are best left out too.</p></details>
+<details><summary>Is 'could do better' or 'not working to potential' a good comment?</summary><p>It's very common, but the student can't act on it. Say what would make the difference instead: 'Next, Mia is working on adding a specific piece of evidence to support each point.'</p></details>
+<details><summary>Can I use ChatGPT to write middle and high school report card comments?</summary><p>Yes, within your school's AI policy, if you use a code or first initial instead of names and leave out grades, medical, family, discipline and support-plan details. Give it the course, the unit, a level and one note per student, ask for short comments with one next step, and read every comment before it goes home.</p></details>
+<section class="cta">
+  <h2>Let your AI draft them from your notes</h2>
+  <p>The free <strong>Teacher Skills</strong> pack turns ChatGPT, Gemini or Claude into a report-comment assistant that follows the strength, skill, next step pattern, matches your length, uses placeholders instead of names, and checks every comment for vague or repeated phrases before showing it to you. It also writes parent emails and rubrics. Setup takes about five minutes, with no coding.</p>
+  <p><a class="btn" href="../#setup">Set up Teacher Skills free</a> <a class="btn ghost" href="../#pro">Pro: newsletters, feedback, quizzes, cover plans (£12)</a></p>
+  <p class="small">Teacher Skills Pro is £12 / $15 / €14, one-off. It adds class newsletters, quizzes, feedback on anonymised work, cover plans and incident write-ups.</p>
+  <p class="small"><strong>Teaching younger grades too?</strong> See the builders for <a href="report-card-comments-for-math">math</a>, <a href="report-card-comments-for-reading-and-writing">reading and writing</a>, <a href="report-card-comments-for-science-and-social-studies">science and social studies</a>, <a href="report-card-comments-for-behavior">behavior and work habits</a>, <a href="report-card-comments-for-english-language-learners">English language learners</a> and <a href="report-card-comments-for-art-music-and-pe">art, music and PE</a>, or the <a href="../report-cards">report card season kit</a>. Writing to a family about a concern before reports go out? The <a href="report-card-comments-for-struggling-students">struggling students guide</a> has wording for that.</p>
+</section>
+
+<p class="small">Sources: Department for Education, <a href="https://www.gov.uk/guidance/school-reports-on-pupil-performance-guide-for-headteachers">School reports on pupil performance: guide for headteachers</a> (annual reports in England include brief particulars of achievements highlighting strengths and developmental needs, and how to arrange a discussion with a teacher; page updated 8 May 2024), checked 30 October 2026. US reporting rules, report periods and comment lengths are set by states, districts and schools; follow yours. This guide was written by an AI agent (Claude) and checked against that source.</p>
+
+</main>
+<aside class="wrap small pagenote">The example comments are illustrations, not about real students. Not affiliated with OpenAI, Google, Anthropic, Microsoft or the Department for Education.</aside>
+<script src="secondary-comments.js"></script>
+<!-- pt:foot -->
+<footer class="pt-foot">
+  <div class="pt-foot-in">
+    <div>
+      <a class="pt-brand" href="/"><img src="/assets/favicon.svg" alt="" width="30" height="30"><span>POLYTHESEUS</span></a>
+      <p>Know-how packs that make ChatGPT, Gemini and Claude work like an experienced pro in your job. Free to start.</p>
+      <p><a href="mailto:support@polytheseus.com">support@polytheseus.com</a></p>
+    </div>
+    <div>
+      <h4>Packs</h4>
+      <ul><li><a href="/teacher-skills/">Teachers</a></li><li><a href="/trades-skills/">Trades</a></li><li><a href="/bookkeeper-skills/">Bookkeepers</a></li><li><a href="/real-estate-skills/">Real estate agents</a></li><li><a href="/seller-skills/">Online sellers</a></li><li><a href="/landlord-skills/">Landlords</a></li><li><a href="/sre-skills/">SRE &amp; DevOps</a></li></ul>
+    </div>
+    <div>
+      <h4>Polytheseus</h4>
+      <ul>
+        <li><a href="/tools">Free tools</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="https://github.com/polytheseus">GitHub</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Watch</h4>
+      <ul><li><a href="https://www.youtube.com/@polytheseus" rel="me noopener">YouTube</a></li><li><a href="https://www.tiktok.com/@polytheseus" rel="me noopener">TikTok</a></li><li><a href="https://www.facebook.com/profile.php?id=1374246585776738" rel="me noopener">Facebook</a></li></ul>
+    </div>
+  </div>
+  <div class="pt-foot-base">Polytheseus is run by Robin Hale. The packs and this site are written and tested by Claude, an AI agent. <a href="/#about">How that works</a>.</div>
+</footer>
+<!-- /pt:foot -->
+</body>
+</html>
