@@ -15,6 +15,9 @@
   // Text is written in UK spelling; fill() converts it for US wording.
   var BANDS = { k2: "Grades K–2", "35": "Grades 3–5", "68": "Grades 6–8" };
   var BANDS_UK = { k2: "Years 1–3", "35": "Years 4–6", "68": "Years 7–9" };
+  // Australia: Foundation is the year before Year 1, so Year N lines up with
+  // US grade N. Style "au" uses UK spelling, "maths" and semesters.
+  var BANDS_AU = { k2: "Foundation–Year 2", "35": "Years 3–5", "68": "Years 6–8" };
   var AREAS = [
     { id: "facts", bands: ["k2", "35", "68"], label: { k2: "Addition and subtraction facts", "35": "Times tables", "68": "Mental {math} and fluency" },
       s: { k2: ["knows {their} addition and subtraction facts to 10 by heart and uses them to solve bigger problems", "recalls facts to 20 quickly and explains strategies such as making ten"],
@@ -163,12 +166,15 @@
   function area(id) { for (var i = 0; i < AREAS.length; i++) if (AREAS[i].id === id) return AREAS[i]; return null; }
   function areasFor(band) { return AREAS.filter(function (a) { return a.bands.indexOf(band) >= 0; }); }
 
+  function isAU(o) { return o.style === "au"; }
+  function an(g) { return (/^[AE]/.test(g) ? "an " : "a ") + g; }
+  function bandNames(o) { return isAU(o) ? BANDS_AU : o.style === "uk" ? BANDS_UK : BANDS; }
   function fill(t, o) {
-    var uk = o.style === "uk", p = PRON[o.pronoun] || PRON.they;
+    var uk = o.style === "uk" || isAU(o), p = PRON[o.pronoun] || PRON.they;
     t = t.replace(/\{(\w+)\}/g, function (m, k) {
       if (k === "name") return o.name || "[Name]";
       if (k === "their" || k === "them") return p[k];
-      if (k === "period") return o.period || (uk ? "term" : "quarter");
+      if (k === "period") return o.period || (isAU(o) ? "semester" : uk ? "term" : "quarter");
       if (k === "math") return uk ? "maths" : "math";
       return m;
     });
@@ -176,8 +182,9 @@
     return t;
   }
 
-  // opts: { name, pronoun, style: us|uk, band: k2|35|68, timing: early|end,
-  //         period, opening, moment, limit, levels: { areaId: "s"|"g"|"f" } }
+  // opts: { name, pronoun, style: us|uk|au, band: k2|35|68, timing: early|end,
+  //         period, opening, moment, limit, grade: ""|A-E,
+  //         levels: { areaId: "s"|"g"|"f" } }
   function build(o) {
     o = o || {};
     var band = BANDS[o.band] ? o.band : "35";
@@ -191,6 +198,13 @@
     if (total > 4) issues.push({ level: "review", msg: "That's " + total + " strands. A {math} comment reads best with two or three; the grade boxes cover the rest." });
     if (focus.length > 2) issues.push({ level: "review", msg: "Three or more next steps is a lot for a family to act on. Pick the one or two that matter most." });
     if (!strong.length && !o.moment) issues.push({ level: o.opening === "none" ? "review" : "note", msg: "No strength picked. Start with something the student does well in {math}, even a small thing, or add a moment you noticed." });
+    // A-E grade beside the comment (Australian reports must have one; the
+    // comment has to agree with it, so an A doesn't read like a D).
+    var grade = /^[A-E]$/.test(o.grade || "") ? o.grade : "";
+    if ((grade === "A" || grade === "B") && !strong.length) issues.push({ level: "review", msg: "The grade is " + grade + " but no strand is a strength. Families read the comment against the grade: lead with what the student does well." });
+    if ((grade === "A" || grade === "B") && focus.length > strong.length + growing.length) issues.push({ level: "review", msg: "More next steps than strengths beside " + an(grade) + ". Keep one next step and say what's strong." });
+    if ((grade === "D" || grade === "E") && !focus.length) issues.push({ level: "review", msg: cap(an(grade)) + " needs one clear next step and the support in place, so the family isn't surprised by the grade." });
+    if ((grade === "D" || grade === "E") && strong.length > 1 && focus.length < 2 && !growing.length) issues.push({ level: "review", msg: "Two strengths and one next step can read like a B. Beside a " + grade + ", say plainly that this is the area to work on." });
     var parts = [];
     var open = (o.timing === "end" && OPENINGS_END[o.opening || "hardworking"]) || OPENINGS[o.opening] || OPENINGS.hardworking;
     var idxOpen = -1, idxFew = -1;
@@ -207,10 +221,11 @@
       return cap((pron ? SUBJ[o.pronoun] : "{name}") + " " + vp + (tail || "") + ".");
     }
     var onTrack = 0;
+    if (grade === "C") parts.push(sentence(o.style === "uk" || isAU(o) ? "is working at the expected standard in {math}" : "is working at grade level in {math}"));
     // Strengths first, then on-track strands, each in AREAS order.
     list.forEach(function (a, i) { if (levels[a.id] === "s") parts.push(sentence(pick(bt(a.s, band), seed + i))); });
     list.forEach(function (a, i) {
-      if (levels[a.id] === "g") parts.push(sentence(pick(bt(a.g, band), seed + i), (o.timing !== "end" && !onTrack++) ? ", which is right on track for this point in the year" : ""));
+      if (levels[a.id] === "g") parts.push(sentence(pick(bt(a.g, band), seed + i), (o.timing !== "end" && grade !== "D" && grade !== "E" && !onTrack++) ? ", which is right on track for this point in the year" : ""));
     });
     var home = null;
     if (focus.length) {
@@ -292,7 +307,15 @@
       if (/\s/.test(nm)) issues.push({ level: "note", msg: "Use the first name only in the comment, the way you'd talk to the family." });
     }
     if (o.style === "uk" && /\bmath\b/.test(t)) issues.push({ level: "review", msg: "\"math\" in a UK report: UK families expect \"maths\"." });
-    if (o.style !== "uk" && /\bmaths\b/.test(t)) issues.push({ level: "review", msg: "\"maths\" in a US report: US families expect \"math\"." });
+    var au;
+    if (isAU(o) && (au = t.match(/\b(math|(first|second|third|fourth|fifth|sixth|seventh|eighth) grade|kindergartners?|kindergarteners?|this quarter|marking period|practicing|practiced|recognizes?|recognizing|colors?)\b/i))) issues.push({ level: "review", msg: "\"" + au[1] + "\" is US wording. Australian families expect \"maths\", \"Year 3\", semester or term, and Australian spelling (practise, recognise, colour)." });
+    if (isAU(o) && (au = t.match(/\b(AC9\w*|MA[0-9e]-\w+|achievement standards?|content descriptions?|proficiency strands?|early stage 1|stage [1-3]\b|elaborations?)\b/i))) issues.push({ level: "review", msg: "Curriculum jargon: \"" + au[1] + "\". Families won't know it; say what the student does (\"uses arrays to solve multiplication problems\")." });
+    if (isAU(o) && (au = t.match(/\b(NAPLAN)\b/))) issues.push({ level: "note", msg: "NAPLAN results go home separately. Keep the comment about this semester's classwork." });
+    var grade = /^[A-E]$/.test(o.grade || "") ? o.grade : "", gm;
+    if ((grade === "D" || grade === "E") && (gm = t.match(/\b(excellent|outstanding|exceptional|excels?|superb|brilliant|impressive|above (the )?expected standard|above grade level|exceed\w*)\b/i))) issues.push({ level: "review", msg: "\"" + gm[1] + "\" beside " + an(grade) + " sends mixed messages. Keep the praise specific (\"solved the two-step problem on her own\") and name the next step." });
+    if ((grade === "A" || grade === "B") && (gm = t.match(/\b(working towards|below (the )?expected standard|below grade level|basic understanding|elementary understanding|limited understanding|with (a lot of|significant|considerable) support)\b/i))) issues.push({ level: "review", msg: "\"" + gm[1] + "\" reads like a D or E, but the grade is " + grade + ". Check the comment and the grade agree." });
+    if (grade === "C" && (gm = t.match(/\b(excellent|outstanding|exceptional|excels?|above (the )?expected standard|above grade level)\b/i))) issues.push({ level: "note", msg: "\"" + gm[1] + "\" can read like an A beside a C. A C means working at the expected standard; say so plainly." });
+    if ((!o.style || o.style === "us") && /\bmaths\b/.test(t)) issues.push({ level: "review", msg: "\"maths\" in a US report: US families expect \"math\"." });
     var m = t.match(/[—–‘’“”…]/g);
     if (m) issues.push({ level: "note", msg: "Curly quotes, dashes or … (" + m.length + "). Some report systems show these as ? or boxes. \"Plain text\" below swaps them for straight ones." });
     var sentences = t.split(/(?<=[.!?])\s+/).filter(Boolean);
@@ -305,7 +328,7 @@
     return String(t).replace(/[‘’]/g, "'").replace(/[“”]/g, "\"").replace(/\s*[—–]\s*/g, ", ").replace(/…/g, "...");
   }
 
-  var api = { AREAS: AREAS, BANDS: BANDS, BANDS_UK: BANDS_UK, areasFor: areasFor, bt: bt, plural: plural, build: build, check: check, plain: plain, fill: fill, area: area };
+  var api = { AREAS: AREAS, BANDS: BANDS, BANDS_UK: BANDS_UK, BANDS_AU: BANDS_AU, bandNames: bandNames, areasFor: areasFor, bt: bt, plural: plural, build: build, check: check, plain: plain, fill: fill, area: area };
   if (typeof module !== "undefined" && module.exports) { module.exports = api; return; }
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]; }); }
@@ -326,16 +349,20 @@
       });
       grid.innerHTML = html;
       Array.prototype.forEach.call(grid.querySelectorAll("select"), function (s) { if (keep[s.getAttribute("data-area")]) s.value = keep[s.getAttribute("data-area")]; });
-      var bs = document.getElementById("mc-band"), names = o.style === "uk" ? BANDS_UK : BANDS;
+      var bs = document.getElementById("mc-band"), names = bandNames(o);
       Array.prototype.forEach.call(bs.options, function (op) { op.textContent = names[op.value]; });
     }
     draw();
     document.getElementById("mc-band").addEventListener("change", draw);
-    document.getElementById("mc-style").addEventListener("change", draw);
+    document.getElementById("mc-style").addEventListener("change", function () {
+      var per = document.getElementById("mc-period"), st = val("mc-style");
+      if (per) per.value = st === "au" ? "semester" : st === "uk" ? "term" : "quarter";
+      draw();
+    });
     function opts() {
       var levels = {};
       Array.prototype.forEach.call(grid.querySelectorAll("select"), function (s) { if (s.value) levels[s.getAttribute("data-area")] = s.value; });
-      return { name: val("mc-name").trim(), pronoun: val("mc-pronoun"), style: val("mc-style"), band: val("mc-band"), timing: val("mc-timing"), period: val("mc-period"), opening: val("mc-opening"), moment: val("mc-moment"), limit: val("mc-limit"), levels: levels };
+      return { name: val("mc-name").trim(), pronoun: val("mc-pronoun"), style: val("mc-style"), grade: val("mc-grade"), band: val("mc-band"), timing: val("mc-timing"), period: val("mc-period"), opening: val("mc-opening"), moment: val("mc-moment"), limit: val("mc-limit"), levels: levels };
     }
     var out = document.getElementById("mc-output");
     function show(text, issues, n) {

@@ -12,9 +12,9 @@ var all = 0, clean = 0, bad = [];
 Object.keys(k.BANDS).forEach(function (band) {
   var list = k.areasFor(band);
   list.forEach(function (a, i) { LV.forEach(function (lv, j) {
-    ["us", "uk"].forEach(function (st) { ["she", "he", "they"].forEach(function (p) { ["early", "end"].forEach(function (tm) { ["hardworking", "curious", "creative", "growing", "none"].forEach(function (op, oi) {
+    ["us", "uk", "au"].forEach(function (st) { ["she", "he", "they"].forEach(function (p) { ["early", "end"].forEach(function (tm) { ["hardworking", "curious", "creative", "growing", "none"].forEach(function (op, oi) {
       var levels = {}; levels[a.id] = lv; levels[list[(i + 3 + oi) % list.length].id] = LV[(j + 1) % 3];
-      var r = k.build({ name: "Ava", pronoun: p, style: st, band: band, timing: tm, opening: op, levels: levels, moment: oi === 1 ? "explained a character's choice to a partner" : "" });
+      var r = k.build({ name: "Ava", pronoun: p, style: st, band: band, timing: tm, opening: op, levels: levels, grade: st === "au" && oi === 2 ? "C" : "", moment: oi === 1 ? "explained a character's choice to a partner" : "" });
       all++;
       var s = serious(r.issues).filter(function (x) { return !/No strength/.test(x.msg); });
       if (r.ok && !s.length && !/\{|\}|\[Name\]|undefined|\|/.test(r.text)) clean++;
@@ -165,6 +165,49 @@ rw.forEach(function (x, i) {
   t("rewrite before flagged " + i + " " + x[0], k.check(x[0]).some(function (y) { return !/No (next step|home tip)/.test(y.msg); }));
   t("rewrite after clean " + i + " " + x[1], !k.check(x[1]).some(function (y) { return y.level !== "note" && !/No (next step|home tip)/.test(y.msg); }));
 });
+
+
+// Australia mode: wording, bands, semester, A-E grade agreement.
+(function () {
+  var au = { style: "au" };
+  t("au bands", k.bandNames(au).k2 === "Foundation–Year 2" && k.bandNames(au)["35"] === "Years 3–5" && k.bandNames({ style: "uk" }).k2 === "Years 1–3" && k.bandNames({}).k2 === "Grades K–2");
+  t("au period semester", k.fill("this {period}", au) === "this semester" && k.fill("this {period}", { style: "au", period: "term" }) === "this term");
+  t("au UK spelling", /practis/.test(k.fill("practise", au)));
+  var lv = {}; lv[k.areasFor("k2")[0].id] = "s"; lv[k.areasFor("k2")[1].id] = "f";
+  var r = k.build({ name: "Ruby", pronoun: "she", style: "au", band: "k2", grade: "C", levels: lv });
+  t("au C sentence", /Ruby is working at the expected standard in English\./.test(r.text) && !/grade level/.test(r.text));
+  t("au C clean", !serious(r.issues).length);
+  var u = k.build({ name: "Ruby", pronoun: "she", style: "us", band: "k2", grade: "C", levels: lv });
+  t("us C grade level", /grade level/.test(u.text));
+  t("no grade no sentence", !/expected standard|grade level/.test(k.build({ name: "Ruby", pronoun: "she", style: "au", band: "k2", levels: lv }).text));
+  t("they C plural", /They are working at the expected standard|Ruby is working at the expected standard/.test(k.build({ name: "Ruby", pronoun: "they", style: "au", band: "k2", grade: "C", opening: "none", moment: "read a poem aloud", levels: lv }).text));
+  var only = {}; only[k.areasFor("35")[0].id] = "f";
+  t("A with no strength", has(k.build({ name: "Ruby", pronoun: "she", style: "au", band: "35", grade: "A", levels: only }).issues, "review", /no (strand|skill) is a strength/));
+  var st = {}; st[k.areasFor("35")[0].id] = "s";
+  t("D without next step", has(k.build({ name: "Ruby", pronoun: "she", style: "au", band: "35", grade: "D", levels: st }).issues, "review", /^A D needs one clear next step/));
+  t("E article", has(k.build({ name: "Ruby", pronoun: "she", style: "au", band: "35", grade: "E", levels: st }).issues, "review", /^An E needs/));
+  var two = {}; two[k.areasFor("35")[0].id] = "s"; two[k.areasFor("35")[1].id] = "s"; two[k.areasFor("35")[2].id] = "f";
+  t("D two strengths", has(k.build({ name: "Ruby", pronoun: "she", style: "au", band: "35", grade: "D", levels: two }).issues, "review", /read like a B/));
+  var gr = {}; gr[k.areasFor("k2")[0].id] = "g"; gr[k.areasFor("k2")[1].id] = "f";
+  t("D no on-track tail", !/right on track/.test(k.build({ name: "Ruby", pronoun: "she", style: "au", band: "k2", grade: "D", levels: gr }).text) && /right on track/.test(k.build({ name: "Ruby", pronoun: "she", style: "au", band: "k2", grade: "C", levels: gr }).text));
+  t("B fine", !serious(k.build({ name: "Ruby", pronoun: "she", style: "au", band: "35", grade: "B", levels: two }).issues).length);
+  var ok = "Our next step is reading longer words. At home, you could read together.";
+  function ci(x, g) { return k.check(x, { style: "au", grade: g || "" }); }
+  t("au flags third grade", has(ci("Ruby is in third grade. " + ok), "review", /US wording/));
+  t("au flags kindergartner", has(ci("Ruby was a confident kindergartner. " + ok), "review", /US wording/));
+  t("au flags AC9", has(ci("Ruby meets AC9X4N01. " + ok), "review", /jargon/));
+  t("au flags achievement standard", has(ci("Ruby meets the achievement standard. " + ok), "review", /jargon/));
+  t("au flags Early Stage 1", has(ci("Ruby is in Early Stage 1. " + ok), "review", /jargon/));
+  t("au NAPLAN note", has(ci("Ruby did well in NAPLAN. " + ok), "note", /NAPLAN/));
+  t("au Year 3 fine", !serious(ci("Ruby has had a great semester in Year 3. " + ok)).length);
+  t("au Grade 3 fine (Vic)", !serious(ci("Ruby has had a great semester in Grade 3. " + ok)).length);
+  t("D excellent", has(ci("Ruby does excellent work. " + ok, "D"), "review", /beside a D/));
+  t("E outstanding", has(ci("Ruby is outstanding. " + ok, "E"), "review", /beside an E/));
+  t("A basic understanding", has(ci("Ruby has a basic understanding of this. " + ok, "A"), "review", /reads like a D or E/));
+  t("C excellent note", has(ci("Ruby does excellent work. " + ok, "C"), "note", /beside a C/));
+  t("no grade no grade checks", !ci("Ruby does excellent work. " + ok).some(function (i) { return /beside/.test(i.msg); }));
+  t("us unaffected by au checks", !k.check("Ruby is in third grade. " + ok, { style: "us" }).some(function (i) { return /Australian/.test(i.msg); }));
+})();
 
 console.log(pass + " passed, " + fail + " failed");
 process.exitCode = fail ? 1 : 0;
