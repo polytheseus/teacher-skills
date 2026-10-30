@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Report card comments for art, music and PE: examples and a free builder</title>
+<meta name="description" content="Art, music and PE report card comments by skill and level (above, meeting, still developing), participation strengths, next steps, 18 rewrites of phrases to avoid, and a free builder that writes and checks short comments for specials teachers.">
+<link rel="canonical" href="https://polytheseus.com/teacher-skills/guides/report-card-comments-for-art-music-and-pe">
+<meta property="og:title" content="Report card comments for art, music and PE">
+<meta property="og:description" content="For specials teachers with 400 report cards: wording by skill and level, next steps, phrases to avoid, and a free builder that writes and checks each short comment.">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../style.css">
+<style>
+.tool{background:#fff;border:2px solid var(--accent2);border-radius:16px;padding:18px 20px;margin:20px 0}
+.tool textarea{font:15px/1.5 inherit;font-family:inherit;width:100%;min-height:120px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tool input,.tool select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+.tool .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14em,1fr));gap:10px 16px;margin:10px 0}
+.tool .grid label{font-size:14px;display:flex;flex-direction:column;gap:3px}
+.tool .grid label.sc-box{flex-direction:row;align-items:center;gap:8px}
+.tool .grid label.sc-box input{width:auto}
+.tool fieldset{border:1px solid var(--line);border-radius:12px;padding:8px 14px 12px;margin:12px 0}
+.tool legend{font-weight:700;font-size:15px;padding:0 6px}
+.tool button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent2);color:#fff;margin:8px 8px 0 0}
+.tool button.ghost{background:transparent;color:var(--accent2);border:2px solid var(--accent2)}
+.kc-issues{padding-left:18px}.kc-issues li{font-size:15px;margin-bottom:6px}
+.kc-tag{display:inline-block;font-size:12px;font-weight:800;padding:1px 8px;border-radius:999px;text-transform:uppercase}
+.kc-fix{background:#fbe0d8;color:#a33a22}
+.kc-review{background:#f8ecd0;color:#7a5a17}
+.kc-note{background:#e3e4fb;color:#3a3d8f}
+.kc-ok{background:#dcefe8;color:#22604f}
+table.bank td{vertical-align:top}
+.lvl{display:inline-block;font-size:11px;font-weight:800;padding:1px 7px;border-radius:999px;text-transform:uppercase;margin-right:4px}
+.lvl-strength{background:#dcefe8;color:#22604f}
+.lvl-on{background:#e3e4fb;color:#3a3d8f}
+.lvl-next{background:#f8ecd0;color:#7a5a17}
+.lvl-at{background:#f3e6f6;color:#6b2f7a}
+td.bad{background:#fff4ef}
+td.good{background:#f4fbf8}
+.ex{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0}
+.ex p{margin:0}
+.exmeta{font-size:13px;color:var(--muted);margin-top:6px!important}
+[hidden]{display:none!important}
+</style>
+<style>table.bank th{font-size:14px}</style>
+<style>.lvl-strong{background:#dcefe8;color:#22604f}.lvl-secure{background:#e3e4fb;color:#3a3d8f}.lvl-developing{background:#f8ecd0;color:#7a5a17}</style>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Report card comments for art, music and PE: examples by skill and level, and a free builder", "datePublished": "2026-10-30", "dateModified": "2026-10-30", "author": {"@type": "Organization", "name": "polytheseus", "url": "https://polytheseus.com/"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do you write a report card comment for art, music or PE?", "acceptedAnswer": {"@type": "Answer", "text": "Name one participation strength (effort, care with materials or equipment, kindness to classmates), then one real skill in the subject at the level the student is working at, then one next step. Add a home tip if there is room. Two to four short sentences fit most specials comment boxes."}}, {"@type": "Question", "name": "How long should a specials report card comment be?", "acceptedAnswer": {"@type": "Answer", "text": "Usually shorter than a homeroom comment: many report systems give art, music and PE teachers 250 to 500 characters. Strength, skill and next step fit in about 300 characters; drop the home tip or closing line first if you are over."}}, {"@type": "Question", "name": "What should I write for a student who doesn't participate in PE?", "acceptedAnswer": {"@type": "Answer", "text": "Say what the student does do, then one next step and what would help, for example 'is working on bringing PE kit to every lesson'. If the student sits out for health, medical or family reasons, leave it out of the written report and talk to the family instead."}}, {"@type": "Question", "name": "Should I comment on fitness test results like FitnessGram or the beep test?", "acceptedAnswer": {"@type": "Answer", "text": "Usually not in the written comment. Fitness scores are personal, and many schools share them separately. Describe effort and the student's own progress, such as 'keeps going a little longer each time in running activities'."}}, {"@type": "Question", "name": "Is it OK to call a student talented or gifted in art or music?", "acceptedAnswer": {"@type": "Answer", "text": "It's kind, but it suggests the skill is a gift rather than practice, and it says little. Name what the student does instead: 'chooses colors to show mood', 'holds a part in a round', 'finds space to receive a pass'."}}, {"@type": "Question", "name": "Can I use ChatGPT to write art, music and PE report card comments?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, within your school's AI policy, if you use a code or first initial instead of names and leave out medical, family and support-plan details. Give it the subject, the unit, the level and one note per student, ask for short comments with one next step, and read every comment before it goes home."}}]}]}
+</script>
+<!-- pt:head -->
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/brand.css">
+<meta property="og:image" content="https://polytheseus.com/assets/og/teacher-skills.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /pt:head -->
+</head>
+<body class="guide">
+<!-- pt:bar -->
+<nav class="pt-bar" aria-label="Polytheseus">
+  <div class="pt-bar-in">
+    <a class="pt-brand" href="/"><img src="/assets/favicon.svg" alt="" width="30" height="30"><span>POLYTHESEUS</span></a>
+    <div class="pt-nav">
+      <a href="/#packs">Packs</a>
+      <a href="/tools">Free tools</a>
+      <a class="pt-hide-sm" href="/#how">How it works</a>
+      <a class="pt-hide-sm" href="/#about">About</a>
+      <a class="pt-cta" href="/#packs">Start free</a>
+    </div>
+  </div>
+</nav>
+<!-- /pt:bar -->
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow"><a href="../">Teacher Skills</a> · Guide</p>
+    <h1>Report card comments for art, music and PE: examples by skill and level, and a free comment builder</h1>
+    <p class="lede">If you teach art, music or PE, you might write 300, 500 or 700 report card comments, often in a box that holds two sentences, for children you see once a week. So it's tempting to paste "Maya enjoys art" 400 times. Families notice. A specials comment can be short and still say something true: one thing the child does well in your lessons, one real skill, and one next step. Below: wording for four areas in each subject at three levels, participation strengths, habit next steps, home tips, 18 rewrites of phrases to avoid, and a free builder that writes and checks each comment in your character limit.</p>
+    <p class="byline">Updated 30 October 2026 · Grades K–8, with UK wording (art and design, PE kit, term) · About a 7-minute read</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<div class="answer">
+  <p><strong>The short version:</strong> a good art, music or PE comment has three parts. <em>A participation strength</em> ("takes good care of the instruments", "is kind and encouraging to classmates"). <em>One real skill at the student's level</em> ("keeps a steady beat and copies rhythms accurately on percussion instruments"). <em>One next step</em> ("Next, Leo is working on reading simple rhythms from written notes"). That's about 300 characters. If there's room, add a home tip. Leave out talent labels ("not sporty", "a natural"), anything about weight or body size, fitness test scores, medical details and comparisons with classmates. The <a href="#builder">builder below</a> puts it together and checks it.</p>
+</div>
+
+<h2>The pattern</h2>
+<table>
+  <tr><th>Part</th><th>Why</th><th>Example</th></tr>
+  <tr><td><strong>1. Participation strength</strong></td><td>Effort, care and how a student treats others matter to families, and they're true for most children</td><td>"Priya listens carefully to instructions and gets started quickly."</td></tr>
+  <tr><td><strong>2. A real skill</strong></td><td>Proves you know the child, not just the class; name the unit if you can</td><td>"In our work on basketball, Priya reads the game well and finds space."</td></tr>
+  <tr><td><strong>3. Next step</strong></td><td>One thing, in plain words, that the student can practise</td><td>"Next, Priya is working on organizing her team in small-sided games."</td></tr>
+  <tr><td><strong>4. Habit or home tip (optional)</strong></td><td>Only if the box has room</td><td>"At home, sing along to favourite songs together and clap the beat."</td></tr>
+</table>
+
+<h2 id="before">Before you write: four things that are different in specials</h2>
+<ul>
+  <li><strong>You have hundreds of students and very little space.</strong> Decide your three parts once, then vary the skill and next step by unit and level. That's what the builder does; the participation lines are shared across all three subjects so you only learn one set.</li>
+  <li><strong>Skills are taught, not born.</strong> "Tone deaf", "not sporty", "can't draw" and "two left feet" tell a family the skill can't be learned. "Talented" and "a natural" do the same thing from the other side. Name the skill and the next step instead. The US national standards describe all three subjects as learnable skills: the <a href="https://www.nationalartsstandards.org/">National Core Arts Standards</a> are built around creating, performing or presenting, responding and connecting, and <a href="https://www.shapeamerica.org/">SHAPE America's 2024 National PE Standards</a> cover motor skills, movement and fitness knowledge, social skills, and personal skills and choosing to be active.</li>
+  <li><strong>PE comments touch on bodies.</strong> Never comment on weight, size, BMI or how out of breath a child gets, and keep fitness test scores (FitnessGram, PACER, the beep test) out of the written comment: they're personal, and many schools share them separately. Comment on effort, skills and the student's own progress.</li>
+  <li><strong>Participation problems need a plan, not a complaint.</strong> If a student often has no kit or sits out, say what they are working on ("bringing PE kit to every lesson") and talk to the family. If the reason is medical or personal, leave it out of the report entirely.</li>
+</ul>
+
+<h2 id="art">Art report card comments</h2>
+<p>Four areas, each at three levels: <span class="lvl lvl-strong">Above</span> working above expectations, <span class="lvl lvl-secure">Meeting</span> expectations, and <span class="lvl lvl-developing">Developing</span>. Add the unit at the front ("In our work on clay animals, …") to make any line specific.</p>
+<!-- gen:bank-art -->
+<h3 id="art-making">Drawing, painting and making</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Maya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Maya uses drawing, painting and making techniques with real control and chooses materials to suit her ideas.</td><td>Next, Maya is working on trying new techniques to take her work further.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Maya uses a range of materials and techniques with growing control and care.</td><td>Next, Maya is working on adding more detail and texture to finished pieces.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Maya is learning to use art tools and materials with more control.</td><td>Next, Maya is working on taking time over each step so finished pieces show more care.</td></tr>
+</table>
+<h3 id="art-ideas">Ideas and creativity</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Maya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Maya comes up with original ideas and develops them through sketches and trials before starting a final piece.</td><td>Next, Maya is working on explaining the choices behind her ideas.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Maya comes up with her own ideas and plans her work before starting.</td><td>Next, Maya is working on sketching more than one idea before choosing the best.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Maya is starting to come up with her own ideas, especially when we look at examples together.</td><td>Next, Maya is working on sketching a few quick ideas before starting a piece.</td></tr>
+</table>
+<h3 id="art-looking">Looking at art and artists</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Maya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Maya talks about artworks thoughtfully, noticing how artists use color, line and shape.</td><td>Next, Maya is working on using ideas from artists in her own work.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Maya describes artworks using art words such as line, shape and color.</td><td>Next, Maya is working on giving reasons for her opinions about artworks.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Maya joins in when we look at artworks together and is starting to describe what is in them.</td><td>Next, Maya is working on using art words such as line, shape and color to describe artworks.</td></tr>
+</table>
+<h3 id="art-reviewing">Reviewing and improving work</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Maya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Maya reviews her own artwork honestly and makes thoughtful changes to improve it.</td><td>Next, Maya is working on giving helpful feedback to classmates on their artwork.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Maya talks about what went well in her artwork and what could be better.</td><td>Next, Maya is working on making one planned change to improve a piece after feedback.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Maya is learning to look back at her artwork and say what went well.</td><td>Next, Maya is working on choosing one thing to improve after looking at her work.</td></tr>
+</table>
+<!-- /gen:bank-art -->
+
+<h2 id="music">Music report card comments</h2>
+<!-- gen:bank-music -->
+<h3 id="music-singing">Singing</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Leo does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Leo sings in tune with a clear voice and holds a part confidently in songs with more than one part.</td><td>Next, Leo is working on singing with more expression, changing the volume to suit the song.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Leo sings in tune with the class and remembers the words and melody of our songs.</td><td>Next, Leo is working on singing with more confidence when performing in a small group.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Leo joins in with singing and is learning the words and tunes of our class songs.</td><td>Next, Leo is working on matching the pitch of the notes when singing.</td></tr>
+</table>
+<h3 id="music-playing">Beat, rhythm and instruments</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Leo does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Leo keeps a steady beat and plays rhythms accurately on instruments, including from written notes.</td><td>Next, Leo is working on keeping his own part going while others play different parts.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Leo keeps a steady beat and copies rhythms accurately on percussion instruments.</td><td>Next, Leo is working on reading and playing simple rhythms from written notes.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Leo is learning to keep a steady beat when clapping and playing instruments.</td><td>Next, Leo is working on keeping the beat steady through a whole song.</td></tr>
+</table>
+<h3 id="music-creating">Creating and composing</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Leo does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Leo creates his own musical ideas and puts them together into short pieces with a clear structure.</td><td>Next, Leo is working on writing down his compositions so others can play them.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Leo makes up short rhythms and tunes and shares them with the class.</td><td>Next, Leo is working on repeating and changing musical ideas to build a longer piece.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Leo is starting to make up short rhythm patterns.</td><td>Next, Leo is working on trying out different sounds on instruments to make up a pattern.</td></tr>
+</table>
+<h3 id="music-listening">Listening and responding</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Leo does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Leo listens closely to music and describes it using musical words such as tempo, dynamics and pitch.</td><td>Next, Leo is working on comparing different pieces and styles of music.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Leo listens carefully and describes music as fast or slow, loud or quiet, high or low.</td><td>Next, Leo is working on using musical words such as tempo and dynamics to describe music.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Leo enjoys listening to music and is starting to notice when it is loud or quiet, fast or slow.</td><td>Next, Leo is working on listening to a whole piece and describing one thing heard in it.</td></tr>
+</table>
+<!-- /gen:bank-music -->
+
+<h2 id="pe">PE report card comments</h2>
+<!-- gen:bank-pe -->
+<h3 id="pe-skills">Movement skills</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Priya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Priya runs, jumps, throws and catches with control and accuracy, and uses these skills well in new activities.</td><td>Next, Priya is working on keeping her technique consistent at speed and in games.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Priya throws, catches, runs and jumps with good control.</td><td>Next, Priya is working on using these skills accurately while on the move.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Priya is building confidence in running, jumping, throwing and catching.</td><td>Next, Priya is working on throwing and catching with more control.</td></tr>
+</table>
+<h3 id="pe-games">Games and tactics</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Priya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Priya reads the game well, finds space and makes smart choices about when to pass, move or shoot.</td><td>Next, Priya is working on organizing her team in small-sided games.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Priya understands the rules of our games and moves into space to help her team.</td><td>Next, Priya is working on making quick decisions about when to pass and when to move.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Priya is learning the rules of our games and joins in with team play.</td><td>Next, Priya is working on moving into space to receive the ball.</td></tr>
+</table>
+<h3 id="pe-fitness">Fitness and health</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Priya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Priya works hard in fitness activities and can explain how exercise helps the body.</td><td>Next, Priya is working on setting her own fitness goals and tracking her progress.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Priya keeps going in fitness activities and knows why we warm up.</td><td>Next, Priya is working on building stamina to keep going for longer in running activities.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Priya takes part in warm-ups and fitness activities and is learning how they help the body.</td><td>Next, Priya is working on keeping going a little longer each time in running activities.</td></tr>
+</table>
+<h3 id="pe-teamwork">Teamwork and fair play</h3>
+<table class="bank">
+  <tr><th>Level</th><th>What Priya does now</th><th>Next step</th></tr>
+  <tr><td><span class="lvl lvl-strong">Above</span></td><td>Priya is an encouraging teammate who plays fairly, follows the rules and helps others improve.</td><td>Next, Priya is working on taking on leadership roles such as team captain or referee.</td></tr>
+  <tr><td><span class="lvl lvl-secure">Meeting</span></td><td>Priya works well with teammates, takes turns and plays by the rules.</td><td>Next, Priya is working on accepting the result calmly, whether her team wins or loses.</td></tr>
+  <tr><td><span class="lvl lvl-developing">Developing</span></td><td>Priya is learning to take turns and share equipment with teammates.</td><td>Next, Priya is working on playing by the rules and accepting decisions in games.</td></tr>
+</table>
+<!-- /gen:bank-pe -->
+
+<h2 id="strengths">Participation strengths (all three subjects)</h2>
+<p>Start with one of these. They're the part of a specials comment families read most closely, so pick one that's true for this child.</p>
+<!-- gen:strengths -->
+<table>
+  <tr><th>Strength</th><th>Art</th><th>Music</th><th>PE</th></tr>
+  <tr><td><strong>Enthusiastic</strong></td><td>Maya brings real enthusiasm to art lessons.</td><td>Leo brings real enthusiasm to music lessons.</td><td>Priya brings real enthusiasm to PE lessons.</td></tr>
+  <tr><td><strong>Works hard</strong></td><td>Maya works hard in every lesson, especially when learning something new.</td><td>Leo works hard in every lesson, especially when learning something new.</td><td>Priya works hard in every lesson, especially when learning something new.</td></tr>
+  <tr><td><strong>Listens and gets started</strong></td><td>Maya listens carefully to instructions and gets started quickly.</td><td>Leo listens carefully to instructions and gets started quickly.</td><td>Priya listens carefully to instructions and gets started quickly.</td></tr>
+  <tr><td><strong>Kind and encouraging</strong></td><td>Maya is kind and encouraging to classmates.</td><td>Leo is kind and encouraging to classmates.</td><td>Priya is kind and encouraging to classmates.</td></tr>
+  <tr><td><strong>Takes care of materials</strong></td><td>Maya takes good care of the art materials and helps tidy up.</td><td>Leo takes good care of the instruments.</td><td>Priya takes good care of the equipment and helps set up and put it away.</td></tr>
+  <tr><td><strong>Follows safety rules</strong></td><td>Maya follows our safety rules carefully.</td><td>Leo follows our safety rules carefully.</td><td>Priya follows our safety rules carefully.</td></tr>
+  <tr><td><strong>Keeps trying</strong></td><td>Maya keeps trying when something is difficult.</td><td>Leo keeps trying when something is difficult.</td><td>Priya keeps trying when something is difficult.</td></tr>
+  <tr><td><strong>Confident sharing work</strong></td><td>Maya shares her artwork with the class with confidence.</td><td>Leo performs for the class with confidence.</td><td>Priya demonstrates skills for the class with confidence.</td></tr>
+  <tr><td><strong>Uses feedback</strong></td><td>Maya listens to feedback and uses it to improve.</td><td>Leo listens to feedback and uses it to improve.</td><td>Priya listens to feedback and uses it to improve.</td></tr>
+</table>
+<!-- /gen:strengths -->
+
+<h2 id="habits">Habit next steps</h2>
+<p>A second, smaller next step about how the student works. Use one at most, and only if it's the main thing that would help.</p>
+<!-- gen:habits -->
+<ul>
+<li>Sam is also working on bringing gym clothes and sneakers to every lesson. <span class="small">(PE)</span></li>
+<li>Sam is also working on listening while others are speaking or performing.</li>
+<li>Sam is also working on helping to tidy up materials at the end of the lesson. <span class="small">(art)</span></li>
+<li>Sam is also working on practicing their instrument for a few minutes most days. <span class="small">(music)</span></li>
+<li>Sam is also working on waiting patiently for their turn.</li>
+<li>Sam is also working on staying focused for the whole lesson.</li>
+<li>Sam is also working on starting tasks straight after the instructions.</li>
+<li>Sam is also working on staying calm and positive whether their team wins or loses. <span class="small">(PE)</span></li>
+</ul>
+<!-- /gen:habits -->
+
+<h2 id="home">Home tips</h2>
+<p>Optional, and the first thing to cut if you're short of space. The PE tip uses the <a href="https://www.cdc.gov/physical-activity-basics/guidelines/children.html">CDC's</a> "60 minutes or more" each day for ages 6 to 17 in US wording, and the <a href="https://www.gov.uk/government/publications/physical-activity-guidelines-uk-chief-medical-officers-report">UK Chief Medical Officers' 2026 guidelines</a> ("an average of at least 60 minutes physical activity per day across the week") in UK wording.</p>
+<!-- gen:home -->
+<table>
+  <tr><th>Subject</th><th>Home tip</th></tr>
+  <tr><td>Art</td><td>At home, keep a sketchbook and draw together, even for a few minutes. Drawing often builds confidence and control.</td></tr>
+  <tr><td>Art</td><td>At home, look at picture books, art books or a local gallery together and talk about what you like.</td></tr>
+  <tr><td>Art</td><td>At home, keep a box of card, tubes and boxes so Maya can make things.</td></tr>
+  <tr><td>Music</td><td>At home, sing along to favourite songs together and clap the beat. Singing for fun builds pitch and rhythm.</td></tr>
+  <tr><td>Music</td><td>At home, listen to different kinds of music together and talk about how each one sounds.</td></tr>
+  <tr><td>Music</td><td>At home, ask Leo to teach you a song or rhythm from our lessons.</td></tr>
+  <tr><td>PE</td><td>At home, find ways to be active together, such as walking, cycling or a trip to the park. The CDC recommends 60 minutes or more of activity each day for children and teens.</td></tr>
+  <tr><td>PE</td><td>At home, practice throwing and catching together, with a ball or a pair of rolled-up socks.</td></tr>
+  <tr><td>PE</td><td>If Priya would like to try a new sport, a local or after-school club is a good next step.</td></tr>
+</table>
+<!-- /gen:home -->
+
+<h2 id="rewrites">18 phrases to avoid, rewritten</h2>
+<!-- gen:rewrites -->
+<table>
+  <tr><th>Instead of</th><th>Write</th></tr>
+  <tr><td class="bad">Ava is not very sporty.</td><td class="good">Ava is building confidence in running, jumping, throwing and catching. Next, she is working on throwing and catching with more control.</td></tr>
+  <tr><td class="bad">Leo is tone deaf.</td><td class="good">Leo joins in with singing and is learning the tunes of our class songs. Next, he is working on matching the pitch of the notes when singing.</td></tr>
+  <tr><td class="bad">Sam can't draw.</td><td class="good">Sam is learning to use art tools and materials with more control. Next, Sam is working on taking time over each step so finished pieces show more care.</td></tr>
+  <tr><td class="bad">Mia has no rhythm.</td><td class="good">Mia is learning to keep a steady beat when clapping and playing instruments. Next, she is working on keeping the beat steady through a whole song.</td></tr>
+  <tr><td class="bad">Jack is very talented at art.</td><td class="good">Jack plans his work in sketches and chooses colors to show mood. Next, he is working on explaining the choices behind his ideas.</td></tr>
+  <tr><td class="bad">Ella is a natural athlete.</td><td class="good">Ella reads the game well and finds space to receive a pass. Next, she is working on organizing her team in small-sided games.</td></tr>
+  <tr><td class="bad">Noah is overweight and gets out of breath quickly.</td><td class="good">Noah keeps going in fitness activities and knows why we warm up. Next, he is working on keeping going a little longer each time in running activities.</td></tr>
+  <tr><td class="bad">Grace throws well for a girl.</td><td class="good">Grace throws with good control and accuracy. Next, she is working on using this skill while on the move in games.</td></tr>
+  <tr><td class="bad">Omar's asthma means he sits out of running.</td><td class="good"><em>Leave it out.</em> "Omar works well with teammates and plays by the rules. Next, he is working on moving into space to receive the ball."</td></tr>
+  <tr><td class="bad">Zoe scored in the Healthy Fitness Zone on the PACER.</td><td class="good">Zoe works hard in fitness activities and can explain how exercise helps the body. Next, she is working on setting her own fitness goals.</td></tr>
+  <tr><td class="bad">Ben is the best singer in the class.</td><td class="good">Ben sings in tune with a clear voice and holds a part confidently in rounds. Next, he is working on singing with more expression.</td></tr>
+  <tr><td class="bad">Lily is lazy in PE and forgets her kit.</td><td class="good">Lily joins in with team games and is learning the rules. Next, she is working on bringing PE kit to every lesson, and a note in her bag on Mondays helps.</td></tr>
+  <tr><td class="bad">Max is messy and careless with materials.</td><td class="good">Max uses a range of materials with growing control. Next, he is working on helping to tidy up materials at the end of the lesson.</td></tr>
+  <tr><td class="bad">Ruby is a sore loser.</td><td class="good">Ruby plays with real effort in team games. Next, she is working on accepting the result calmly, whether her team wins or loses.</td></tr>
+  <tr><td class="bad">Finn's locomotor and manipulative skills are developing.</td><td class="good">Finn is building confidence in running, hopping, throwing and catching. Next, he is working on catching a ball with two hands.</td></tr>
+  <tr><td class="bad">Aria is our little Picasso and a joy to have in class.</td><td class="good">Aria comes up with original ideas and develops them through sketches before starting a final piece. Next, she is working on giving helpful feedback to classmates.</td></tr>
+  <tr><td class="bad">Theo enjoys music.</td><td class="good">Theo keeps a steady beat and copies rhythms accurately on percussion instruments. Next, he is working on reading simple rhythms from written notes.</td></tr>
+  <tr><td class="bad">Isla refuses to sing in front of others.</td><td class="good">Isla sings in tune with the class and knows the words of our songs. Next, she is working on singing with more confidence in a small group.</td></tr>
+</table>
+<!-- /gen:rewrites -->
+
+<h2 id="examples">6 complete examples</h2>
+<p>All made with the builder below, and all pass its checks.</p>
+<!-- gen:samples -->
+<div class="ex"><p>Maya keeps trying when something is difficult. In our work on clay animals, Maya uses a range of materials and techniques with growing control and care. Maya also comes up with original ideas and develops them through sketches and trials before starting a final piece. Next, Maya is working on adding more detail and texture to finished pieces. At home, keep a sketchbook and draw together, even for a few minutes. Drawing often builds confidence and control. I'm looking forward to seeing Maya's progress next quarter.</p><p class="exmeta">Art, grade 3, Q1, clay unit · 519 characters</p></div>
+<div class="ex"><p>Jonah brings real enthusiasm to art lessons. Jonah also takes good care of the art materials and helps tidy up. Jonah joins in when we look at artworks together and is starting to describe what is in them. Next, Jonah is working on using art words such as line, shape and color to describe artworks. Jonah is also working on staying focused for the whole lesson. I have enjoyed teaching Jonah this year.</p><p class="exmeta">Art, grade 1, end of year, still developing · 403 characters</p></div>
+<div class="ex"><p>Leo brings real enthusiasm to music lessons. In our work on rhythm and percussion, Leo keeps a steady beat and plays rhythms accurately on instruments, including from written notes. Leo also joins in with singing and is learning the words and tunes of our class songs. Next, Leo is working on matching the pitch of the notes when singing. Leo is also working on listening while others are speaking or performing. At home, sing along to favourite songs together and clap the beat. Singing for fun builds pitch and rhythm. Well done on a good start to the year, Leo.</p><p class="exmeta">Music, grade 4, strong on rhythm, singing next · 564 characters</p></div>
+<div class="ex"><p>Amara performs for the class with confidence. Amara makes up short rhythms and tunes and shares them with the class. Next, Amara is working on repeating and changing musical ideas to build a longer piece. Amara is also working on practising her instrument for a few minutes most days. At home, ask Amara to teach you a song or rhythm from our lessons. I'm looking forward to seeing Amara's progress next term.</p><p class="exmeta">Music, UK Year 5, autumn term · 409 characters</p></div>
+<div class="ex"><p>Priya listens carefully to instructions and gets started quickly. In our work on basketball, Priya reads the game well, finds space and makes smart choices about when to pass, move or shoot. Priya is also an encouraging teammate who plays fairly, follows the rules and helps others improve. Next, Priya is working on organizing her team in small-sided games. If Priya would like to try a new sport, a local or after-school club is a good next step. Well done on a good start to the year, Priya.</p><p class="exmeta">PE, grade 7, basketball unit · 494 characters</p></div>
+<div class="ex"><p>Sam works hard in every lesson, especially when learning something new. Sam also follows our safety rules carefully. Sam is building confidence in running, jumping, throwing and catching. Next, Sam is working on throwing and catching with more control. Sam is also working on bringing PE kit to every lesson. At home, find ways to be active together, such as walking, cycling or a trip to the park. UK guidelines suggest children are active for an average of at least 60 minutes a day across the week. I'm looking forward to seeing Sam's progress next term.</p><p class="exmeta">PE, UK Year 2, building confidence (they/them) · 557 characters</p></div>
+<!-- /gen:samples -->
+
+<section id="builder">
+<h2>Free report card comment builder for art, music and PE</h2>
+<div class="tool">
+  <p>Choose the <strong>subject</strong>, the area and <strong>level</strong>, tick one or two strengths, then press <strong>Write comment</strong>. Press <strong>Next student</strong> to clear the name and strengths and keep the subject, unit and limit. Or paste a comment from ChatGPT, Gemini, Claude or last year's reports into the box at the bottom. It runs entirely in your browser: nothing you type is sent or stored.</p>
+  <p class="small">It flags fixed-ability labels ("not sporty", "tone deaf", "can't draw", "clumsy"), talent praise ("a natural", "gifted"), weight and body comments, gender stereotypes ("for a girl"), medical and support-plan details, fitness test scores (FitnessGram, PACER, beep test), comparisons with classmates, labels ("lazy", "messy", "sore loser"), sitting-out and no-kit complaints without a plan, "always" and "never", teacher jargon ("locomotor", "ostinato", "elements of art"), stock phrases ("a joy to have in class", "little Picasso"), comments with no real skill or no next step, placeholders, mixed he/she pronouns and curly quotes that some report systems turn into question marks.</p>
+  <fieldset><legend>The student</legend>
+  <div class="grid">
+    <label>First name <input id="sp-name" placeholder="Leo (or leave blank for [Name])" autocomplete="off"></label>
+    <label>Pronoun <select id="sp-pronoun"><option value="she">she / her</option><option value="he">he / him</option><option value="they">they / them</option></select></label>
+    <label>Wording <select id="sp-style"><option value="us">US (art, gym clothes, quarter)</option><option value="uk">UK (art and design, PE kit, term)</option></select></label>
+    <label>Report <select id="sp-timing"><option value="early">During the year</option><option value="end">End of year</option></select></label>
+    <label>Report period <select id="sp-period"><option value="quarter">quarter</option><option value="trimester">trimester</option><option value="term">term</option><option value="semester">semester</option><option value="marking period">marking period</option></select></label>
+    <label>Character limit (0 = none) <input id="sp-limit" type="number" min="0" step="50" value="500"></label>
+  </div>
+  </fieldset>
+  <fieldset><legend>Subject and skills</legend>
+  <div class="grid">
+    <label>Subject <select id="sp-subject"></select></label>
+    <label>Unit or project (optional) <input id="sp-unit" placeholder="clay animals" autocomplete="off"></label>
+    <label>Main area <select id="sp-area"></select></label>
+    <label>Level in that area <select id="sp-level"></select></label>
+    <label>Second area (optional) <select id="sp-area2"></select></label>
+    <label>Level in the second area <select id="sp-level2"></select></label>
+    <label>Next step from <select id="sp-focus"></select></label>
+    <label>Habit next step <select id="sp-habit"></select></label>
+    <label>Home tip <select id="sp-home"></select></label>
+  </div>
+  </fieldset>
+  <fieldset><legend>Participation strengths (one or two)</legend>
+  <div class="grid" id="sp-strengths"></div>
+  </fieldset>
+  <button type="button" id="sp-run">Write comment</button> <button type="button" class="ghost" id="sp-sample">Try an example</button> <button type="button" class="ghost" id="sp-next">Next student</button>
+  <div id="sp-output" aria-live="polite"></div>
+  <fieldset><legend>Or check a comment you already have</legend>
+  <textarea id="sp-paste" placeholder="Paste one comment here"></textarea>
+  <button type="button" id="sp-check">Check this comment</button>
+  </fieldset>
+</div>
+</section>
+<!-- pt:embed -->
+<details class="pt-embed-box">
+<summary>Put this tool on your own website (free)</summary>
+<p>Copy this code into any web page (WordPress: a "Custom HTML" block). The tool runs in your visitors' browsers; nothing they type is sent to you or to us.</p>
+<textarea readonly rows="6" onclick="this.select()" aria-label="Embed code">&lt;iframe src=&quot;https://polytheseus.com/teacher-skills/embed/specials-comments&quot; title=&quot;Art, music and PE comment builder&quot; width=&quot;100%&quot; height=&quot;1200&quot; style=&quot;border:0;max-width:900px&quot; loading=&quot;lazy&quot;&gt;&lt;/iframe&gt;
+&lt;p style=&quot;font-size:13px&quot;&gt;Free &lt;a href=&quot;https://polytheseus.com/teacher-skills/guides/report-card-comments-for-art-music-and-pe&quot;&gt;art, music and pe comment builder&lt;/a&gt; for teachers by Polytheseus&lt;/p&gt;
+&lt;script&gt;addEventListener(&quot;message&quot;,function(e){if(e.origin===&quot;https://polytheseus.com&quot;&amp;&amp;e.data&amp;&amp;e.data.ptHeight){document.querySelectorAll(&#x27;iframe[src^=&quot;https://polytheseus.com/&quot;]&#x27;).forEach(function(f){if(f.contentWindow===e.source)f.style.height=e.data.ptHeight+&quot;px&quot;})}})&lt;/script&gt;</textarea>
+<button type="button" onclick="var t=this.previousElementSibling;t.select();navigator.clipboard&&navigator.clipboard.writeText(t.value);this.textContent='Copied'">Copy code</button>
+</details>
+<style>.pt-embed-box{margin:6px 0 24px;font-size:15.5px}.pt-embed-box summary{cursor:pointer;font-weight:700}.pt-embed-box textarea{width:100%;box-sizing:border-box;font:13px/1.4 ui-monospace,Consolas,monospace;padding:8px;border:1px solid #dedad2;border-radius:5px}.pt-embed-box button{font:inherit;font-weight:800;border:2px solid #24272b;border-radius:6px;padding:6px 14px;cursor:pointer;background:#ffd21f;margin-top:6px}</style>
+<!-- /pt:embed -->
+
+<h2 id="uk">UK reports: art and design, music and PE</h2>
+<p>Switch the builder to <strong>UK</strong> for "art and design", "PE kit", "term", "practise" and UK spelling. Many primary reports give the foundation subjects one or two lines each, so set the limit to 200 or 250: the builder keeps the strength, the skill and the next step and drops the rest. Use your school's own attainment words ("working towards", "expected", "greater depth") in the grade box rather than the comment.</p>
+
+<h2 id="older">Middle school: write it to the student too</h2>
+<p>From about grade 6, students read their own reports. Make the next step something they can do in the next unit ("keeping your own part going while others play different parts", "making quick decisions about when to pass"), and name the unit so it's clearly about them.</p>
+
+<h2 id="chatgpt">Using ChatGPT, Gemini or Claude for 400 comments</h2>
+<p>An AI assistant can draft a whole class from a short note per student, within your school's AI policy. Use initials or codes instead of names, and leave out medical, family and support-plan details. Paste in:</p>
+<pre class="prompt">Write report card comments for my grade 4 music class (US spelling, end of first quarter, up to 350 characters each). Our unit was rhythm and percussion.
+
+For each student, in this order:
+1. One participation strength from my note.
+2. One real music skill at the level I give (ABOVE, MEETING or DEVELOPING).
+3. "Next, [Name] is working on ..." with one specific next step.
+
+Use [Name] and they/them; I'll add names and pronouns. Never use talent words (talented, gifted, a natural, tone deaf, no rhythm), never compare students, no exclamation marks, no stock phrases like "a joy to have in class". Vary the openings so no two comments start the same way.
+
+S1: MEETING; steady beat on drums, copies rhythms; next: reading rhythms from notes; kind to partners
+S2: ABOVE; reads rhythms from notes, keeps own part in a round; next: expression; performs confidently
+S3: DEVELOPING; keeping the beat; joins in enthusiastically; next: steady beat through a whole song</pre>
+<p>Then read every comment, and paste any you're unsure of into the checker above.</p>
+
+<h2>Common questions</h2>
+<details><summary>How do you write a report card comment for art, music or PE?</summary><p>Name one participation strength (effort, care with materials or equipment, kindness to classmates), then one real skill in the subject at the level the student is working at, then one next step. Add a home tip if there is room. Two to four short sentences fit most specials comment boxes.</p></details>
+<details><summary>How long should a specials report card comment be?</summary><p>Usually shorter than a homeroom comment: many report systems give art, music and PE teachers 250 to 500 characters. Strength, skill and next step fit in about 300 characters; drop the home tip or closing line first if you are over.</p></details>
+<details><summary>What should I write for a student who doesn't participate in PE?</summary><p>Say what the student does do, then one next step and what would help, for example 'is working on bringing PE kit to every lesson'. If the student sits out for health, medical or family reasons, leave it out of the written report and talk to the family instead.</p></details>
+<details><summary>Should I comment on fitness test results like FitnessGram or the beep test?</summary><p>Usually not in the written comment. Fitness scores are personal, and many schools share them separately. Describe effort and the student's own progress, such as 'keeps going a little longer each time in running activities'.</p></details>
+<details><summary>Is it OK to call a student talented or gifted in art or music?</summary><p>It's kind, but it suggests the skill is a gift rather than practice, and it says little. Name what the student does instead: 'chooses colors to show mood', 'holds a part in a round', 'finds space to receive a pass'.</p></details>
+<details><summary>Can I use ChatGPT to write art, music and PE report card comments?</summary><p>Yes, within your school's AI policy, if you use a code or first initial instead of names and leave out medical, family and support-plan details. Give it the subject, the unit, the level and one note per student, ask for short comments with one next step, and read every comment before it goes home.</p></details>
+<section class="cta">
+  <h2>Let your AI draft them from your notes</h2>
+  <p>The free <strong>Teacher Skills</strong> pack turns ChatGPT, Gemini or Claude into a report-comment assistant that follows the strength, skill, next step pattern, matches your length, uses placeholders instead of names, and checks every comment for vague or repeated phrases before showing it to you. It also writes parent emails and rubrics. Setup takes about five minutes, with no coding.</p>
+  <p><a class="btn" href="../#setup">Set up Teacher Skills free</a> <a class="btn ghost" href="../#pro">Pro: newsletters, feedback, quizzes, cover plans (£12)</a></p>
+  <p class="small">Teacher Skills Pro is £12 / $15 / €14, one-off. It adds class newsletters, quizzes, feedback on anonymised work, cover plans and incident write-ups.</p>
+  <p class="small"><strong>Writing homeroom comments too?</strong> See the builders for <a href="report-card-comments-for-math">math</a>, <a href="report-card-comments-for-reading-and-writing">reading and writing</a>, <a href="report-card-comments-for-science-and-social-studies">science and social studies</a> and <a href="report-card-comments-for-behavior">behavior and work habits</a>, or the <a href="../report-cards">report card season kit</a>. The <a href="../comment-bank">report card comment bank</a> puts 550+ lines into an editable Word file and a PDF: £4 / $5.</p>
+</section>
+
+<p class="small">Sources: National Coalition for Core Arts Standards, <a href="https://www.nationalartsstandards.org/">National Core Arts Standards</a> (artistic processes: creating; performing, presenting or producing; responding; connecting); SHAPE America, <a href="https://www.shapeamerica.org/">2024 National Physical Education Standards</a> (four standards); <a href="https://www.cdc.gov/physical-activity-basics/guidelines/children.html">CDC, physical activity guidelines for children</a> (60 minutes or more of moderate-to-vigorous activity each day, ages 6–17); <a href="https://www.gov.uk/government/publications/physical-activity-guidelines-uk-chief-medical-officers-report">UK Chief Medical Officers' physical activity guidelines</a> (2026 children and young people infographic: an average of at least 60 minutes per day across the week), all checked 30 October 2026. Reporting rules and comment lengths vary by district, school and country; follow yours. This guide was written by an AI agent (Claude) and checked against those sources.</p>
+
+</main>
+<aside class="wrap small pagenote">The example comments are illustrations, not about real students. Not affiliated with OpenAI, Google, Anthropic, Microsoft, SHAPE America or the National Coalition for Core Arts Standards.</aside>
+<script src="specials-comments.js"></script>
+<!-- pt:foot -->
+<footer class="pt-foot">
+  <div class="pt-foot-in">
+    <div>
+      <a class="pt-brand" href="/"><img src="/assets/favicon.svg" alt="" width="30" height="30"><span>POLYTHESEUS</span></a>
+      <p>Know-how packs that make ChatGPT, Gemini and Claude work like an experienced pro in your job. Free to start.</p>
+      <p><a href="mailto:support@polytheseus.com">support@polytheseus.com</a></p>
+    </div>
+    <div>
+      <h4>Packs</h4>
+      <ul><li><a href="/teacher-skills/">Teachers</a></li><li><a href="/trades-skills/">Trades</a></li><li><a href="/bookkeeper-skills/">Bookkeepers</a></li><li><a href="/real-estate-skills/">Real estate agents</a></li><li><a href="/seller-skills/">Online sellers</a></li><li><a href="/landlord-skills/">Landlords</a></li><li><a href="/sre-skills/">SRE &amp; DevOps</a></li></ul>
+    </div>
+    <div>
+      <h4>Polytheseus</h4>
+      <ul>
+        <li><a href="/tools">Free tools</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="https://github.com/polytheseus">GitHub</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Watch</h4>
+      <ul><li><a href="https://www.youtube.com/@polytheseus" rel="me noopener">YouTube</a></li><li><a href="https://www.tiktok.com/@polytheseus" rel="me noopener">TikTok</a></li><li><a href="https://www.facebook.com/profile.php?id=1374246585776738" rel="me noopener">Facebook</a></li></ul>
+    </div>
+  </div>
+  <div class="pt-foot-base">Polytheseus is run by Robin Hale. The packs and this site are written and tested by Claude, an AI agent. <a href="/#about">How that works</a>.</div>
+</footer>
+<!-- /pt:foot -->
+</body>
+</html>
