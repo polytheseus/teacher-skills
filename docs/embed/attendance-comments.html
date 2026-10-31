@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attendance comment builder (free tool) | Polytheseus</title>
+<meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="../style.css">
+<style>
+.tool{background:#fff;border:2px solid var(--accent2);border-radius:16px;padding:18px 20px;margin:20px 0}
+.tool textarea{font:15px/1.5 inherit;font-family:inherit;width:100%;min-height:120px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tool input,.tool select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+.tool .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14em,1fr));gap:10px 16px;margin:10px 0}
+.tool .grid label{font-size:14px;display:flex;flex-direction:column;gap:3px}
+.tool .grid label.sc-box{flex-direction:row;align-items:center;gap:8px}
+.tool .grid label.sc-box input{width:auto}
+.tool fieldset{border:1px solid var(--line);border-radius:12px;padding:8px 14px 12px;margin:12px 0}
+.tool legend{font-weight:700;font-size:15px;padding:0 6px}
+.tool button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent2);color:#fff;margin:8px 8px 0 0}
+.tool button.ghost{background:transparent;color:var(--accent2);border:2px solid var(--accent2)}
+.kc-issues{padding-left:18px}.kc-issues li{font-size:15px;margin-bottom:6px}
+.kc-tag{display:inline-block;font-size:12px;font-weight:800;padding:1px 8px;border-radius:999px;text-transform:uppercase}
+.kc-fix{background:#fbe0d8;color:#a33a22}
+.kc-review{background:#f8ecd0;color:#7a5a17}
+.kc-note{background:#e3e4fb;color:#3a3d8f}
+.kc-ok{background:#dcefe8;color:#22604f}
+table.bank td{vertical-align:top}
+.lvl{display:inline-block;font-size:11px;font-weight:800;padding:1px 7px;border-radius:999px;text-transform:uppercase;margin-right:4px}
+.lvl-strength{background:#dcefe8;color:#22604f}
+.lvl-on{background:#e3e4fb;color:#3a3d8f}
+.lvl-next{background:#f8ecd0;color:#7a5a17}
+.lvl-at{background:#f3e6f6;color:#6b2f7a}
+td.bad{background:#fff4ef}
+td.good{background:#f4fbf8}
+.ex{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0}
+.ex p{margin:0}
+.exmeta{font-size:13px;color:var(--muted);margin-top:6px!important}
+[hidden]{display:none!important}
+</style>
+<style>table.bank th{font-size:14px}h4{margin:18px 0 6px;font-size:17px}</style>
+<style>.lvl-strong{background:#dcefe8;color:#22604f}.lvl-secure{background:#e3e4fb;color:#3a3d8f}.lvl-developing{background:#f8ecd0;color:#7a5a17}</style>
+<style>table.bank th{font-size:14px}</style>
+<style>
+body{background:var(--bg)}
+.pt-embed-main{max-width:900px;margin:0 auto;padding:4px 14px 10px}
+.pt-embed-main h2{margin-top:12px}
+.pt-embed-by{font:14px/1.5 "Inter","Segoe UI",system-ui,sans-serif;color:#5d6268;margin:10px 0 0;padding-top:8px;border-top:1px solid #dedad2}
+@media print{.pt-embed-by{display:none}}
+</style>
+</head>
+<body>
+<main class="pt-embed-main">
+<h2>Free attendance report card comment builder</h2>
+<div class="tool">
+  <p>Pick the attendance situation, a strength to lead with and how to invite the family in, then press <strong>Write comment</strong>. Press <strong>Next student</strong> to clear the name and keep your settings. Or paste a comment from ChatGPT, Gemini, Claude or your school's comment bank into the box at the bottom. It runs entirely in your browser: nothing you type is sent or stored.</p>
+  <p class="small">It flags reasons for absence and health details (sick, appointments, anxiety, school refusal, IEP), home and family circumstances (a parent's shifts, overslept, missed the bus, divorce), term-time holidays, blame and pressure on the family ("parents need to make sure"), fines, truancy and other enforcement language, labels ("lazy", "skiving", "skips lessons"), verdicts ("poor attendance", "unacceptable", "constantly late"), attendance jargon (persistent absence, unauthorised, sessions), numbers and percentages to check against the register, comparisons, "always" and "never", stock phrases, concerns with no plan or no strength, placeholders, mixed he/she pronouns, and curly quotes that some report systems turn into question marks.</p>
+  <fieldset><legend>The student</legend>
+  <div class="grid">
+    <label>First name <input id="at-name" placeholder="Leo (or leave blank for [Name])" autocomplete="off"></label>
+    <label>Pronoun <select id="at-pronoun"><option value="she">she / her</option><option value="he">he / him</option><option value="they">they / them</option></select></label>
+    <label>Age group <select id="at-age"><option value="young">Grades K–5 (Reception–Year 6)</option><option value="older">Grades 6–12 (Years 7–13)</option></select></label>
+    <label>Wording <select id="at-style"><option value="us">US (quarter, class, first period)</option><option value="uk">UK (term, lessons, registration)</option></select></label>
+    <label>Report <select id="at-timing"><option value="early">During the year</option><option value="end">End of year</option></select></label>
+    <label>Report period <select id="at-period"><option value="quarter">quarter</option><option value="semester">semester</option><option value="trimester">trimester</option><option value="marking period">marking period</option><option value="grading period">grading period</option><option value="term">term</option><option value="year">year</option></select></label>
+    <label>Character limit (0 = none) <input id="at-limit" type="number" min="0" step="50" value="500"></label>
+  </div>
+  </fieldset>
+  <fieldset><legend>Attendance</legend>
+  <div class="grid">
+    <label>Situation <select id="at-situation"></select></label>
+    <label>A strength to include <select id="at-strength"></select></label>
+    <label id="at-subject-row">Subject <input id="at-subject" placeholder="reading" autocomplete="off"></label>
+  </div>
+  <div class="grid" id="at-concern">
+    <label>Work missed (optional) <input id="at-unit" placeholder="fractions, our Romans topic" autocomplete="off"></label>
+    <label>How school is helping <select id="at-support"></select></label>
+    <label>Inviting the family in <select id="at-contact"></select></label>
+  </div>
+  <div class="grid" id="at-thanks-row">
+    <label class="sc-box"><input type="checkbox" id="at-thanks" checked> Thank the family</label>
+  </div>
+  </fieldset>
+  <button type="button" id="at-run">Write comment</button> <button type="button" class="ghost" id="at-sample">Try an example</button> <button type="button" class="ghost" id="at-next">Next student</button>
+  <div id="at-output" aria-live="polite"></div>
+  <fieldset><legend>Or check a comment you already have</legend>
+  <textarea id="at-paste" placeholder="Paste one comment here"></textarea>
+  <button type="button" id="at-check">Check this comment</button>
+  </fieldset>
+</div>
+<p class="pt-embed-by">Free tool by <a href="https://polytheseus.com/" target="_blank" rel="noopener">Polytheseus</a> · <a href="https://polytheseus.com/teacher-skills/guides/attendance-report-card-comments#builder" target="_blank" rel="noopener">Full guide and how to use it</a> · Nothing you type leaves your browser.</p>
+</main>
+<script src="../guides/attendance-comments.js"></script>
+<script>
+(function () {
+  var last = 0;
+  function send() {
+    var h = Math.ceil(document.documentElement.scrollHeight);
+    if (h !== last && window.parent !== window) { last = h; window.parent.postMessage({ptHeight: h}, "*"); }
+  }
+  addEventListener("load", send);
+  if (window.ResizeObserver) new ResizeObserver(send).observe(document.body);
+  else setInterval(send, 700);
+})();
+</script>
+</body>
+</html>
