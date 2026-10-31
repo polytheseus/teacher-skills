@@ -55,15 +55,16 @@ Copilot and OpenCode.
 
 ## Teacher Skills Pro
 
-Five more skills for the rest of the paperwork:
+Six more skills for the rest of the paperwork:
 
+- `report-check`: checks a whole batch of finished report comments (wrong names or pronouns, diagnoses, home details, labels, missing next steps, duplicates, length limits) and fixes only the ones that need it.
 - `work-feedback`: feedback on student work against your rubric. What went well, one actionable next step, a suggested level for you to confirm, and whole-class feedback with common misconceptions.
 - `quiz-builder`: quizzes and exit tickets with verified answer keys, distractors based on real misconceptions, a misconception map, and rows ready to paste into the Kahoot template.
 - `cover-plans`: sub / cover plans a non-specialist can run cold, plus an emergency "sub tub".
 - `incident-report`: objective behaviour write-ups and pattern summaries, with safeguarding guardrails.
 - `class-newsletter`: weekly family updates with action items first and a home activity.
 
-It includes all 8 skills as a ready-made ChatGPT / Gemini / Claude setup, a
+It includes all 9 skills as a ready-made ChatGPT / Gemini / Claude setup, a
 copy-paste prompt pack for any chat app, and the coding-agent versions.
 
 **[Get Teacher Skills Pro: £12 / $15 / €14](https://polytheseus.com/teacher-skills/#pro)**. You pay once and get updates for life.
