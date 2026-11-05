@@ -28,7 +28,8 @@ sign, in their school's style, quickly and consistently across a whole class.
 Ask, or infer from a sample comment the teacher provides:
 
 1. **Length**: word or character limit per comment (many systems cap at
-   500–1000 characters; ask). Default: 60–90 words.
+   500–1000 characters; ask). Default: up to 90 words. This is a ceiling, not a
+   target: thin notes make a short comment.
 2. **Voice**: third person ("[Name] has…") or second person to the student
    ("You have…"). Default: third person.
 3. **Spelling**: UK or US English (and terminology: "Year 4" vs "4th grade",
@@ -58,6 +59,14 @@ bank the teacher already has. For each student identify:
 
 Never invent achievements, test scores, books read or events. If the notes
 are too thin, write the comment from what exists and list what you'd need.
+
+Don't pad, either. Short notes make a short comment: 25 words the teacher can
+stand behind beat 70 with filler. Each detail in a comment must come from the
+notes, so don't add how a child works, how they make others feel or how keen
+they are ("works carefully", "a positive presence in the classroom", "real
+enthusiasm", "a valued member of the class"). "Kind to others" stays as that,
+with `[add an example?]`. A next step may be your suggestion, and the Flags
+list says so.
 
 Never invent a cause either. If the notes give two facts, such as absence and
 a gap in phonics, state them separately rather than saying one led to the
@@ -96,7 +105,7 @@ Structure (adapt to house style):
 - Match grade and comment: a comment glowing about maths shouldn't sit next
   to a "working towards" grade without explanation.
 
-### Phrase bank (starting points, adapt to evidence)
+### Phrase bank (use one only when the notes support it)
 
 | Purpose | Phrases |
 |---|---|
@@ -113,6 +122,7 @@ Before handing over, check every comment against this list and fix silently:
 - [ ] Within the length limit (count characters if a limit was given)
 - [ ] Contains a specific strength and one actionable next step
 - [ ] No invented facts or causes; every claim traces to the teacher's notes
+- [ ] Nothing added for length: delete any description the notes don't give
 - [ ] No real names or sensitive details; placeholders consistent
 - [ ] Correct spelling variant and terminology throughout
 - [ ] No banned phrases; required phrases present
@@ -129,6 +139,8 @@ A table or numbered list the teacher can copy straight into their system:
 
 2. ...
 ```
+
+Count words and characters exactly, or leave the counts out. Never estimate.
 
 Then a short **Flags** list: comments where evidence was thin
 (`[add an example?]`), grade/comment mismatches, or notes that seemed to
