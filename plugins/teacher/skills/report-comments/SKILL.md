@@ -63,6 +63,12 @@ bank the teacher already has. For each student identify:
 Never invent achievements, test scores, books read or events. If the notes
 are too thin, write the comment from what exists and list what you'd need.
 
+Never invent a cause either. If the notes give two facts, such as absence and
+a gap in phonics, state them separately rather than saying one led to the
+other, and flag the link for the teacher to decide. Don't add advice about
+attendance unless the notes ask for it: the reason may be illness or family
+circumstances you can't see.
+
 ## Step 3: Write each comment
 
 Structure (adapt to house style):
@@ -110,7 +116,7 @@ Before handing over, check every comment against this list and fix silently:
 
 - [ ] Within the length limit (count characters if a limit was given)
 - [ ] Contains a specific strength and one actionable next step
-- [ ] No invented facts; every claim traces to the teacher's notes
+- [ ] No invented facts or causes; every claim traces to the teacher's notes
 - [ ] No real names or sensitive details; placeholders consistent
 - [ ] Correct spelling variant and terminology throughout
 - [ ] No banned phrases; required phrases present
