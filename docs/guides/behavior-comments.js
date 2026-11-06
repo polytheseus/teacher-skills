@@ -145,7 +145,7 @@
   // US: -ize and -or. Canada (Ontario): -ize, but behaviour, favourite and practise stay.
   var US = { practise: "practice", practised: "practiced", practising: "practicing", behaviour: "behavior", behaviours: "behaviors", Behaviour: "Behavior",
     organise: "organize", organised: "organized", organising: "organizing", organisation: "organization", Organisation: "Organization",
-    recognise: "recognize", recognises: "recognizes", favourite: "favorite", colour: "color", apologise: "apologize", realise: "realize", prioritise: "prioritize" };
+    recognise: "recognize", recognises: "recognizes", favourite: "favorite", colour: "color", humour: "humor", apologise: "apologize", realise: "realize", prioritise: "prioritize" };
   var CA = { organise: "organize", organised: "organized", organising: "organizing", organisation: "organization", Organisation: "Organization",
     recognise: "recognize", recognises: "recognizes", apologise: "apologize", realise: "realize", prioritise: "prioritize" };
   function mapRe(m) { return new RegExp("(^|[^\\w-])(" + Object.keys(m).sort(function (a, b) { return b.length - a.length; }).join("|") + ")(?![\\w-])", "g"); }
@@ -269,7 +269,7 @@
     [/\b(sel|social[- ]emotional learning|executive function\w*|dysregulat\w*|co-?regulat\w*|zones of regulation|pbis|restorative (conversation|practice|justice)s?|tier [123]|mtss|rti|on[- ]task behaviou?rs?|off[- ]task|task avoidan\w*|work avoidan\w*|sensory (breaks?|seeking|needs)|antecedents?|replacement behaviou?rs?|lswh|learning skills and work habits)\b/i, "review", "Jargon: \"$1\". Many families won't know it; say what the student does (\"gets started on work straight away\", \"uses a calm-down space when upset\")."]
   ];
   var US_SPELL = /\b(behavior\w*|favorite|colors?|organiz\w+|recogniz\w+|apologiz\w+|practic(ing|ed))\b/i;
-  var UK_SPELL = /\b(behaviours?|favourite|colours?|organis\w+|recognis\w+|apologis\w+|practis\w+)\b/i;
+  var UK_SPELL = /\b(behaviours?|favourite|colours?|humour|organis\w+|recognis\w+|apologis\w+|practis\w+)\b/i;
   var CA_US = /\b(behavior\w*|favorite|colors?|practic(ing|ed))\b/i;
   var CA_UK = /\b(organis\w+|recognis\w+|apologis\w+)\b/i;
   // Australia: US school words, and the curriculum or program names behind

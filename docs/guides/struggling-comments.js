@@ -104,8 +104,8 @@
   };
   var PRON = { she: "her", he: "his", they: "their" };
   var WORDS = {
-    us: { period: "quarter", practise: "practice", practising: "practicing", behaviour: "behavior" },
-    uk: { period: "term", practise: "practise", practising: "practising", behaviour: "behaviour" }
+    us: { period: "quarter", practise: "practice", practising: "practicing", Practising: "Practicing", behaviour: "behavior" },
+    uk: { period: "term", practise: "practise", practising: "practising", Practising: "Practising", behaviour: "behaviour" }
   };
 
   function hash(s) { var h = 7; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
@@ -123,7 +123,7 @@
         if (k in w) return w[k];
         return m;
       })
-      .replace(/\b(practise|practising)\b/g, function (m) { return w[m]; });
+      .replace(/\b(practise|practising|Practising)\b/g, function (m) { return w[m]; });
   }
 
   // opts: { name, pronoun, style: us|uk, timing: early|end, period,
