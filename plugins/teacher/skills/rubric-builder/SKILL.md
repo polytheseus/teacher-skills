@@ -21,14 +21,20 @@ Ask only for what's missing:
    state standard code, a UK National Curriculum or exam-board assessment
    objective, IB criteria, or the teacher's own objective. If the teacher
    gives a code, use their wording; don't invent official text. If you're
-   not sure of a standard's exact wording, ask them to paste it.
+   not sure of a standard's exact wording, ask them to paste it. Until
+   they do, don't tag criteria with codes you haven't seen (write
+   "[check: which standard/AO?]" instead), and if you say what a code
+   covers from memory, say it's from memory. Codes are easy to mix up.
 3. **Age / grade / year group** and any students needing adapted criteria.
 4. **Rubric type** (recommend one if they're unsure, see below).
 5. **Number of levels and labels**: e.g. 4 (Beginning, Developing,
    Proficient, Exemplary) or the school's grade bands. Default: 4 levels,
    no neutral middle.
 6. **Points**: is it scored, and does it need to convert to a grade or
-   percentage?
+   percentage? A straight conversion of levels to a percentage puts work
+   at the target level of a 4-level scale (3 of 4) at 75%, and Beginning
+   at 25%. Say so, and ask whether the school has its own conversion
+   chart before using a straight one.
 
 ### Which type?
 
@@ -38,6 +44,9 @@ Ask only for what's missing:
 | **Holistic** (one scale, overall judgment) | Quick marking, timed writing, performances | Less diagnostic feedback |
 | **Single-point** (criteria at the target level, space for "below" / "beyond" comments) | Formative feedback, drafts, student self-assessment | Needs written comments |
 | **Checklist** (yes/no) | Procedures, formatting, completion requirements | Doesn't measure quality |
+
+A holistic rubric has one descriptor per level and no criteria rows. If
+it needs separate rows, it's analytic: say so and build that instead.
 
 ## Step 2: Choose criteria
 
@@ -88,6 +97,9 @@ Run this quality pass and fix problems:
 - [ ] A typical "secure" piece would land at the target level, not the top
 - [ ] The top level is reachable by a strong student of this age
 - [ ] Points add up correctly; grade conversion stated if required
+- [ ] If points become a percentage, the scoring guide says what the target
+      level converts to (75% on a straight 4-level scale) and asks about the
+      school's own chart
 - [ ] Student version uses "I can…" statements a student of this age can read
 
 Then do a **calibration test**: describe briefly what a piece of work at
