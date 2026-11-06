@@ -95,7 +95,7 @@
     { id: "hands", group: "physical", label: "Hand skills (scissors, crayons, puzzles)", us: "Perceptual, Motor, and Physical Development", uk: "Physical development",
       s: ["uses scissors carefully and holds crayons with good control", "completes puzzles and builds tall towers with steady hands"],
       g: ["is building strong hands through play-dough, puzzles and building", "is learning to use scissors with help"],
-      f: "using scissors and holding a crayon comfortably", sch: "with play-dough, threading and cutting activities",
+      f: "using scissors and holding a crayon comfortably", sch: "with snipping, tracing and peg-board activities",
       home: "try play-dough, threading pasta onto string or tearing paper for collages" }
   ];
   // UK progress check at age 2: the three prime areas (EYFS 2.6). f = the

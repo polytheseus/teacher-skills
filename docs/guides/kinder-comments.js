@@ -43,7 +43,7 @@
     { id: "motor", group: "writing", label: "Pencil grip and cutting",
       s: ["holds a pencil with a good grip and cuts carefully along lines", "has strong fine motor skills and forms many letters neatly"],
       g: ["is developing a steadier pencil grip and getting more confident with scissors", "is building the hand strength for writing through play-dough, beads and puzzles"],
-      f: "a comfortable pencil grip and cutting along a line", sch: "with play-dough, threading and cutting activities",
+      f: "a comfortable pencil grip and cutting along a line", sch: "with threading, tracing and snipping activities",
       home: "try play-dough, Lego, peg games or cutting old magazines" },
     { id: "counting", group: "math", label: "Counting",
       s: ["counts to 100 by ones and tens with confidence", "counts well past 20 and can count on from any number"],
