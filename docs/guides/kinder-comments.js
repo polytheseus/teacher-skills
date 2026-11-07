@@ -50,7 +50,7 @@
       g: ["counts to 20 and is working towards higher numbers", "counts objects carefully, touching each one while counting"],
       f: "counting objects one at a time, touching each one once", sch: "with counting games and real objects",
       home: "count stairs, toys or snacks together and ask \"how many?\"" },
-    { id: "numbers", group: "math", label: "Recognising and writing numbers",
+    { id: "numbers", group: "math", label: "Number recognition and writing",
       s: ["recognises and writes numbers to 20", "reads numbers to 20 and matches each one to the right number of objects"],
       g: ["recognises numbers to 10 and is learning to write them", "is learning to read the numbers 11 to 20"],
       f: "recognising and writing numbers to 10", sch: "in small-group {math} games",
