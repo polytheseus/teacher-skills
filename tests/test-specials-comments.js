@@ -42,9 +42,9 @@ k.HABITS.forEach(function (h) { if (h.s) t("habit " + h.id, lone("Ava is also wo
 var r = k.build({ name: "Leo", pronoun: "he", subject: "music", unit: "rhythm and percussion", area: "playing", level: "strong", area2: "singing", level2: "developing", strengths: ["enthusiasm"], habit: "listening", home: "sing" });
 t("ok", r.ok && r.chars === r.text.length && r.issues.length === 0);
 t("strength first", /^Leo brings real enthusiasm to music lessons\./.test(r.text));
-t("unit", /In our work on rhythm and percussion, Leo keeps a steady beat/.test(r.text));
+t("unit", /In our work on rhythm and percussion, (Leo|he) keeps a steady beat/.test(r.text));
 t("area2 also", /Leo also joins in with singing/.test(r.text));
-t("next from lower level", /Next, Leo is working on matching the pitch of the notes when singing\./.test(r.text));
+t("next from lower level", /Next, (Leo|he) is working on matching the pitch of the notes when singing\./.test(r.text));
 t("habit", /Leo is also working on listening while others are speaking or performing\./.test(r.text));
 t("home + why", /clap the beat\. Singing for fun builds pitch and rhythm\./.test(r.text));
 var f = k.build({ name: "Leo", subject: "music", area: "playing", level: "strong", area2: "singing", level2: "developing", focus: "playing", strengths: ["kind"] });
@@ -154,6 +154,33 @@ rewrites.forEach(function (rw, i) {
   var after = rw[1].replace(/^Leave it out\.\s*/, "").replace(/^"|"$/g, "");
   t("rewrite " + i + " after clean", !serious(k.check(after)).length || (console.log(after, JSON.stringify(k.check(after))), false));
 });
+
+// The name doesn't open two sentences running (before 7 Nov 2026 it opened
+// almost every sentence), it's still in every comment, and "they" takes
+// plural verbs: the same random builds with "she" and "they" differ only in
+// pronouns and verbs.
+(function () {
+  var seed = 11, runs = 0, missing = 0, built = 0, odd = [];
+  function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+  function pick(a) { return a[Math.floor(rnd() * a.length)]; }
+  function ids(a) { if (!Array.isArray(a)) a = [].concat.apply([], Object.keys(a).map(function (x) { return a[x]; })); return a.filter(function (x) { return x.id; }).map(function (x) { return x.id; }); }
+  function some(a, n) { var r = []; for (var i = 0; i < n; i++) r.push(pick(a)); return r.filter(function (x, i) { return r.indexOf(x) === i; }); }
+  var OK = /^(she|he|her|his|hers|herself|himself)$|^(they|their|theirs|themselves)$/i;
+  for (var i = 0; i < 1500; i++) {
+    var o = {subject:pick(ids(k.SUBJECTS)),level:pick(ids(k.LEVELS)),strengths:some(ids(k.STRENGTHS),2),home:pick(ids(k.HOME))}; o.name = "Ava"; o.style = pick(["us", "uk"]); o.pronoun = pick(["she", "he", "they"]);
+    var r = k.build(o); if (!r.ok) continue; built++;
+    var lead = r.text.split(/(?<=[.!?])\s+/).map(function (s) { return /^(?:[^,.]*, )?Ava (?!')/.test(s); });
+    if (r.text.indexOf("Ava") < 0) missing++;
+    for (var x = 0; x + 1 < lead.length; x++) if (lead[x] && lead[x + 1]) { runs++; break; }
+    o.pronoun = "she"; var a = k.build(o).text.split(/\s+/); o.pronoun = "they"; var b = k.build(o).text.split(/\s+/);
+    if (a.length !== b.length) odd.push(b.join(" "));
+    else a.forEach(function (w, j) { var v = b[j]; if (w !== v && !(OK.test(w.replace(/\W+$/, "")) && OK.test(v.replace(/\W+$/, ""))) && !(w.replace(/\W+$/, "") in { is: 1, has: 1, was: 1, does: 1, goes: 1, "isn't": 1, "hasn't": 1 }) && !/s$/.test(w.replace(/\W+$/, ""))) odd.push(w + " -> " + v); });
+  }
+  t("name doesn't open two sentences running (" + built + " built)", built > 500 && runs === 0);
+  t("name in every comment", missing === 0);
+  t("she/they builds differ only in pronouns and verbs", !odd.length);
+  if (odd.length) console.log(odd.slice(0, 3).join("\n"));
+})();
 
 console.log(pass + " passed, " + fail + " failed");
 process.exit(fail ? 1 : 0);

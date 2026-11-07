@@ -37,11 +37,11 @@ Object.keys(k.ENGLISH).forEach(function (st) { Object.keys(k.ENGLISH[st]).forEac
 var r = k.build({ name: "Mateo", pronoun: "he", stage: "early", strong: "speaking", focus: "writing", strengths: ["brave", "friends"], content: "math", improved: "Now asks for help in English when he's stuck.", supports: ["visuals", "frames", "buddy"], home: "homelang", interp: "yes" });
 t("ok", r.ok && r.chars === r.text.length);
 t("strength first", /^Mateo has a go at speaking English/.test(r.text));
-t("has also", /Mateo has also made good friends and joins in at recess\./.test(r.text));
+t("has also", /(Mateo|He) has also made good friends and joins in at recess\./.test(r.text));
 t("improved lowercased", /Since the start of the quarter, Mateo now asks for help in English when he's stuck\./.test(r.text));
-t("content", /Mateo shows a good understanding of math/.test(r.text));
+t("content", /(Mateo|He) shows a good understanding of math/.test(r.text));
 t("english now", /In English, Mateo speaks in short phrases and simple sentences/.test(r.text));
-t("next", /Next, Mateo is working on writing two or three linked sentences\./.test(r.text));
+t("next", /Next, (Mateo|he) is working on writing two or three linked sentences\./.test(r.text));
 t("supports list", /supported with pictures, sentence starters and a buddy who speaks the same home language\./.test(r.text));
 t("home why", /A strong home language helps children learn English\./.test(r.text));
 t("interpreter", /arrange an interpreter/.test(r.text));
@@ -148,6 +148,33 @@ rewrites.forEach(function (rw, i) {
   t("after clean " + i, !s.length);
   if (s.length) console.log("  after " + i + ": " + JSON.stringify(s));
 });
+
+// The name doesn't open two sentences running (before 7 Nov 2026 it opened
+// almost every sentence), it's still in every comment, and "they" takes
+// plural verbs: the same random builds with "she" and "they" differ only in
+// pronouns and verbs.
+(function () {
+  var seed = 11, runs = 0, missing = 0, built = 0, odd = [];
+  function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+  function pick(a) { return a[Math.floor(rnd() * a.length)]; }
+  function ids(a) { if (!Array.isArray(a)) a = [].concat.apply([], Object.keys(a).map(function (x) { return a[x]; })); return a.filter(function (x) { return x.id; }).map(function (x) { return x.id; }); }
+  function some(a, n) { var r = []; for (var i = 0; i < n; i++) r.push(pick(a)); return r.filter(function (x, i) { return r.indexOf(x) === i; }); }
+  var OK = /^(she|he|her|his|hers|herself|himself)$|^(they|their|theirs|themselves)$/i;
+  for (var i = 0; i < 1500; i++) {
+    var o = (function(){var st=pick(ids(k.STAGES)),dm=Object.keys(k.ENGLISH[st]);return {stage:st,strong:pick(dm),focus:pick(dm),strengths:some(ids(k.STRENGTHS),2),content:rnd()<.5?pick(ids(k.CONTENT)):"",supports:some(ids(k.SUPPORTS),2),home:pick(ids(k.HOME))};})(); o.name = "Ava"; o.style = pick(["us", "uk"]); o.pronoun = pick(["she", "he", "they"]);
+    var r = k.build(o); if (!r.ok) continue; built++;
+    var lead = r.text.split(/(?<=[.!?])\s+/).map(function (s) { return /^(?:[^,.]*, )?Ava (?!')/.test(s); });
+    if (r.text.indexOf("Ava") < 0) missing++;
+    for (var x = 0; x + 1 < lead.length; x++) if (lead[x] && lead[x + 1]) { runs++; break; }
+    o.pronoun = "she"; var a = k.build(o).text.split(/\s+/); o.pronoun = "they"; var b = k.build(o).text.split(/\s+/);
+    if (a.length !== b.length) odd.push(b.join(" "));
+    else a.forEach(function (w, j) { var v = b[j]; if (w !== v && !(OK.test(w.replace(/\W+$/, "")) && OK.test(v.replace(/\W+$/, ""))) && !(w.replace(/\W+$/, "") in { is: 1, has: 1, was: 1, does: 1, goes: 1, "isn't": 1, "hasn't": 1 }) && !/s$/.test(w.replace(/\W+$/, ""))) odd.push(w + " -> " + v); });
+  }
+  t("name doesn't open two sentences running (" + built + " built)", built > 500 && runs === 0);
+  t("name in every comment", missing === 0);
+  t("she/they builds differ only in pronouns and verbs", !odd.length);
+  if (odd.length) console.log(odd.slice(0, 3).join("\n"));
+})();
 
 console.log(pass + " passed, " + fail + " failed");
 process.exit(fail ? 1 : 0);

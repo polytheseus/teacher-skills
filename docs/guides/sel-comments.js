@@ -158,6 +158,35 @@
     return "also " + s;
   }
 
+  // The name opens at most two sentences running: a part that starts with the
+  // name (after any "This year, ") takes the pronoun when the part before
+  // already names the student. "they" takes plural verbs (has -> have, and
+  // any listed verb after "and", "but" or a comma in the same sentence).
+  // Runs on filled text, so {share}-style words are already in place.
+  var SUBJ = { she: "she", he: "he", they: "they" };
+  var PLURAL = { is: "are", has: "have", was: "were", does: "do", goes: "go", "isn't": "aren't", "hasn't": "haven't", "wasn't": "weren't", "doesn't": "don't" };
+  var VERBS = /^(is|has|was|does|goes|isn't|hasn't|answers|considers|counts|encourages|includes|jumps|learns|misses|recognises|recognizes|reflects|waits|acts|applies|approaches|arrives|asks|attends|brings|builds|calls|carries|catches|chats|chooses|comes|completes|contributes|cooperates|copies|demonstrates|describes|doubts|enjoys|explains|expresses|finds|follows|gets|gives|greets|helps|holds|joins|keeps|knows|labels|leaves|likes|listens|loves|makes|manages|names|needs|notices|owns|performs|picks|plans|prefers|prepares|reads|reasons|remembers|responds|runs|rushes|seeks|seems|sets|shares|shows|sings|solves|sorts|speaks|stops|takes|talks|thinks|throws|treats|tries|understands|uses|wants|watches|works|writes)$/;
+  function pl(v) { return PLURAL[v] || (/(ch|sh|ss|x|zz)es$/.test(v) ? v.slice(0, -2) : /[^aeiou]ies$/.test(v) ? v.slice(0, -3) + "y" : /[^su]s$/.test(v) ? v.slice(0, -1) : v); }
+  function vary(list, o) {
+    var nm = String(o.name || "").trim(), prev = false;
+    if (!nm || !SUBJ[o.pronoun]) return list;
+    var lead = new RegExp("^([^,.]*, )?" + nm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + " ((?:(?:also|still|now|often|usually|sometimes|always) )*)([a-z']+)\\b(?!')");
+    return list.map(function (p) {
+      var m = prev && p.match(lead);
+      if (m && (VERBS.test(m[3]) || /^(can|will|would|could|may|might|should|must)$/.test(m[3]))) {
+        var v = m[3], rest = p.slice(m[0].length), cut = rest.search(/[.;:!?]/);
+        if (o.pronoun === "they") {
+          v = pl(v);
+          if (cut < 0) cut = rest.length;
+          rest = rest.slice(0, cut).replace(/((?:,? and|,? but|,? or|,) (?:also |often |usually |sometimes |still |now )?)([a-z']+)\b/g, function (x, sep, w) { return VERBS.test(w) ? sep + pl(w) : x; }) + rest.slice(cut);
+        }
+        p = (m[1] || "") + SUBJ[o.pronoun] + " " + m[2] + v + rest;
+      }
+      prev = p.indexOf(nm) >= 0;
+      return p;
+    });
+  }
+
   // opts: { name, pronoun, style: us|uk, age: young|older, timing: early|end,
   //         period, skill, level, skill2, level2, focus: skill id,
   //         school: bool, home: bool, limit }
@@ -185,7 +214,7 @@
     if (o.home) { idxHome = parts.length; parts.push("At home, you could " + age(fs.home, o) + "."); }
     var idxClose = parts.length;
     parts.push(pick(CLOSES[o.timing === "end" ? "end" : "early"], seed));
-    function join() { return cap(parts.filter(Boolean).map(function (p) { return cap(fill(p, o)); }).join(" ").replace(/\s+/g, " ").trim()); }
+    function join() { return cap(vary(parts.filter(Boolean).map(function (p) { return fill(p, o); }), o).map(cap).join(" ").replace(/\s+/g, " ").trim()); }
     var limit = Number(o.limit) || 0, text = join();
     var trims = [
       function () { parts[idxClose] = ""; },

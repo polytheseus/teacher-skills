@@ -31,7 +31,7 @@ k.AREAS.forEach(function (a) { a.c.forEach(function (c, j) { var x = k.fill("Ava
 var r = k.build({ name: "Jordan", pronoun: "he", strengths: ["tries", "oral"], improved: "Now reads chapter books with a partner.", areas: ["comprehension"], level: "big", told: "yes" });
 t("ok", r.ok && r.chars === r.text.length);
 t("strength first", /^Jordan keeps trying/.test(r.text));
-t("second strength", /Jordan also explains his thinking/.test(r.text));
+t("second strength", /(Jordan|He) also explains his thinking/.test(r.text));
 t("improved lowercased", /progress this quarter: Jordan now reads chapter books with a partner\./.test(r.text));
 t("big line", /main focus/.test(r.text));
 t("support", /To help, we're working on/.test(r.text));
@@ -40,7 +40,7 @@ t("no issues", r.issues.length === 0);
 t("is also", /Ava is also a kind classmate/.test(k.build({ name: "Ava", strengths: ["tries", "kind"], areas: ["focus"] }).text));
 t("has also", /Ava has also a creative/.test(k.build({ name: "Ava", strengths: ["tries", "creative"], areas: ["focus"] }).text) === false);
 var u = k.build({ name: "Ava", pronoun: "they", style: "uk", strengths: ["kind"], areas: ["facts"], timing: "end" });
-t("uk maths + term-less end", /maths facts/.test(u.text) && /practise a few/.test(u.text) && /This year, Ava/.test(u.text) && /summer|next year/.test(u.text));
+t("uk maths + term-less end", /maths facts/.test(u.text) && /practise a few/.test(u.text) && /This year, (Ava|they)/.test(u.text) && /summer|next year/.test(u.text));
 t("uk they", /learning their number facts/.test(u.text));
 t("us practice", /practice/.test(k.build({ name: "Ava", strengths: ["kind"], areas: ["spelling"] }).text));
 t("custom support", /we're working on handing in every assignment on time, with a homework club on Thursdays\./.test(k.build({ name: "Ava", strengths: ["kind"], areas: ["work"], support: "With a homework club on Thursdays." }).text));
@@ -95,6 +95,33 @@ rewrites.forEach(function (rw, i) {
     t("rewrite good clean " + i + ": " + JSON.stringify(g), !g.length);
   }
 });
+
+// The name doesn't open two sentences running (before 7 Nov 2026 it opened
+// almost every sentence), it's still in every comment, and "they" takes
+// plural verbs: the same random builds with "she" and "they" differ only in
+// pronouns and verbs.
+(function () {
+  var seed = 11, runs = 0, missing = 0, built = 0, odd = [];
+  function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+  function pick(a) { return a[Math.floor(rnd() * a.length)]; }
+  function ids(a) { if (!Array.isArray(a)) a = [].concat.apply([], Object.keys(a).map(function (x) { return a[x]; })); return a.filter(function (x) { return x.id; }).map(function (x) { return x.id; }); }
+  function some(a, n) { var r = []; for (var i = 0; i < n; i++) r.push(pick(a)); return r.filter(function (x, i) { return r.indexOf(x) === i; }); }
+  var OK = /^(she|he|her|his|hers|herself|himself)$|^(they|their|theirs|themselves)$/i;
+  for (var i = 0; i < 1500; i++) {
+    var o = {strengths:some(ids(k.STRENGTHS),2),areas:some(ids(k.AREAS),1+Math.floor(rnd()*2)),level:pick(["mild","big"]),told:pick(["no","yes"]),timing:pick(["early","end"]),improved:rnd()<.3?"now reads chapter books with a partner":""}; o.name = "Ava"; o.style = pick(["us", "uk"]); o.pronoun = pick(["she", "he", "they"]);
+    var r = k.build(o); if (!r.ok) continue; built++;
+    var lead = r.text.split(/(?<=[.!?])\s+/).map(function (s) { return /^(?:[^,.]*, )?Ava (?!')/.test(s); });
+    if (r.text.indexOf("Ava") < 0) missing++;
+    for (var x = 0; x + 1 < lead.length; x++) if (lead[x] && lead[x + 1]) { runs++; break; }
+    o.pronoun = "she"; var a = k.build(o).text.split(/\s+/); o.pronoun = "they"; var b = k.build(o).text.split(/\s+/);
+    if (a.length !== b.length) odd.push(b.join(" "));
+    else a.forEach(function (w, j) { var v = b[j]; if (w !== v && !(OK.test(w.replace(/\W+$/, "")) && OK.test(v.replace(/\W+$/, ""))) && !(w.replace(/\W+$/, "") in { is: 1, has: 1, was: 1, does: 1, goes: 1, "isn't": 1, "hasn't": 1 }) && !/s$/.test(w.replace(/\W+$/, ""))) odd.push(w + " -> " + v); });
+  }
+  t("name doesn't open two sentences running (" + built + " built)", built > 500 && runs === 0);
+  t("name in every comment", missing === 0);
+  t("she/they builds differ only in pronouns and verbs", !odd.length);
+  if (odd.length) console.log(odd.slice(0, 3).join("\n"));
+})();
 
 console.log(pass + " passed, " + fail + " failed");
 process.exit(fail ? 1 : 0);

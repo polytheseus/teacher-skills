@@ -50,7 +50,7 @@ t("every skill has an area", k.SKILLS.every(function (s) { return k.AREAS.some(f
 var r = k.build({ name: "Mateo", pronoun: "he", skill: "empathy", level: "strong", skill2: "calm", level2: "developing", home: true });
 t("ok", r.ok && r.chars === r.text.length && r.issues.length === 0);
 t("strength first", /^Mateo notices how others are feeling and responds with real kindness\./.test(r.text));
-t("second skill also", /Mateo is also learning ways to calm down when upset, such as taking deep breaths or using the calm corner\./.test(r.text));
+t("second skill also", /(Mateo|He) is also learning ways to calm down when upset, such as taking deep breaths or using the calm corner\./.test(r.text));
 t("next from weaker skill", /Next, Mateo is working on using one calming strategy, such as slow breaths, at the first sign of feeling upset\./.test(r.text));
 t("school line US", /We are practicing this at school with a calm-down plan that Mateo helped to choose\./.test(r.text));
 t("home tip US", /At home, you could practice one calming strategy together/.test(r.text));
@@ -83,10 +83,10 @@ t("full is long", full.chars > 400);
 [400, 300, 250].forEach(function (lim) {
   var x = k.build(Object.assign({}, long, { limit: lim }));
   t("fits " + lim + " (" + x.chars + ")", x.chars <= lim && !has(x.issues, "fix", /over your limit/));
-  t("keeps next step at " + lim, /Next, Alexandra is working on/.test(x.text));
+  t("keeps next step at " + lim, /Next, (Alexandra|she|he|they) (is|are) working on/.test(x.text));
 });
 var tiny = k.build(Object.assign({}, long, { limit: 200 }));
-t("dropping skill 2 switches next step", /Next, Alexandra is working on helping a group reach a decision/.test(tiny.text) && has(tiny.issues, "note", /Dropped the second skill/));
+t("dropping skill 2 switches next step", /Next, (Alexandra|she|he|they) (is|are) working on helping a group reach a decision/.test(tiny.text) && has(tiny.issues, "note", /Dropped the second skill/));
 t("over-limit flagged when it can't fit", has(k.build(Object.assign({}, long, { limit: 60 })).issues, "fix", /over your limit of 60/));
 var maxLen = 0;
 k.SKILLS.forEach(function (a) { k.SKILLS.forEach(function (b) { ["young", "older"].forEach(function (ag) {
@@ -165,6 +165,33 @@ rewrites.forEach(function (rw) {
   var ai = k.check(after, { name: name });
   t("rewrite after clean: " + rw[0], !ai.length || (console.log(after, JSON.stringify(ai)), false));
 });
+
+// The name doesn't open two sentences running (before 7 Nov 2026 it opened
+// almost every sentence), it's still in every comment, and "they" takes
+// plural verbs: the same random builds with "she" and "they" differ only in
+// pronouns and verbs.
+(function () {
+  var seed = 11, runs = 0, missing = 0, built = 0, odd = [];
+  function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+  function pick(a) { return a[Math.floor(rnd() * a.length)]; }
+  function ids(a) { if (!Array.isArray(a)) a = [].concat.apply([], Object.keys(a).map(function (x) { return a[x]; })); return a.filter(function (x) { return x.id; }).map(function (x) { return x.id; }); }
+  function some(a, n) { var r = []; for (var i = 0; i < n; i++) r.push(pick(a)); return r.filter(function (x, i) { return r.indexOf(x) === i; }); }
+  var OK = /^(she|he|her|his|hers|herself|himself)$|^(they|their|theirs|themselves)$/i;
+  for (var i = 0; i < 1500; i++) {
+    var o = {skill:pick(ids(k.SKILLS)),level:pick(ids(k.LEVELS)),skill2:rnd()<.6?pick(ids(k.SKILLS)):"",level2:pick(ids(k.LEVELS))}; o.name = "Ava"; o.style = pick(["us", "uk"]); o.pronoun = pick(["she", "he", "they"]);
+    var r = k.build(o); if (!r.ok) continue; built++;
+    var lead = r.text.split(/(?<=[.!?])\s+/).map(function (s) { return /^(?:[^,.]*, )?Ava (?!')/.test(s); });
+    if (r.text.indexOf("Ava") < 0) missing++;
+    for (var x = 0; x + 1 < lead.length; x++) if (lead[x] && lead[x + 1]) { runs++; break; }
+    o.pronoun = "she"; var a = k.build(o).text.split(/\s+/); o.pronoun = "they"; var b = k.build(o).text.split(/\s+/);
+    if (a.length !== b.length) odd.push(b.join(" "));
+    else a.forEach(function (w, j) { var v = b[j]; if (w !== v && !(OK.test(w.replace(/\W+$/, "")) && OK.test(v.replace(/\W+$/, ""))) && !(w.replace(/\W+$/, "") in { is: 1, has: 1, was: 1, does: 1, goes: 1, "isn't": 1, "hasn't": 1 }) && !/s$/.test(w.replace(/\W+$/, ""))) odd.push(w + " -> " + v); });
+  }
+  t("name doesn't open two sentences running (" + built + " built)", built > 500 && runs === 0);
+  t("name in every comment", missing === 0);
+  t("she/they builds differ only in pronouns and verbs", !odd.length);
+  if (odd.length) console.log(odd.slice(0, 3).join("\n"));
+})();
 
 console.log(pass + " passed, " + fail + " failed");
 process.exit(fail ? 1 : 0);

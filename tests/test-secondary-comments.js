@@ -40,10 +40,10 @@ function lone(x, o) { var is = k.check(k.fill(x, o)).filter(function (i) { retur
 var r = k.build({ name: "Jordan", pronoun: "he", course: "Biology", unit: "cells and microscopy", area: "practical", level: "strong", area2: "writing", level2: "developing", strengths: ["curious"], concern: "missing", deadline: "November 20", help: "Tuesday after-school help in room 114" });
 t("ok", r.ok && r.chars === r.text.length && r.issues.length === 0);
 t("strength first + course", /^Jordan shows real curiosity about Biology\./.test(r.text));
-t("unit", /In our work on cells and microscopy, Jordan plans and carries out practical work/.test(r.text));
+t("unit", /In our work on cells and microscopy, (Jordan|he) plans and carries out practical work/.test(r.text));
 t("area2 also", /Jordan is also learning to organize written answers/.test(r.text));
-t("concern + deadline", /Jordan has some missing work this quarter, and handing it in by November 20 will give a fuller picture of what Jordan can do\./.test(r.text));
-t("next from lower level", /Next, Jordan is working on planning each answer before writing/.test(r.text));
+t("concern + deadline", /(Jordan|He) has some missing work this quarter, and handing it in by November 20 will give a fuller picture of what Jordan can do\./.test(r.text));
+t("next from lower level", /Next, (Jordan|he) is working on planning each answer before writing/.test(r.text));
 t("help", /Jordan is welcome at Tuesday after-school help in room 114\./.test(r.text));
 t("concern close", /Please get in touch if you would like to talk about how we can support Jordan\.$/.test(r.text));
 t("help cleaned", /Ava is welcome at catch-up club\./.test(k.build({ name: "Ava", help: "come to catch-up club.", strengths: ["effort"] }).text));
@@ -89,12 +89,12 @@ t("longest full is long", full.text.length > 650);
   var o = JSON.parse(JSON.stringify(longest)); o.limit = lim;
   var x = k.build(o);
   t("fits " + lim + " (" + x.chars + ")", x.chars <= lim && !has(x.issues, "fix", /over your limit/));
-  t("core kept at " + lim, /^Alexandra works hard/.test(x.text) && /Missed lessons/.test(x.text) && /Next, Alexandra is working on/.test(x.text));
+  t("core kept at " + lim, /^Alexandra works hard/.test(x.text) && /Missed lessons/.test(x.text) && /Next, (Alexandra|she|he|they) (is|are) working on/.test(x.text));
 });
 var typical = k.build({ name: "Ava", pronoun: "she", course: "Spanish 2", area: "discussion", level: "secure", area2: "writing", level2: "developing", strengths: ["effort", "respect"], habit: "review", limit: 350 });
 t("typical fits 350 (" + typical.chars + ")", typical.chars <= 350 && /Next, Ava is working on/.test(typical.text));
 var sw = k.build({ name: "Jordan", pronoun: "he", course: "Biology", unit: "cells and microscopy", area: "practical", level: "strong", area2: "writing", level2: "developing", strengths: ["curious"], concern: "missing", deadline: "November 20", help: "Tuesday after-school help in room 114", limit: 500 });
-t("dropped area2 switches next step to area 1", !/written answers/.test(sw.text) && /Next, Jordan is working on evaluating his methods/.test(sw.text));
+t("dropped area2 switches next step to area 1", !/written answers/.test(sw.text) && /Next, (Jordan|he) is working on evaluating his methods/.test(sw.text));
 var tiny = k.build({ name: "Ava", strengths: ["effort"], area: "knowledge", level: "developing", limit: 100 });
 t("over limit flagged when it can't fit", has(tiny.issues, "fix", /over your limit/));
 
@@ -165,6 +165,33 @@ rewrites.forEach(function (rw, i) {
     t("rewrite " + i + " leave-out alternative clean", aq.length === 0);
   }
 });
+
+// The name doesn't open two sentences running (before 7 Nov 2026 it opened
+// almost every sentence), it's still in every comment, and "they" takes
+// plural verbs: the same random builds with "she" and "they" differ only in
+// pronouns and verbs.
+(function () {
+  var seed = 11, runs = 0, missing = 0, built = 0, odd = [];
+  function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+  function pick(a) { return a[Math.floor(rnd() * a.length)]; }
+  function ids(a) { if (!Array.isArray(a)) a = [].concat.apply([], Object.keys(a).map(function (x) { return a[x]; })); return a.filter(function (x) { return x.id; }).map(function (x) { return x.id; }); }
+  function some(a, n) { var r = []; for (var i = 0; i < n; i++) r.push(pick(a)); return r.filter(function (x, i) { return r.indexOf(x) === i; }); }
+  var OK = /^(she|he|her|his|hers|herself|himself)$|^(they|their|theirs|themselves)$/i;
+  for (var i = 0; i < 1500; i++) {
+    var o = {area:pick(ids(k.AREAS)),level:pick(ids(k.LEVELS)),area2:rnd()<.6?pick(ids(k.AREAS)):"",level2:pick(ids(k.LEVELS)),strengths:some(ids(k.STRENGTHS),2),habit:rnd()<.5?pick(ids(k.HABITS)):"",concern:rnd()<.4?pick(ids(k.CONCERNS)):""}; o.name = "Ava"; o.style = pick(["us", "uk"]); o.pronoun = pick(["she", "he", "they"]);
+    var r = k.build(o); if (!r.ok) continue; built++;
+    var lead = r.text.split(/(?<=[.!?])\s+/).map(function (s) { return /^(?:[^,.]*, )?Ava (?!')/.test(s); });
+    if (r.text.indexOf("Ava") < 0) missing++;
+    for (var x = 0; x + 1 < lead.length; x++) if (lead[x] && lead[x + 1]) { runs++; break; }
+    o.pronoun = "she"; var a = k.build(o).text.split(/\s+/); o.pronoun = "they"; var b = k.build(o).text.split(/\s+/);
+    if (a.length !== b.length) odd.push(b.join(" "));
+    else a.forEach(function (w, j) { var v = b[j]; if (w !== v && !(OK.test(w.replace(/\W+$/, "")) && OK.test(v.replace(/\W+$/, ""))) && !(w.replace(/\W+$/, "") in { is: 1, has: 1, was: 1, does: 1, goes: 1, "isn't": 1, "hasn't": 1 }) && !/s$/.test(w.replace(/\W+$/, ""))) odd.push(w + " -> " + v); });
+  }
+  t("name doesn't open two sentences running (" + built + " built)", built > 500 && runs === 0);
+  t("name in every comment", missing === 0);
+  t("she/they builds differ only in pronouns and verbs", !odd.length);
+  if (odd.length) console.log(odd.slice(0, 3).join("\n"));
+})();
 
 console.log(pass + "/" + (pass + fail) + " passed");
 process.exit(fail ? 1 : 0);

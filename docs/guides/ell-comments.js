@@ -131,6 +131,35 @@
   }
   function list(items) { return items.length < 2 ? items.join("") : items.slice(0, -1).join(", ") + " and " + items[items.length - 1]; }
 
+  // The name opens at most two sentences running: a part that starts with the
+  // name (after any "This year, ") takes the pronoun when the part before
+  // already names the student. "they" takes plural verbs (has -> have, and
+  // any listed verb after "and", "but" or a comma in the same sentence).
+  // Runs on filled text, so {share}-style words are already in place.
+  var SUBJ = { she: "she", he: "he", they: "they" };
+  var PLURAL = { is: "are", has: "have", was: "were", does: "do", goes: "go", "isn't": "aren't", "hasn't": "haven't", "wasn't": "weren't", "doesn't": "don't" };
+  var VERBS = /^(is|has|was|does|goes|isn't|hasn't|answers|considers|counts|encourages|includes|jumps|learns|misses|recognises|recognizes|reflects|waits|acts|applies|approaches|arrives|asks|attends|brings|builds|calls|carries|catches|chats|chooses|comes|completes|contributes|cooperates|copies|demonstrates|describes|doubts|enjoys|explains|expresses|finds|follows|gets|gives|greets|helps|holds|joins|keeps|knows|labels|leaves|likes|listens|loves|makes|manages|names|needs|notices|owns|performs|picks|plans|prefers|prepares|reads|reasons|remembers|responds|runs|rushes|seeks|seems|sets|shares|shows|sings|solves|sorts|speaks|stops|takes|talks|thinks|throws|treats|tries|understands|uses|wants|watches|works|writes)$/;
+  function pl(v) { return PLURAL[v] || (/(ch|sh|ss|x|zz)es$/.test(v) ? v.slice(0, -2) : /[^aeiou]ies$/.test(v) ? v.slice(0, -3) + "y" : /[^su]s$/.test(v) ? v.slice(0, -1) : v); }
+  function vary(list, o) {
+    var nm = String(o.name || "").trim(), prev = false;
+    if (!nm || !SUBJ[o.pronoun]) return list;
+    var lead = new RegExp("^([^,.]*, )?" + nm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + " ((?:(?:also|still|now|often|usually|sometimes|always) )*)([a-z']+)\\b(?!')");
+    return list.map(function (p) {
+      var m = prev && p.match(lead);
+      if (m && (VERBS.test(m[3]) || /^(can|will|would|could|may|might|should|must)$/.test(m[3]))) {
+        var v = m[3], rest = p.slice(m[0].length), cut = rest.search(/[.;:!?]/);
+        if (o.pronoun === "they") {
+          v = pl(v);
+          if (cut < 0) cut = rest.length;
+          rest = rest.slice(0, cut).replace(/((?:,? and|,? but|,? or|,) (?:also |often |usually |sometimes |still |now )?)([a-z']+)\b/g, function (x, sep, w) { return VERBS.test(w) ? sep + pl(w) : x; }) + rest.slice(cut);
+        }
+        p = (m[1] || "") + SUBJ[o.pronoun] + " " + m[2] + v + rest;
+      }
+      prev = p.indexOf(nm) >= 0;
+      return p;
+    });
+  }
+
   // opts: { name, pronoun, style: us|uk, timing: early|end, period, stage,
   //         strong: domain id, focus: domain id, strengths: [id], content: id,
   //         improved: "text", supports: [id], home: id, interp: yes|no, limit }
@@ -162,7 +191,7 @@
     parts.push(o.interp === "yes" ? CONTACT.interp : CONTACT.plain);
     var idxClose = parts.length;
     parts.push(pick(CLOSES[o.timing === "end" ? "end" : "early"], seed));
-    function join() { return cap(parts.filter(Boolean).map(function (p) { return cap(fill(p, o)); }).join(" ").replace(/\s+/g, " ").trim()); }
+    function join() { return cap(vary(parts.filter(Boolean).map(function (p) { return fill(p, o); }), o).map(cap).join(" ").replace(/\s+/g, " ").trim()); }
     var limit = Number(o.limit) || 0, text = join();
     var trims = [
       function () { if (idxWhy >= 0) parts[idxWhy] = ""; },
@@ -217,7 +246,7 @@
     if (needs >= 3) issues.push({ level: "review", msg: "\"Needs to\", \"must\" or \"should\" " + needs + " times. Turn one into \"next, X is working on\" and say how you're helping." });
     if (!/\b(supported|support|to help|we'?re|we are|we have|we've|I'm|I am|small[- ]group|buddy|word bank|sentence starters?|visuals|helping)\b/i.test(t)) issues.push({ level: "review", msg: "No support mentioned. Say what helps in class (pictures, sentence starters, a word bank), so the family knows the school is on it." });
     if (!/\b(next|working on|work on|focus|goal|aim|learning to|is learning|starting to)\b/i.test(t)) issues.push({ level: "review", msg: "No next step in English. Name one specific thing the student is working on next." });
-    if (!/\b(can|now|understands|follows|reads|writes|speaks|explains|uses|joins|takes part|recogni[sz]es|copies|labels|is starting to|answers|has a go)\b/i.test(t)) issues.push({ level: "review", msg: "Nothing the student can do in English yet. Start from what they do now, however small (\"follows class routines\", \"uses single words to ask for help\")." });
+    if (!/\b(can|now|understands?|follows?|reads?|writes?|speaks?|explains?|uses?|joins?|takes? part|recogni[sz]es|recogni[sz]e|copies|copy|labels?|(is|are) starting to|answers?|(has|have) a go)\b/i.test(t)) issues.push({ level: "review", msg: "Nothing the student can do in English yet. Start from what they do now, however small (\"follows class routines\", \"uses single words to ask for help\")." });
     if (!/\b(at home|home language|home|together|family)\b/i.test(t)) issues.push({ level: "note", msg: "No home tip. Reading and talking together in the home language is one of the most useful things families can do." });
     if (!/\b(get in touch|contact|call|email|meet|talk (to|with)|questions|let me know|reach out|interpreter)\b/i.test(t)) issues.push({ level: "note", msg: "No invitation to talk. If your school can arrange an interpreter, offer it here." });
     var ex = (t.match(/!/g) || []).length;
