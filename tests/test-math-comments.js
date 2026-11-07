@@ -44,7 +44,7 @@ if (phraseBad.length) console.log(phraseBad.slice(0, 5).join("\n"));
 var r = k.build({ name: "Leo", pronoun: "he", band: "35", opening: "curious", moment: "Showed the class two ways to work out 25 x 12.", levels: { facts: "s", reasoning: "g", fractions: "f" } });
 t("ok", r.ok && r.chars === r.text.length);
 t("opening", /^Leo (is curious|likes to know)/.test(r.text));
-t("moment lowercased", /I was impressed when Leo showed the class two ways to work out 25 x 12\./.test(r.text));
+t("moment lowercased", /I was impressed when he showed the class two ways to work out 25 x 12\./.test(r.text));
 t("pronoun alternates", /\. He /.test(r.text));
 t("on track tail once", (r.text.match(/right on track/g) || []).length === 1);
 t("next step + sch", /Our next step is comparing fractions and finding equivalent fractions, which we're practicing with fraction strips/.test(r.text));
@@ -141,7 +141,7 @@ t("gives up", has(iss("Ava gives up easily. " + ok), "review", /character verdic
   t("au UK spelling", /practis/.test(k.fill("practise", au)));
   var lv = {}; lv[k.areasFor("k2")[0].id] = "s"; lv[k.areasFor("k2")[1].id] = "f";
   var r = k.build({ name: "Ruby", pronoun: "she", style: "au", band: "k2", grade: "C", levels: lv });
-  t("au C sentence", /Ruby is working at the expected standard in maths\./.test(r.text) && !/grade level/.test(r.text));
+  t("au C sentence", /(Ruby|She) is working at the expected standard in maths\./.test(r.text) && !/grade level/.test(r.text));
   t("au C clean", !serious(r.issues).length);
   var u = k.build({ name: "Ruby", pronoun: "she", style: "us", band: "k2", grade: "C", levels: lv });
   t("us C grade level", /grade level/.test(u.text));
@@ -173,6 +173,27 @@ t("gives up", has(iss("Ava gives up easily. " + ok), "review", /character verdic
   t("C excellent note", has(ci("Ruby does excellent work. " + ok, "C"), "note", /beside a C/));
   t("no grade no grade checks", !ci("Ruby does excellent work. " + ok).some(function (i) { return /beside/.test(i.msg); }));
   t("us unaffected by au checks", !k.check("Ruby is in third grade. " + ok, { style: "us" }).some(function (i) { return /Australian/.test(i.msg); }));
+})();
+
+// The name isn't in three sentences running (opening, moment, first strand all
+// started with it before 7 Nov 2026), and it's still in every comment.
+(function () {
+  var runs = 0, missing = 0, built = 0;
+  Object.keys(k.BANDS).forEach(function (band) {
+    var list = k.areasFor(band);
+    list.forEach(function (a, i) { ["she", "he", "they", ""].forEach(function (p) { ["early", "end"].forEach(function (tm) { ["hardworking", "none"].forEach(function (op) { ["", "built 24 as an array three ways"].forEach(function (m) {
+      var lv = {}; lv[a.id] = "s"; lv[list[(i + 2) % list.length].id] = "g"; lv[list[(i + 5) % list.length].id] = "f";
+      var r = k.build({ name: "Ava", pronoun: p, band: band, timing: tm, opening: op, moment: m, levels: lv });
+      if (!r.ok) return; built++;
+      var has = r.text.split(/(?<=[.!?])\s+/).map(function (s) { return /\bAva\b/.test(s); });
+      if (has.indexOf(true) < 0) missing++;
+      for (var x = 0; x + 2 < has.length; x++) if (p && has[x] && has[x + 1] && has[x + 2]) { runs++; break; }
+    }); }); }); }); });
+  });
+  t("no name in 3 sentences running (" + built + " built)", built > 100 && runs === 0);
+  t("name in every comment", missing === 0);
+  var r = k.build({ name: "Ava", pronoun: "she", band: "35", opening: "hardworking", moment: "built 24 as an array three ways", levels: { facts: "s", reasoning: "g", addsub: "f" } });
+  t("moment after a named opening uses the pronoun", /I was impressed when she built 24/.test(r.text) && /^Ava /.test(r.text));
 })();
 
 console.log(pass + " passed, " + fail + " failed");

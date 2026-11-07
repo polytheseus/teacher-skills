@@ -38,7 +38,7 @@ k.AREAS.forEach(function (a) {
 var r = k.build({ name: "Maya", pronoun: "she", style: "us", moment: "read a whole page in a dinosaur voice.", levels: { phonics: "s", facts: "g", sentences: "f" } });
 t("ok", r.ok && r.chars === r.text.length);
 t("names first grade", /first grade/.test(r.text));
-t("moment", /I loved seeing Maya read a whole page in a dinosaur voice\./.test(r.text));
+t("moment", /I loved seeing her read a whole page in a dinosaur voice\./.test(r.text));
 t("subject groups", /In reading, Maya .*In math/.test(r.text));
 t("pronoun alternates", /\. She|In math, she/.test(r.text));
 t("on-track clause once", (r.text.match(/right on track/g) || []).length === 1);

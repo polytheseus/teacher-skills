@@ -235,8 +235,8 @@
     he: { their: "his", them: "him", they_see: "he sees", they_notice: "he notices", they_record: "he records", they_would: "he would", they_think: "he thinks", they_learned: "he learned", they_know: "he knows", they_are: "he is" },
     they: { their: "their", them: "them", they_see: "they see", they_notice: "they notice", they_record: "they record", they_would: "they would", they_think: "they think", they_learned: "they learned", they_know: "they know", they_are: "they are" }
   };
-  var US = { practise: "practice", practised: "practiced", practising: "practicing", analyses: "analyzes", labelled: "labeled", mouldy: "moldy", modelling: "modeling", colour: "color", colours: "colors" };
-  var US_RE = /\b(practised|practising|practise|analyses|labelled|mouldy|modelling|colours|colour)\b/g;
+  var US = { practise: "practice", practised: "practiced", practising: "practicing", analyses: "analyzes", analyse: "analyze", labelled: "labeled", mouldy: "moldy", modelling: "modeling", colour: "color", colours: "colors" };
+  var US_RE = /\b(practised|practising|practise|analyses|analyse|labelled|mouldy|modelling|colours|colour)\b/g;
 
   function bt(v, band) { return v && typeof v === "object" && !Array.isArray(v) ? v[band] : v; }
   function plural(vp) {
@@ -351,10 +351,10 @@
     if (o.opening !== "none") { idxOpen = parts.length; parts.push(pick(open, seed)); }
     if (ca && grade) { var ss = strandSentence(o, subj, grade); if (ss) parts.push(ss); }
     var moment = String(o.moment || "").trim().replace(/[.!]+$/, "");
-    if (moment) parts.push("I was impressed when {name} " + moment.charAt(0).toLowerCase() + moment.slice(1) + ".");
+    if (moment) parts.push("I was impressed when " + ((idxOpen >= 0 && /\{name\}/.test(parts[idxOpen]) && { she: "she", he: "he" }[o.pronoun]) || "{name}") + " " + moment.charAt(0).toLowerCase() + moment.slice(1) + ".");
     // Subjects alternate between the name and a pronoun so the name isn't on
     // every sentence; "they" takes a plural verb (asks -> ask, is -> are).
-    var n = 0, SUBJ = { she: "she", he: "he", they: "they" };
+    var n = /\{name\}/.test(parts[parts.length - 1] || "") ? 1 : 0, SUBJ = { she: "she", he: "he", they: "they" };
     function sentence(vp, tail) {
       var pron = SUBJ[o.pronoun] && n % 2 === 1;
       n++;
@@ -374,7 +374,7 @@
       if (focus[1]) parts.push((o.timing === "end" ? "It would also help to keep working on " : "We're also working on ") + bt(focus[1].f, band) + ".");
       home = focus[0];
     } else if (growing.length) {
-      parts.push((o.timing === "end" ? "Next year, {name} will keep building on " : "Next, we'll keep building on ") + bt(growing[0].f, band) + ".");
+      parts.push((o.timing === "end" ? "Next year, " + ((/\{name\}/.test(parts[parts.length - 1]) && SUBJ[o.pronoun]) || "{name}") + " will keep building on " : "Next, we'll keep building on ") + bt(growing[0].f, band) + ".");
       home = growing[0];
     } else if (o.timing === "end") {
       parts.push(subj === "sci" ? "Over the summer, a trip to a park, beach or museum would keep building on this year's work." : "Over the summer, a visit to a museum, a historic place or somewhere new on the map would keep building on this year's work.");

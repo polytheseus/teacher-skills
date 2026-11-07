@@ -247,10 +247,10 @@
     var idxOpen = -1, idxFew = -1;
     if (o.opening !== "none") { idxOpen = parts.length; parts.push(pick(open, seed)); }
     var moment = String(o.moment || "").trim().replace(/[.!]+$/, "");
-    if (moment) parts.push("I was impressed when {name} " + moment.charAt(0).toLowerCase() + moment.slice(1) + ".");
+    if (moment) parts.push("I was impressed when " + ((idxOpen >= 0 && /\{name\}/.test(parts[idxOpen]) && { she: "she", he: "he" }[o.pronoun]) || "{name}") + " " + moment.charAt(0).toLowerCase() + moment.slice(1) + ".");
     // Subjects alternate between the name and a pronoun so the name isn't on
     // every sentence; "they" takes a plural verb (knows -> know, is -> are).
-    var n = 0, SUBJ = { she: "she", he: "he", they: "they" };
+    var n = /\{name\}/.test(parts[parts.length - 1] || "") ? 1 : 0, SUBJ = { she: "she", he: "he", they: "they" };
     function sentence(vp, tail) {
       var pron = SUBJ[o.pronoun] && n % 2 === 1;
       n++;
@@ -271,7 +271,7 @@
       if (focus[1]) parts.push((o.timing === "end" ? "It would also help to keep working on " : "We're also working on ") + bt(focus[1].f, band) + ".");
       home = focus[0];
     } else if (growing.length) {
-      parts.push((o.timing === "end" ? "Next year, {name} will keep building on " : "Next, we'll keep building on ") + bt(growing[0].f, band) + ".");
+      parts.push((o.timing === "end" ? "Next year, " + ((/\{name\}/.test(parts[parts.length - 1]) && SUBJ[o.pronoun]) || "{name}") + " will keep building on " : "Next, we'll keep building on ") + bt(growing[0].f, band) + ".");
       home = growing[0];
     } else if (o.timing === "end") {
       parts.push("Over the summer, reading for pleasure a little each day, and writing the odd postcard or diary entry, will keep these skills fresh.");

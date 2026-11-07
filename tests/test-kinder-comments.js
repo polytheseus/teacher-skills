@@ -25,7 +25,7 @@ if (bad.length) console.log(bad.slice(0, 3).join("\n"));
 // Basic build
 var r = k.build({ name: "Maya", pronoun: "she", style: "us", timing: "early", moment: "count every block in the tower she built.", levels: { letters: "s", counting: "s", sight: "g", writing: "f" } });
 t("ok", r.ok && r.chars === r.text.length);
-t("moment sentence", /I loved seeing Maya count every block in the tower she built\./.test(r.text));
+t("moment sentence", /I loved seeing her count every block in the tower she built\./.test(r.text));
 t("subject groups", /In reading, Maya .*In math/.test(r.text));
 t("pronoun alternates", /\. She /.test(r.text));
 t("on-track clause once", (r.text.match(/right on track/g) || []).length === 1);

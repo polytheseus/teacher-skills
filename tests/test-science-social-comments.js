@@ -56,7 +56,7 @@ t("ids unique", k.AREAS.map(function (a) { return a.id; }).filter(function (x, i
 var r = k.build({ name: "Leo", pronoun: "he", subject: "sci", band: "35", opening: "curious", moment: "Suggested testing each paper towel with the same amount of water.", levels: { investigate: "s", measure: "g", explain: "f" } });
 t("ok", r.ok && r.chars === r.text.length);
 t("opening", /^Leo (is curious|likes to know)/.test(r.text));
-t("moment lowercased", /I was impressed when Leo suggested testing each paper towel with the same amount of water\./.test(r.text));
+t("moment lowercased", /I was impressed when he suggested testing each paper towel with the same amount of water\./.test(r.text));
 t("pronoun alternates", /\. He /.test(r.text));
 t("on track tail once", (r.text.match(/right on track/g) || []).length === 1);
 t("next step + sch", /Our next step is using results to explain the answer, not just saying what happened, which we're practicing with "I found that\.\.\. because\.\.\." sentence starters\./.test(r.text));
@@ -275,7 +275,7 @@ t("US ignores Ontario options", !/Life Systems/.test(r.text) && /right on track/
   var ids = k.areasFor("35", "ss").map(function (a) { return a.id; });
   var lv = {}; lv[ids[0]] = "s"; lv[ids[1]] = "f";
   r = k.build({ name: "Ruby", pronoun: "she", style: "au", subject: "ss", band: "35", timing: "end", ae: "C", levels: lv });
-  t("au C sentence HASS", /Ruby is working at the expected standard in HASS\./.test(r.text) && /summer holidays/.test(r.text) && !serious(r.issues).length);
+  t("au C sentence HASS", /(Ruby|She) is working at the expected standard in HASS\./.test(r.text) && /summer holidays/.test(r.text) && !serious(r.issues).length);
   t("us C grade level", /working at grade level in social studies/.test(k.build({ name: "Ruby", pronoun: "she", style: "us", subject: "ss", band: "35", ae: "C", levels: lv }).text));
   var only = {}; only[ids[0]] = "f";
   t("A with no strength", has(k.build({ name: "Ruby", pronoun: "she", style: "au", subject: "ss", band: "35", ae: "A", levels: only }).issues, "review", /no strand is a strength/));

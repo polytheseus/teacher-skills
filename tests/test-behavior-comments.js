@@ -52,7 +52,7 @@ if (phraseBad.length) console.log(phraseBad.slice(0, 5).join("\n"));
 var r = k.build({ name: "Leo", pronoun: "he", band: "35", opening: "helpful", moment: "Noticed a new classmate on his own at recess and invited him to join the game.", levels: { kindness: "s", deadlines: "g", turns: "f" } });
 t("ok", r.ok && r.chars === r.text.length);
 t("opening", /^Leo (is a helpful member|is quick to help)/.test(r.text));
-t("moment lowercased", /I was impressed when Leo noticed a new classmate/.test(r.text));
+t("moment lowercased", /I was impressed when he noticed a new classmate/.test(r.text));
 t("pronoun alternates", /\. He /.test(r.text));
 t("on track tail once", (r.text.match(/right on track/g) || []).length === 1);
 t("next step + sch (US)", /Our next step is waiting for his turn to speak in class discussions, which we're practicing with talk partners/.test(r.text));

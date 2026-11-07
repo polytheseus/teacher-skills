@@ -53,7 +53,7 @@ if (phraseBad.length) console.log(phraseBad.slice(0, 5).join("\n"));
 var r = k.build({ name: "Amara", pronoun: "she", band: "35", opening: "curious", moment: "Explained why the main character lied, using three clues.", levels: { inference: "s", spelling: "g", organisation: "f" } });
 t("ok", r.ok && r.chars === r.text.length);
 t("opening", /^Amara (is a curious reader|brings great questions)/.test(r.text));
-t("moment lowercased", /I was impressed when Amara explained why the main character lied, using three clues\./.test(r.text));
+t("moment lowercased", /I was impressed when she explained why the main character lied, using three clues\./.test(r.text));
 t("pronoun alternates", /\. She /.test(r.text));
 t("on track tail once", (r.text.match(/right on track/g) || []).length === 1);
 t("next step + sch (US)", /Our next step is organizing writing into paragraphs, each with one main idea, which we're practicing with planning frames/.test(r.text));
@@ -175,7 +175,7 @@ rw.forEach(function (x, i) {
   t("au UK spelling", /practis/.test(k.fill("practise", au)));
   var lv = {}; lv[k.areasFor("k2")[0].id] = "s"; lv[k.areasFor("k2")[1].id] = "f";
   var r = k.build({ name: "Ruby", pronoun: "she", style: "au", band: "k2", grade: "C", levels: lv });
-  t("au C sentence", /Ruby is working at the expected standard in English\./.test(r.text) && !/grade level/.test(r.text));
+  t("au C sentence", /(Ruby|She) is working at the expected standard in English\./.test(r.text) && !/grade level/.test(r.text));
   t("au C clean", !serious(r.issues).length);
   var u = k.build({ name: "Ruby", pronoun: "she", style: "us", band: "k2", grade: "C", levels: lv });
   t("us C grade level", /grade level/.test(u.text));

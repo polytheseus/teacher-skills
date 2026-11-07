@@ -48,7 +48,7 @@ if (bad2.length) console.log(bad2.slice(0, 2).join("\n"));
 // Basic build
 var r = k.build({ name: "Rosa", pronoun: "she", style: "us", timing: "early", moment: "count all the ducks in our pond book.", levels: { friends: "s", counting: "g", listening: "f" } });
 t("ok", r.ok && r.chars === r.text.length);
-t("moment", /I loved seeing Rosa count all the ducks in our pond book\./.test(r.text));
+t("moment", /I loved seeing her count all the ducks in our pond book\./.test(r.text));
 t("pre-K", /pre-K/.test(r.text));
 t("math lead", /In math, /.test(r.text));
 t("on-track clause once", (r.text.match(/just right for this point/g) || []).length === 1);

@@ -180,10 +180,10 @@
     var idxOpen = -1, idxFew = -1;
     if (o.opening !== "none") { idxOpen = parts.length; parts.push(pick(open, seed)); }
     var moment = String(o.moment || "").trim().replace(/[.!]+$/, "");
-    if (moment) parts.push("I loved seeing {name} " + moment.charAt(0).toLowerCase() + moment.slice(1) + ".");
+    if (moment) parts.push("I loved seeing " + ((idxOpen >= 0 && /\{name\}/.test(parts[idxOpen]) && { she: "her", he: "him", they: "them" }[o.pronoun]) || "{name}") + " " + moment.charAt(0).toLowerCase() + moment.slice(1) + ".");
     // Subjects alternate between the name and a pronoun so the name isn't on
     // every sentence; "they" takes a plural verb (names -> name, is -> are).
-    var lastGroup = null, n = 0;
+    var lastGroup = null, n = /\{name\}/.test(parts[parts.length - 1] || "") ? 1 : 0;
     var SUBJ = { she: "she", he: "he", they: "they" };
     function sentence(a, vp, tail) {
       var g = GROUP[a.group], lead = g && g !== lastGroup ? g + ", " : "";
@@ -206,10 +206,10 @@
       if (focus[1]) parts.push("We're also working on " + focus[1].f + ".");
       home = focus[0];
     } else if (growing.length) {
-      parts.push((o.timing === "end" ? "Next year, {name} will keep working on " : "Next, we'll keep working on ") + growing[0].f.replace(/^learning /, "") + ".");
+      parts.push((o.timing === "end" ? "Next year, " + ((/\{name\}/.test(parts[parts.length - 1]) && SUBJ[o.pronoun]) || "{name}") + " will keep working on " : "Next, we'll keep working on ") + growing[0].f.replace(/^learning /, "") + ".");
       home = growing[0];
     } else if (o.timing === "end") {
-      parts.push("Over the summer, {name} can keep building on this by reading together and counting the things you see.");
+      parts.push("Over the summer, " + ((/\{name\}/.test(parts[parts.length - 1]) && SUBJ[o.pronoun]) || "{name}") + " can keep building on this by reading together and counting the things you see.");
     } else {
       issues.push({ level: "note", msg: "No next step picked. Even a strong student's comment usually names one thing to aim for next." });
     }
