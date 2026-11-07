@@ -196,5 +196,24 @@ t("gives up", has(iss("Ava gives up easily. " + ok), "review", /character verdic
   t("moment after a named opening uses the pronoun", /I was impressed when she built 24/.test(r.text) && /^Ava /.test(r.text));
 })();
 
+// When the character limit drops the opening, the comment still names the
+// student before any pronoun ("I loved seeing her ..." with no name was the fault).
+(function () {
+  var built = 0, early = 0, dropped = 0, ex = "";
+  ["she", "he", "they"].forEach(function (p) { [0, 1, 2, 3, 4, 5].forEach(function (seed) { [300, 400, 500, 600].forEach(function (limit) {
+    k.AREAS.forEach(function (a, i) {
+      var levels = {}; levels[a.id] = "s"; levels[k.AREAS[(i + 2) % k.AREAS.length].id] = "g"; levels[k.AREAS[(i + 4) % k.AREAS.length].id] = "f";
+      var o = { name: "Zara" + seed, pronoun: p, style: "us", levels: levels, limit: limit, band: "35", moment: seed % 2 ? "" : "build a tall tower with a friend" };
+      var r = k.build(o), full = k.build(Object.assign({}, o, { limit: 0 }));
+      built++;
+      if (r.text.indexOf("Zara") !== 0 && full.text.indexOf("Zara") === 0) dropped++;
+      var ni = r.text.indexOf("Zara"), m = r.text.match(/\b(she|he|they|her|him|them|his|their)\b/i);
+      if (m && (ni < 0 || m.index < ni)) { early++; if (!ex) ex = r.text.slice(0, 120); }
+    });
+  }); }); });
+  t("opening dropped in some builds (" + dropped + " of " + built + ")", dropped > 10);
+  t("no pronoun before the name when the opening is dropped" + (ex ? ": " + ex : ""), early === 0);
+})();
+
 console.log(pass + " passed, " + fail + " failed");
 process.exitCode = fail ? 1 : 0;

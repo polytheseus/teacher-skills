@@ -305,5 +305,25 @@ t("US ignores Ontario options", !/Life Systems/.test(r.text) && /right on track/
   t("us unaffected", !k.check("Ruby enjoys social studies." + ok, { style: "us" }).some(function (i) { return /Australian/.test(i.msg); }));
 })();
 
+// When the character limit drops the opening, the comment still names the
+// student before any pronoun ("I loved seeing her ..." with no name was the fault).
+(function () {
+  var built = 0, early = 0, dropped = 0, ex = "";
+  ["she", "he", "they"].forEach(function (p) { [0, 1, 2, 3, 4, 5].forEach(function (seed) { [300, 400, 500, 600].forEach(function (limit) {
+    var SA = k.AREAS.filter(function (a) { return a.subj === "sci" && a.bands.indexOf("35") >= 0; });
+    SA.forEach(function (a, i) {
+      var levels = {}; levels[a.id] = "s"; levels[SA[(i + 2) % SA.length].id] = "g"; levels[SA[(i + 4) % SA.length].id] = "f";
+      var o = { name: "Zara" + seed, pronoun: p, style: "us", levels: levels, limit: limit, band: "35", subject: "sci", moment: seed % 2 ? "" : "build a tall tower with a friend" };
+      var r = k.build(o), full = k.build(Object.assign({}, o, { limit: 0 }));
+      built++;
+      if (r.text.indexOf("Zara") !== 0 && full.text.indexOf("Zara") === 0) dropped++;
+      var ni = r.text.indexOf("Zara"), m = r.text.match(/\b(she|he|they|her|him|them|his|their)\b/i);
+      if (m && (ni < 0 || m.index < ni)) { early++; if (!ex) ex = r.text.slice(0, 120); }
+    });
+  }); }); });
+  t("opening dropped in some builds (" + dropped + " of " + built + ")", dropped > 10);
+  t("no pronoun before the name when the opening is dropped" + (ex ? ": " + ex : ""), early === 0);
+})();
+
 console.log(pass + " passed, " + fail + " failed");
 process.exitCode = fail ? 1 : 0;

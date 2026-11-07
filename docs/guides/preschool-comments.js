@@ -30,7 +30,7 @@
     { id: "feelings", group: "social", label: "Feelings and calming down", us: "Social and Emotional Development", uk: "Personal, social and emotional development",
       s: ["names {their} feelings and asks a grown-up for help when upset", "calms down quickly after small upsets and comforts friends who are sad"],
       g: ["is learning to name {their} feelings, such as happy, sad and angry", "is getting better at calming down with a cuddle, a deep breath or a quiet moment"],
-      f: "naming {their} feelings and using a calm-down strategy when upset", sch: "with our feelings pictures and cosy corner",
+      f: "naming {their} feelings and using a calm-down strategy when upset", sch: "with our feelings pictures and {cosy} corner",
       home: "talk about how characters feel in stories (\"how do you think the bear feels?\")" },
     { id: "settling", group: "social", label: "Settling in and saying goodbye", us: "Social and Emotional Development", uk: "Personal, social and emotional development",
       s: ["says goodbye happily at drop-off and settles straight into play", "comes in confidently each morning and knows our routine"],
@@ -150,8 +150,8 @@
   };
   var PRON = { she: { their: "her", them: "her" }, he: { their: "his", them: "him" }, they: { their: "their", them: "them" } };
   var WORDS = {
-    us: { math: "math", class: "pre-K", next: "kindergarten", peg: "cubby", colour: "color", favourite: "favorite", practise: "practice", practising: "practicing", recognises: "recognizes", recognising: "recognizing" },
-    uk: { math: "maths", class: "nursery", next: "Reception", peg: "peg", colour: "colour", favourite: "favourite", practise: "practise", practising: "practising", recognises: "recognises", recognising: "recognising" }
+    us: { math: "math", class: "pre-K", next: "kindergarten", peg: "cubby", colour: "color", favourite: "favorite", practise: "practice", practising: "practicing", recognises: "recognizes", recognising: "recognizing", recognise: "recognize", cosy: "cozy" },
+    uk: { math: "maths", class: "nursery", next: "Reception", peg: "peg", colour: "colour", favourite: "favourite", practise: "practise", practising: "practising", recognises: "recognises", recognising: "recognising", recognise: "recognise", cosy: "cosy" }
   };
 
   function plural(vp) {
@@ -176,7 +176,7 @@
       if (k === "period") return o.period || (o.style === "us" ? "quarter" : "term");
       if (k in w) return w[k];
       return m;
-    }).replace(/\b(recognises|recognising)\b/g, function (m) { return w[m]; });
+    }).replace(/\b(recognises|recognising|recognise)\b/g, function (m) { return w[m]; });
   }
 
   // opts: { name, pronoun, style: us|uk|two, timing: early|end, period,
@@ -239,9 +239,15 @@
     var trims = [
       function () { if (idxFew >= 0) parts[idxFew] = ""; },
       function () { parts[idxClose] = o.timing === "end" ? "{name} is ready for {next}." : "Thank you for your support at home."; },
-      function () { if (idxOpen >= 0 && (moment || strong.length)) parts[idxOpen] = ""; }
+      function () { if (idxOpen >= 0 && (moment || strong.length)) dropOpen = true; }
     ];
-    for (var ti = 0; limit && text.length > limit && ti < trims.length; ti++) { trims[ti](); text = join(); }
+    // Dropping the opening rebuilds as "No opening" with the first two trims
+    // already made, so the moment line and first strand name the student
+    // instead of starting on a pronoun.
+    var dropOpen = false;
+    for (var tj = 0; tj < (o._trimmed || 0); tj++) { trims[tj](); text = join(); }
+    for (var ti = o._trimmed || 0; limit && text.length > limit && ti < trims.length && !dropOpen; ti++) { trims[ti](); text = join(); }
+    if (dropOpen) return build(Object.assign({}, o, { opening: "none", _trimmed: 2 }));
     return { ok: true, text: text, chars: text.length, issues: issues.concat(check(text, o)) };
   }
 

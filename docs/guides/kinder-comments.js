@@ -207,9 +207,15 @@
     var trims = [
       function () { if (idxFew >= 0) parts[idxFew] = ""; },
       function () { parts[idxClose] = o.timing === "end" ? "{name} is ready for {next}." : "Thank you for your support at home."; },
-      function () { if (idxOpen >= 0 && (moment || strong.length)) parts[idxOpen] = ""; }
+      function () { if (idxOpen >= 0 && (moment || strong.length)) dropOpen = true; }
     ];
-    for (var ti = 0; limit && text.length > limit && ti < trims.length; ti++) { trims[ti](); text = join(); }
+    // Dropping the opening rebuilds as "No opening" with the first two trims
+    // already made, so the moment line and first strand name the student
+    // instead of starting on a pronoun.
+    var dropOpen = false;
+    for (var tj = 0; tj < (o._trimmed || 0); tj++) { trims[tj](); text = join(); }
+    for (var ti = o._trimmed || 0; limit && text.length > limit && ti < trims.length && !dropOpen; ti++) { trims[ti](); text = join(); }
+    if (dropOpen) return build(Object.assign({}, o, { opening: "none", _trimmed: 2 }));
     var res = check(text, o);
     return { ok: true, text: text, chars: text.length, issues: issues.concat(res) };
   }
