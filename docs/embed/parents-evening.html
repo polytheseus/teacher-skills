@@ -26,7 +26,26 @@
 .pe-note{background:#dcefe8;color:#22604f}
 td.bad{background:#fff4ef}
 td.good{background:#f4fbf8}
-@media print{body *{visibility:hidden}#pe-output,#pe-output *{visibility:visible}#pe-output{position:absolute;left:0;top:0;width:100%}#pe-output button,#pe-output .pe-issues{display:none}.pe-card{break-inside:avoid}.pe-card details{display:none}}
+@media print{body:not(.pes-mode) *{visibility:hidden}body:not(.pes-mode) #pe-output,body:not(.pes-mode) #pe-output *{visibility:visible}#pe-output{position:absolute;left:0;top:0;width:100%}#pe-output button,#pe-output .pe-issues{display:none}.pe-card{break-inside:avoid}.pe-card details{display:none}}
+#pe-sheet{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:14px}
+#pe-sheet h3{margin:0 0 8px}
+.pes-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(13em,1fr));gap:6px 14px;margin-bottom:10px}
+.pes-fields label{display:flex;gap:6px;align-items:baseline;font-weight:700;font-size:13px}
+.pes-fields input{flex:1;min-width:0;font:inherit;font-weight:400;border:0;border-bottom:1px solid #888;background:transparent;padding:2px 0}
+.pes-scroll{overflow-x:auto}
+table.pes-table{width:100%;min-width:760px;border-collapse:collapse;margin:0;table-layout:fixed}
+.pes-table th,.pes-table td{border:1px solid #999;padding:4px 5px;font-size:12.5px;vertical-align:top;text-align:left}
+.pes-table th{background:#eef0f4;font-size:12px}
+.pes-table th span{display:block;font-weight:400;color:#555;font-size:11px}
+.pes-table td{height:3.2em}
+.pes-table col.t{width:4.6em}.pes-table col.n{width:6.5em}.pes-table col.f{width:5.5em}
+.pes-foot{font-size:11px;color:#777;margin:8px 0 0}
+.pes-print{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent2);color:#fff}
+@media print{body.pes-mode>*:not(main),body.pes-mode main>*:not(#template),body.pes-mode #template>*:not(#pe-sheet){display:none!important}
+body.pes-mode main.wrap{max-width:none;padding:0!important;margin:0}body.pes-mode #pe-sheet{border:0;padding:0;margin:0;font-size:11px;page:pesland}
+.pes-scroll{overflow:visible}table.pes-table{min-width:0}.pes-table th,.pes-table td{font-size:10.5px;padding:3px 4px}.pes-table th span{font-size:9.5px}.pes-table td{height:5.1em}
+html,body{background:#fff!important}}
+@page pesland{size:A4 landscape;margin:10mm}
 </style>
 <style>
 body{background:var(--bg)}
