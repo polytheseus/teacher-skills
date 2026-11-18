@@ -1,0 +1,5 @@
+{
+  "name": "polytheseus-teacher-skills",
+  "version": "0.1.5",
+  "description": "Teacher skills for AI assistants: report card comments, parent emails, and rubrics. Works in Claude, ChatGPT, Gemini, Codex, Cursor and more."
+}
