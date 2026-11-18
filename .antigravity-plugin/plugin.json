@@ -1,0 +1,29 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "polytheseus-teacher-skills",
+  "displayName": "Teacher Skills",
+  "version": "0.1.5",
+  "description": "Report card comments, parent and guardian emails, and rubrics/success criteria, with student privacy built in.",
+  "logo": "plugins/teacher/.claude-plugin/icon.png",
+  "suggestedPrompts": [
+    "Write report comments for these students from my notes",
+    "Draft a reply to a parent's email about homework",
+    "Build a rubric for this assignment"
+  ],
+  "author": {
+    "name": "polytheseus",
+    "url": "https://polytheseus.com"
+  },
+  "homepage": "https://polytheseus.com/teacher-skills/",
+  "repository": "https://github.com/polytheseus/teacher-skills",
+  "license": "MIT",
+  "keywords": [
+    "teacher",
+    "education",
+    "report-comments",
+    "parent-email",
+    "rubric",
+    "k12",
+    "school"
+  ]
+}
